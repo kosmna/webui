@@ -1,0 +1,202 @@
+<div class="content" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile" fxLayout="column" fxLayoutGap="10px" @cardAnimations>
+    <div fxLayoutAlign.gt-md="center start" fxLayout.lt-md="column" fxLayoutGap="15px">
+      <!-- General info -->
+      <mat-card loopCard loopMaterialCard class="info-card" fxFlex *ngIf="deviceInfo">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>computer</mat-icon>
+          <mat-card-title>
+            <h2 class="mat-title" i18n="title" i18n> General </h2>
+          </mat-card-title>
+
+        </mat-card-header>
+        <mat-list>
+          <mat-list-item matLine>
+            <span i18n fxFlex="35">
+              Model Number
+            </span>
+            <span class="output info__output">
+              {{deviceInfo.modelNumber}}
+            </span>
+
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item matLine>
+            <span i18n fxFlex="35">
+              Manufacturer
+            </span>
+            <span class="output info__output">
+              {{deviceInfo.manufacturer}}
+            </span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item matLine>
+            <span i18n fxFlex="35" i18n>Firmware Version</span>
+            <span class="output info__output">
+              {{deviceInfo.firmwareVersion}}
+            </span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item matLine>
+            <span i18n fxFlex="35" i18n> Hardware Version</span>
+            <span class="output info__output">
+              {{deviceInfo.hardwareVersion}}
+            </span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item matLine>
+            <span i18n fxFlex="35" i18n>Serial #</span>
+            <span class="output info__output">
+              {{deviceInfo.serialNumber}}
+            </span>
+          </mat-list-item>
+        </mat-list>
+      </mat-card>
+
+      <!-- CPU Info -->
+      <mat-card loopCard loopMaterialCard id="cpu-card" class="info-card" fxFlex fxFlex.lt-md="100" *ngIf="cpuInfo">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>developer_board</mat-icon>
+
+          <mat-card-title>
+            <h2 class="mat-title" i18n="title" i18n> CPU </h2>
+          </mat-card-title>
+
+        </mat-card-header>
+        <mat-tab-group>
+          <ng-container *ngFor="let cpu of cpuInfo; let i = index;">
+            <mat-tab label="CPU {{i}}">
+              <mat-list>
+                <mat-list-item matLine>
+                  <span i18n fxFlex="35" i18n>Name</span>
+                  <span class="output">
+                    {{cpu.modelName}}
+                  </span>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <span i18n fxFlex="35" i18n>Core #</span>
+                  <span class="output">
+                    {{cpu.cpuCores}}
+                  </span>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item matLine>
+                  <span i18n fxFlex="35" i18n>Clock Speed</span>
+                  <span class="output">
+                    {{toGigahertz(cpu.clockMHz)}}
+                  </span>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item matLine>
+                  <span i18n fxFlex="35" i18n>Vendor ID</span>
+                  <span class="output">
+                    {{cpu.vendorID}}
+                  </span>
+                </mat-list-item>
+              </mat-list>
+            </mat-tab>
+          </ng-container>
+        </mat-tab-group>
+      </mat-card>
+    </div>
+    <!--end of row -->
+
+    <div fxLayoutAlign.gt-md="center start" fxLayout.lt-md="column" fxLayoutGap="15px">
+
+      <!-- Storage Info -->
+
+      <loop-info-memory-panel #loopMemPanel fxFlex fxFlex.lt-md="100" *ngIf="storageInfo" usedTxt="Storage Used"
+        i18n-usedTxt availableTxt="Storage Available" i18n-availableTxt totalTxt="Total Storage" i18n-totalTxt type="storage"
+        [data]="storageInfo"></loop-info-memory-panel>
+
+      <loop-info-memory-panel fxFlex fxFlex.lt-md="100" *ngIf="memInfo" usedTxt="Memory Used" i18n-usedTxt availableTxt="Memory Available"
+        i18n-availableTxt totalTxt="Total Memory" i18n-totalTxt type="memory" [data]="memInfo"></loop-info-memory-panel>
+
+    </div>
+    <loop-modem-panel [modemInfo]="modemInterfaces"></loop-modem-panel>
+    <!--end of row -->
+    <mat-card loopCard loopMaterialCard class="info-card" *ngIf="networkInterfaces">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>settings_input_antenna</mat-icon>
+        <mat-card-title>
+          <h2 class="mat-title" i18n="title" i18n> Network Interfaces </h2>
+        </mat-card-title>
+      </mat-card-header>
+      <div class="table-container">
+        <mat-table #networkTable class="network-table wrap-cells" [dataSource]="networkDataSource">
+          <ng-container cdkColumnDef="interface">
+            <mat-header-cell *cdkHeaderCellDef i18n>Interface</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.name}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="hwaddr">
+            <mat-header-cell *cdkHeaderCellDef i18n>MAC Address</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.hwaddr}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="address">
+            <mat-header-cell *cdkHeaderCellDef i18n>IP Address</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.address}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="family">
+            <mat-header-cell *cdkHeaderCellDef i18n>Address Family</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.family}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="type">
+            <mat-header-cell *cdkHeaderCellDef i18n>Type</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.type}}</mat-cell>
+          </ng-container>
+          <mat-header-row *cdkHeaderRowDef="['interface', 'hwaddr', 'address', 'family', 'type']"></mat-header-row>
+          <mat-row *cdkRowDef="let row; columns: ['interface', 'hwaddr', 'address', 'family', 'type']"></mat-row>
+        </mat-table>
+        <div *ngIf="networkDataSource.datalength === 0" fxLayout="row" fxLayoutAlign="center center" class="empty-table-container">
+          <span i18n>
+            NO NETWORK INTERFACES FOUND
+          </span>
+        </div>
+      </div>
+    </mat-card>
+    <!--end of row -->
+    <mat-card loopCard loopMaterialCard class="info-card" *ngIf="serialInterfaces">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>router</mat-icon>
+        <mat-card-title>
+          <h2 class="mat-title" i18n="title" i18n> Serial Interfaces </h2>
+        </mat-card-title>
+      </mat-card-header>
+      <div class="table-container">
+        <mat-table #serialTable [dataSource]="serialDataSource" class="wrap-cells info-table">
+          <ng-container cdkColumnDef="name">
+            <mat-header-cell *cdkHeaderCellDef i18n>Name</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.name}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="model">
+            <mat-header-cell *cdkHeaderCellDef i18n>Model</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.model}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="manufacturer">
+            <mat-header-cell *cdkHeaderCellDef i18n>Manufacturer</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.manufacturer}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="serialNum">
+            <mat-header-cell *cdkHeaderCellDef i18n>Serial #</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.serialNumber}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="speed">
+            <mat-header-cell *cdkHeaderCellDef i18n>Speed (Baudrate)</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.speed | replace:'0':' - '}}</mat-cell>
+          </ng-container>
+          <mat-header-row *cdkHeaderRowDef="['name', 'model', 'manufacturer', 'serialNum', 'speed']"></mat-header-row>
+          <mat-row *cdkRowDef="let row; columns: ['name', 'model', 'manufacturer', 'serialNum', 'speed']"></mat-row>
+        </mat-table>
+        <div *ngIf="serialDataSource.length === 0" fxLayout="row" fxLayoutAlign="center center" class="empty-table-container">
+          <span i18n>
+            NO SERIAL INTERFACES FOUND
+          </span>
+        </div>
+      </div>
+    </mat-card>
+
+    <!--end of row -->
+  </div>
+</div>
+<!--end of container -->

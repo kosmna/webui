@@ -1,0 +1,81 @@
+@import 'mixins';
+
+.edit-mode {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.network {
+
+  @include e('sub-title') {
+    padding-left: 16px;
+    margin-top: 21px;
+    font-weight: 700;
+  }
+
+  @include e('label') {
+    font-weight: 500 !important;
+  }
+
+
+  @include e('button') {
+
+    @include m('margin-left') {
+      margin-left: 5px;
+    }
+
+    @include m('margin-right') {
+      margin-right: 25px;
+    }
+  }
+
+
+  @include e('card') {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+}
+
+@include shadow('mat-card-content') {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.list-item {
+
+  @include e('label') {
+    font-weight: 500 !important;
+    width: 120px;
+  }
+
+
+  @include m('edit-mode') {
+    height: 60px;
+  }
+
+  @include e('second-line') {
+    margin-left: 5px;
+  }
+
+  @include e('input') {
+
+    @include m('margin-right') {
+      margin-right: 16px;
+    }
+  }
+}
+
+@include shadow('.mat-list-item-content') {
+  padding-right: 0px !important;
+}
+
+@include shadow('mat-list') {
+  padding-top: 0px;
+}
+
+.mat-expansion-panel-header {
+  padding: 0 16px 0px 12px;
+}

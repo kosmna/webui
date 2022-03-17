@@ -1,0 +1,26 @@
+<div   class="content" fxLayout="row" fxLayoutAlign="center" >  
+  <div  class="content__inner content--mobile" fxLayout="row wrap" fxLayoutAlign="start" >
+    
+    <loop-add-card #addCard class="add-network-card" tooltip="Join Network" i18n-tooltip fxFlex.lg="40"  fxFlex.gt-lg="30"  fxFlex.md="0 0 50" fxFlex.lt-md="100"></loop-add-card>
+    <!-- Add Network Card -->
+
+    <ng-container *ngIf="networks">
+      
+      <ng-container *ngFor="let network of networks">
+        <loop-remote-access-card
+          fxFlex.gt-lg="30"
+          fxFlex.lg="40"
+          fxFlex.md="0 0 50"
+          fxFlex.lt-md="100"
+          class="remote-access-card"
+          [network]="network"
+          (leaveNetwork)="showLeaveDialog($event)"
+          >
+
+        </loop-remote-access-card>
+          
+      </ng-container>
+    </ng-container>
+
+  </div>
+</div>

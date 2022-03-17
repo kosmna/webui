@@ -1,0 +1,61 @@
+<h2 matDialogTitle class="theme-bottom-border">
+
+  <ng-container [ngSwitch]="data.type">
+    
+    <span *ngSwitchCase="'resetPassword'" i18n>
+      Reset Password
+    </span>
+    <span *ngSwitchCase="'editUser'" i18n>
+      Edit User
+    </span>
+    <span *ngSwitchDefault i18n>
+      Create User
+    </span>
+  </ng-container>
+</h2>
+
+<form  [formGroup]="userForm" fxLayout="column">
+<mat-dialog-content *ngIf="!isLoading" [class]="!!currentUser.password ? 'password-content' : '' ">
+    <mat-form-field  class="full-width">
+      <input matInput  placeholder="Username" type="text" formControlName="username" i18n-placeholder>
+    </mat-form-field>
+    <!--end of add user form-->
+    <mat-list *ngIf="password">
+      <div>
+        
+      </div>
+
+      <mat-list-item>
+        <div matLine>
+          <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutAlign.gt-sm="start center" fxLayoutAlign="start start" fxLayoutGap="15px">
+            <h3 class="subheading-1 subheader" i18n>Password</h3>
+            <h4 class="topic-tag subheading-1 ">{{currentUser.password}}</h4>
+          </div>
+          
+        </div>
+        <p matLine fxHide.lt-sm i18n>Make sure that you save this password. You cannot access it again!</p>
+      </mat-list-item>
+    </mat-list>
+  </mat-dialog-content>
+  <mat-dialog-content  *ngIf="isLoading" fxLayoutAlign="center center">
+    <mat-progress-spinner class="loading-spinner" mode="indeterminate" [strokeWidth]="5"></mat-progress-spinner>
+  </mat-dialog-content>
+  <mat-dialog-actions *ngIf="!isLoading" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+    <button *ngIf="!password" type="submit" loopButton loopClearButton mat-button [disabled]="!userForm.valid" (click)="createUser()" >
+ 
+      <ng-container [ngSwitch]="editMode">
+        <span *ngSwitchCase="true" i18n>Update User</span>
+        <span *ngSwitchCase="false" i18n>Add User</span>
+      </ng-container>
+
+    </button>
+   
+    <button  mat-button loopButton color="warn" [matDialogClose]="" >
+      <ng-container [ngSwitch]="password">
+        <span *ngSwitchCase="true" i18n>Close</span>
+        <span *ngSwitchCase="false" i18n>Cancel</span>
+      </ng-container>
+    </button>
+  </mat-dialog-actions>
+</form>
+  

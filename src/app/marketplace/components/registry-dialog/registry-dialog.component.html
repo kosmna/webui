@@ -1,0 +1,79 @@
+<h2 matDialogTitle *ngIf="isUpdate" class="theme-bottom-border" i18n>Update Registry</h2>
+<h2 matDialogTitle *ngIf="!isUpdate"  class="theme-bottom-border" i18n>Add Registry</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="registryForm">
+
+    <div fxLayout="column" fxLayoutAlign="start stretch">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Registry Name" formControlName="name" type="text" i18n-placeholder>
+      </mat-form-field>
+
+      <div
+        fxLayout="row nowrap"
+        fxLayout.lt-sm="column nowrap"
+        fxLayoutAlign.lt-sm="start stretch"
+        fxLayoutGap="10px"
+        fxLayoutAlign="start baseline">
+        <mat-form-field fxFlex fxFlex.lt-sm="100">
+          <input matInput placeholder="Address" formControlName="address" type="url" i18n-placeholder>
+        </mat-form-field>
+
+        <mat-slide-toggle formControlName="tlsSkipVerify" i18n>
+          Skip TLS
+        </mat-slide-toggle>
+      </div>
+
+      <div
+        fxLayout="row nowrap"
+        fxLayout.lt-sm="column nowrap"
+        fxLayoutAlign="start stretch"
+        fxLayoutGap="10px">
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Username" formControlName="username" type="text" i18n-placeholder>
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Password" formControlName="password" type="password" i18n-placeholder>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div class="table-container" [fxHide]="dataSource.data.length === 0">
+    <div class="mat-title table-container__title" i18n>
+      Repositories
+    </div>
+    <mat-table #table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef i18n> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="tags">
+        <mat-header-cell *matHeaderCellDef i18n> Tags </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.tags}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+  </div>
+  <div [fxShow]="dataSource.data.length === 0" fxLayout="row" fxLayoutAlign="center center" class="empty-table-container">
+    <span class="mat-subheading-1" i18n>
+      No Repositories Defined
+    </span>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+  <button loopButton loopSubmitOnEnter loopClearButton mat-button [disabled]="!registryForm.valid" [matDialogClose]="registryForm.value">
+    <span *ngIf="isUpdate" i18n>Update</span>
+    <span *ngIf="!isUpdate" i18n>Add</span>
+  </button>
+  <button mat-button loopButton color="warn" [matDialogClose]="" i18n>Cancel</button>
+</mat-dialog-actions>

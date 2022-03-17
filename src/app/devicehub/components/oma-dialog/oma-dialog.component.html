@@ -1,0 +1,254 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between">
+  <span class="oma-binding__title theme-bottom-border">
+    <h3 class="oma-binding__title__text" i18n>OMA Binding</h3>
+  </span>
+
+  <button mat-icon-button [matDialogClose]="false" color="warn">
+    <mat-icon> close </mat-icon>
+  </button>
+</div>
+<mat-dialog-content>
+  <form
+    [formGroup]="bindingForm"
+    (ngSubmit)="onSubmit()"
+    #formDirective="ngForm"
+  >
+    <mat-horizontal-stepper [linear]="stepperLinear" #stepper>
+      <ng-template matStepperIcon="edit">
+        <mat-icon> done </mat-icon>
+      </ng-template>
+      <mat-step [stepControl]="bindingForm.controls['objectId']">
+        <ng-template matStepLabel i18n>Object ID</ng-template>
+        <div class="oma-binding__content" fxLayout="column">
+          <mat-form-field fxFlex="90">
+            <mat-select
+              matInput
+              placeholder="Object"
+              formControlName="objectId"
+              fxFlex
+              i18n-placeholder
+            >
+              <mat-option
+                *ngFor="let object of omaBindings.objects"
+                [value]="object.objectID"
+              >
+                <span fxLayoutAlign="space-between">
+                  <span> {{ object.objectID }} </span>
+                  <span> {{ object.name }} </span>
+                </span>
+              </mat-option>
+            </mat-select>
+            <mat-hint [align]="'start'" i18n>Select Object ID</mat-hint>
+          </mat-form-field>
+          <div *ngIf="selectedObject?.name" class="oma-binding__text-container">
+            <h3>{{ selectedObject?.name }}</h3>
+            <p
+              class="oma-binding__description  oma-binding__description--no-margin-top "
+            >
+              {{ selectedObject?.description1 }}
+            </p>
+          </div>
+
+          <div class="action-buttons" fxLayout="row" fxLayoutAlign="end">
+            <button
+              class="action-buttons__next"
+              type="button"
+              mat-button
+              loopButton
+              loopClearButton
+              matStepperNext
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      <mat-step [stepControl]="bindingForm.controls['valueType']">
+        <ng-template matStepLabel i18n>Resource ID</ng-template>
+        <div class="oma-binding__content" fxLayout="column" fxLayoutGap="25px">
+          <mat-form-field fxFlex="90">
+            <mat-select
+              placeholder="Resource"
+              matInput
+              formControlName="resourceId"
+              fxFlex
+              i18n-placeholder
+            >
+              <mat-option
+                *ngFor="let resource of selectedObject?.resources.item"
+                [value]="resource.id"
+              >
+                <span fxLayoutAlign="space-between">
+                  <span> {{ resource.id }} </span>
+                  <span> {{ resource.name }} </span>
+                </span>
+              </mat-option>
+            </mat-select>
+            <mat-hint align="start" i18n>Select Resource ID</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="90">
+            <mat-select
+              placeholder="Value Type"
+              formControlName="valueType"
+              fxFlex
+              i18n-placeholder
+            >
+              <mat-option *ngFor="let type of valueTypes" [value]="type">
+                {{ type }}
+              </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="!!selectedResource?.type" align="start" i18n>
+              <strong>{{ selectedResource?.type }}</strong> is the default value
+              type</mat-hint
+            >
+            <mat-hint *ngIf="!selectedResource?.type" align="start" i18n
+              >Select value type</mat-hint
+            >
+          </mat-form-field>
+          <div
+            *ngIf="selectedResource?.name"
+            class="oma-binding__text-container"
+          >
+            <h3>{{ selectedResource?.name }}</h3>
+
+            <p
+              class="oma-binding__description  oma-binding__description--no-margin-top "
+            >
+              {{ selectedResource?.description }}
+            </p>
+          </div>
+
+          <div
+            class="action-buttons"
+            fxLayout="row"
+            fxLayoutAlign="space-between"
+          >
+            <button
+              type="button"
+              class="action-buttons__back"
+              mat-button
+              loopButton
+              loopClearButton
+              matStepperPrevious
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              class="action-buttons__next"
+              mat-button
+              loopButton
+              loopClearButton
+              matStepperNext
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      <mat-step [stepControl]="bindingForm.controls['instanceId']">
+        <ng-template matStepLabel i18n>Instance ID</ng-template>
+        <div class="oma-binding__content" fxLayout="column" fxLayoutGap="25px">
+          <mat-form-field fxFlex>
+            <input
+              matInput
+              placeholder="Instance ID"
+              type="number"
+              formControlName="instanceId"
+              i18n-placeholder
+            />
+            <mat-hint align="start" i18n>Enter instance ID</mat-hint>
+          </mat-form-field>
+          <div
+            class="action-buttons"
+            fxLayout="row"
+            fxLayoutAlign="space-between"
+          >
+            <button
+              class="action-buttons__back"
+              type="button"
+              mat-button
+              loopButton
+              loopClearButton
+              matStepperPrevious
+              i18n
+            >
+              Back
+            </button>
+            <button
+              class="action-buttons__next"
+              type="button"
+              mat-button
+              loopButton
+              loopClearButton
+              matStepperNext
+              i18n
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel i18n>Done</ng-template>
+        <mat-list>
+          <mat-list-item class="output-item">
+            <span fxFlex="35" i18n> Object ID </span>
+            <span class="output"> {{ selectedObject?.objectID }} </span>
+            <span class="output output-item__description">
+              - {{ selectedObject?.name }}
+            </span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item class="output-item">
+            <span fxFlex="35" i18n> Resource ID </span>
+            <span class="output"> {{ selectedResource?.id }} </span>
+            <span class="output output-item__description">
+              - {{ selectedResource?.name }}
+            </span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+
+          <mat-list-item class="output-item">
+            <span fxFlex="35" i18n> Value Type </span>
+            <span class="output"> {{ bindingForm.value?.valueType }} </span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+
+          <mat-list-item class="output-item">
+            <span fxFlex="35" i18n> Instance ID </span>
+            <span class="output"> {{ bindingForm.value?.instanceId }} </span>
+          </mat-list-item>
+        </mat-list>
+        <div
+          class="action-buttons"
+          fxLayout="row"
+          fxLayoutAlign="space-between"
+        >
+          <button
+            class="action-buttons__back"
+            mat-button
+            type="button"
+            loopButton
+            loopClearButton
+            matStepperPrevious
+            i18n
+          >
+            Back
+          </button>
+          <button
+            class="action-buttons__next"
+            mat-button
+            type="submit"
+            loopButton
+            loopClearButton
+          >
+            <span *ngIf="data.binding" i18n> Update </span>
+            <span *ngIf="!data.binding" i18n> Submit </span>
+          </button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </form>
+</mat-dialog-content>

@@ -1,0 +1,24 @@
+<mat-card class="subscription-card">
+  <mat-card-content fxFlexFill fxLayoutAlign="center center">
+    <mat-icon fxFlexFill fxLayoutAlign="center center" class="subscription-card__image" [style.fontSize.px]="rowHeight" [ngClass]="{'subscription-card__image--enabled': enabled, 'subscription-card__image--disabled': !enabled}">check_circle</mat-icon>
+    <div class="subscription-card__data">
+      <div class="data-content" fxLayout="column nowrap">
+        <div fxLayout="row nowrap">
+          <span class="mat-headline" fxFlex>{{ title }}</span>
+          <button mat-icon-button [matMenuTriggerFor]="connectorActionsMenu" class="menu-button-24">
+            <mat-icon class="mat-18">more_vertical</mat-icon>
+          </button>
+
+          <mat-menu #connectorActionsMenu="matMenu" x-position="after" y-position="below" [overlapTrigger]="false">
+            <button mat-menu-item *ngFor="let action of actions" (click)="action.action(item)">
+              <mat-icon>{{ action.icon }}</mat-icon>
+              <span>{{ action.name }}</span>
+            </button>
+          </mat-menu>
+        </div>
+        <span class="mat-caption subscription-card__subtitle" ngxClipboard [cbContent]="subtitle" matTooltip="Click to copy topic"
+          matTooltipShowDelay="400">{{ subtitle }}</span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

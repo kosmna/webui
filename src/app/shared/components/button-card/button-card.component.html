@@ -1,0 +1,8 @@
+<mat-card matRipple class="button-card" (click)="click($event)">
+  <mat-card-content fxFlexFill fxLayoutAlign="center center">
+    <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px" [matTooltip]="buttonText" matTooltipShowDelay="400">
+      <mat-icon class="mat-18">{{iconName}}</mat-icon>
+      <span>{{buttonText}}</span>
+    </div>
+  </mat-card-content>
+</mat-card>

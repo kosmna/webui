@@ -1,0 +1,93 @@
+<!-- <loop-list-filter (applyFilter)="filter($event)" [actions]="filterActions"></loop-list-filter> -->
+
+<section>
+  <section class="table-container">
+    <mat-table #table [dataSource]="dataSource" [fxHide]="dataSource.data.length === 0">
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell fxFlex="0 0 100px" *matHeaderCellDef i18n> Name </mat-header-cell>
+        <mat-cell fxFlex="0 0 100px" *matCellDef="let element">
+          <span class="storage-row__text-cell">{{element.name}}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="shareURI">
+        <mat-header-cell *matHeaderCellDef i18n> Share URI </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <span class="storage-row__text-cell">{{element.shareURI}}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="path">
+        <mat-header-cell *matHeaderCellDef i18n> Path </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <span class="storage-row__text-cell">{{element.path}}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="readOnly">
+        <mat-header-cell fxFlex="0 0 100px" fxLayoutAlign="center center" *matHeaderCellDef i18n> Read Only
+        </mat-header-cell>
+        <mat-cell fxFlex="0 0 100px" fxLayoutAlign="center center" *matCellDef="let element">
+          <loop-status-display [positive]="element.readOnly" [statusText]="element.readOnly ? 'Yes' : 'No'"></loop-status-display>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="mountOnBoot">
+        <mat-header-cell fxFlex="0 0 100px" fxLayoutAlign="center center" *matHeaderCellDef i18n> Mount on Boot
+        </mat-header-cell>
+        <mat-cell fxFlex="0 0 100px" fxLayoutAlign="center center" *matCellDef="let element">
+          <loop-status-display [positive]="element.mountOnBoot" [statusText]="element.mountOnBoot ? 'Yes' : 'No'"></loop-status-display>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <mat-header-cell fxFlex="0 0 150px" *matHeaderCellDef i18n> Status
+        </mat-header-cell>
+        <mat-cell fxFlex="0 0 150px" *matCellDef="let element">
+          <loop-status-display [positive]="isMounted(element)" [statusText]="element.status"></loop-status-display>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell fxFlex="0 0 80px" *matHeaderCellDef i18n> Actions </mat-header-cell>
+        <mat-cell fxFlex="0 0 80px" *matCellDef="let element">
+          <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editMountPoint.emit(element)">
+              <mat-icon>edit</mat-icon>
+              <span i18n>Edit</span>
+            </button>
+            <button mat-menu-item (click)="toggleMount.emit(element)" [disabled]="isConnecting(element)">
+              <mat-icon>storage</mat-icon>
+              <ng-container [ngSwitch]="isMounted(element)">
+                <span *ngSwitchCase="true" i18n>
+                  Unmount
+                </span>
+                <span *ngSwitchDefault i18n>
+                  Mount
+                </span>
+              </ng-container>
+            </button>
+            <button mat-menu-item (click)="deleteMountPoint.emit(element)">
+              <mat-icon>delete</mat-icon>
+              <span i18n>Remove</span>
+            </button>
+          </mat-menu>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [fxHide]="dataSource.data.length === 0">
+    </mat-paginator>
+  </section>
+
+  <div [fxShow]="dataSource.data.length === 0" fxLayout="row" fxLayoutAlign="center center" class="mat-headline" i18n>
+    No Mount Points Defined
+  </div>
+</section>

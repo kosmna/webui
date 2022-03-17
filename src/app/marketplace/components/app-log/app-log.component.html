@@ -1,0 +1,31 @@
+<section fxLayout="column">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <h4>Logs</h4>
+    <div fxLayout="row" fxLayoutGap="8px">
+      <button id="download-button" *ngIf="logExist" mat-icon-button (click)="download.emit()" matTooltip="Download File"
+        i18n-matTooltip>
+        <mat-icon>
+          file_download
+        </mat-icon>
+      </button>
+      <button id="refresh-button" mat-icon-button (click)="refreshData()" matTooltip="Refresh" i18n-matTooltip>
+        <mat-icon>
+          refresh
+        </mat-icon>
+      </button>
+      <button id="expand-button" *ngIf="logExist" mat-icon-button (click)="toggleFullscreen()" matTooltip="Expand"
+        i18n-matTooltip>
+        <mat-icon>
+          format_line_spacing
+        </mat-icon>
+      </button>
+    </div>
+  </div>
+  <div>
+    <pre #preTxt class="preformated-text">
+          <code class="preformated-text__code" [innerHTML]="log">
+          </code>
+          <loop-dot-loaders class="loading-dots" size="35"></loop-dot-loaders>
+        </pre>
+  </div>
+</section>

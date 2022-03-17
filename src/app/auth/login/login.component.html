@@ -1,0 +1,121 @@
+<ng-container *ngIf="!checkingLogin">
+  <section fxLayoutAlign="center center" fxFlexFill>
+    <mat-card class="login-card" [fxFlex.gt-sm]="loggedInReset ? 85 : 35" fxFlex.lt-md="100" loopCard>
+      <!-- Not Logged in banner  -->
+      <mat-toolbar class="login-card__toolbar" *ngIf="!loggedInReset" loopToolbar>
+        <div fxLayoutAlign="center center" fxFlex="1 1 100">
+          <img class="login-card__logo" alt="application logo" loopLogo fxFlex="1 1 100">
+        </div>
+      </mat-toolbar>
+
+      <!-- Logged in change passwordHeader -->
+      <mat-card-header *ngIf="loggedInReset">
+     
+        <mat-card-title>
+            <h2 class="mat-title"  i18n> Change Password</h2> 
+        </mat-card-title>
+      </mat-card-header>
+
+      <loop-bar *ngIf="!loadingLogin && credentialError" color="warn" i18n>
+          Invalid username or password
+      </loop-bar>
+      <!--Normal login form-->
+      <mat-card-content *ngIf="!resetPassword">
+        <form [formGroup]="loginForm" fxLayout="column" fxLayoutGap="20px">
+          <span fxFlex></span>
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Username" formControlName="username" autocomplete="username" i18n-placeholder="username placeholder">
+          </mat-form-field>
+          <input type="text" autocomplete="username" style="display: none;">
+          <mat-form-field class="full-width" [ngClass]="{'mat-form-field-invalid': credentialError}">
+            <input matInput placeholder="Password" #password type="password" formControlName="password" autocomplete="current-password"
+            i18n-placeholder
+            />
+          </mat-form-field>
+
+          <mat-form-field *ngIf="showProviderInput">
+            <mat-select formControlName="providerId" placeholder="Provider ID">
+              <mat-option *ngFor="let provider of providers" [value]="provider.id">
+                {{provider.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+ 
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+
+            <button mat-button loopButton loopClearButton type="submit" (click)="onLogin()" [disabled]="loadingLogin || !loginForm.valid" i18n>Login</button>
+            <mat-progress-spinner *ngIf="loadingLogin" mode="indeterminate" [diameter]="25" [strokeWidth]="2"> </mat-progress-spinner>
+            <!-- <span class="login-card__message--error" translate >
+              Invalid username or password
+            </span> -->
+
+          </div>
+          <span *ngIf="isLitmusThemed" class="login-card__EULA-text mat-caption">
+            <span i18n>
+              By clicking Login button, you agree to Litmus Automation Inc.
+            </span>
+            <a href="javascript:void(0)" (click)="showElua.emit()" i18n>End-user License Agreement</a>
+          </span>
+
+        </form>
+      </mat-card-content>
+      <!--Password reset form-->
+      <mat-card-content *ngIf="resetPassword">
+        <form [formGroup]="resetForm" fxLayout="column" fxLayoutGap="20px">
+          <span fxFlex></span>
+
+          <mat-form-field class="full-width">
+            <input matInput type="password" placeholder="Current Password" formControlName="password" autocomplete="current-password" i18n-placeholder
+            />
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput type="password" placeholder="New Password" formControlName="newPassword" (keyup)="checkConfirmation()" autocomplete="new-password" i18n-placeholder
+            />
+            <mat-error *ngIf="resetForm.hasError('InvalidPassword')"
+              i18n>
+              New Password must be different from your old one
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput type="password" placeholder="Confirm New Password" formControlName="confirmNewPassword" (keyup)="checkConfirmation()"
+              autocomplete="new-password" i18n-placeholder/>
+            <mat-error *ngIf="resetForm.controls['confirmNewPassword'].hasError('doNotMatch')"
+              i18n>
+              Passwords do not match
+            </mat-error>
+            <mat-error *ngIf="resetForm.controls['confirmNewPassword'].hasError('weakPassword')"
+              i18n>
+              Password too easy.
+            </mat-error>
+          </mat-form-field>
+
+          <loop-password-indicator [levels]="2" [medium]="2" [strong]="2" [strength]="strength" [isChecking]="isChecking" [requirements]="requirements"></loop-password-indicator>
+
+          <div fxLayoutAlign="start center" fxLayoutGap="20px">
+            <button mat-button loopButton loopClearButton type="submit" (click)="onPassReset()" [disabled]="loadingReset || !resetForm.valid"
+              i18n>Reset Password
+            </button>
+
+            <a *ngIf="!loggedInReset" href="javascript:void(0)" (click)="onLogout()" i18n>Back to Login</a>
+            <mat-progress-spinner class="small-spinner" *ngIf="loadingReset" mode="indeterminate" [diameter]="25" [strokeWidth]="2">
+            </mat-progress-spinner>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+    <!-- End of login  Card  -->
+  </section>
+</ng-container>
+<ng-container *ngIf="checkingLogin">
+  <div fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
+    <mat-progress-spinner class="check-login-spinner" mode="indeterminate" [strokeWidth]="5"> </mat-progress-spinner>
+
+    <p i18n="Text while loading"> 
+      Please wait, checking if you're logged in...
+    </p>
+  </div>
+</ng-container>
+<!-- Checking If logged in -->

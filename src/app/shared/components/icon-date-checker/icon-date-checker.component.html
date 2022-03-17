@@ -1,0 +1,5 @@
+<mat-icon *ngIf="valid; else invalid" class="loop-icon icon-check accent">check</mat-icon>
+
+<ng-template #invalid>
+  <mat-icon class="loop-icon icon-cancel warn">cancel</mat-icon>
+</ng-template>

@@ -1,0 +1,42 @@
+<h1 matDialogTitle i18n>Add node</h1>
+
+<mat-dialog-content>
+  <div class="type-selector">
+    <mat-radio-group [(ngModel)]="selectedType" (change)="initForm($event.value)" fxLayoutGap="10px" fxLayout="row nowrap">
+      <mat-radio-button value="FOLDER" i18n>Folder</mat-radio-button>
+      <mat-radio-button value="DEVICE" i18n>Device</mat-radio-button>
+      <mat-radio-button value="TAG" i18n>Tag</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <form [formGroup]="nodeForm">
+    <div fxLayout="column nowrap" fxLayoutAlign="start stretch">
+      <mat-form-field floatPlaceholder="auto" fxFlex>
+        <input matInput formControlName="name" type="text" required placeholder="Node name" i18n-placeholder>
+        <mat-error *ngIf="nodeForm.controls['name'].hasError('required')" i18n>
+          Name is
+          <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <input formControlName="type" type="hidden">
+      <div formGroupName="data" fxLayout="column nowrap" [fxShow]="selectedType === 'TAG'">
+        <mat-form-field floatPlaceholder="auto" fxFlex>
+          <input matInput formControlName="topic" type="text" placeholder="Topic">
+        </mat-form-field>
+        <mat-form-field floatPlaceholder="auto" fxFlex>
+          <mat-select formControlName="dataType" placeholder="Data Type" i18n-placeholder>
+            <mat-option *ngFor="let item of dataTypes" [value]="item">
+              {{ item }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions attr.align="start" fxLayoutGap="16px">
+  <button mat-stroked-button loopButton color="accent" [matDialogClose]="cleanFormValue" [disabled]="nodeForm.invalid"
+    i18n>Add</button>
+  <button mat-stroked-button loopButton color="warn" matDialogClose i18n>Cancel</button>
+
+</mat-dialog-actions>

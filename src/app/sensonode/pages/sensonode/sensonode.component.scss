@@ -1,0 +1,97 @@
+@import 'mixins';
+@import 'variables';
+@import 'include-media';
+
+.info-list {
+    @include e('output') {
+        color: $sub-header-text-color;
+    }
+}
+
+.button--green::ng-deep {
+    background-color: #008000;
+
+}
+
+
+@include shadow('loop-copy-button') {
+  mat-icon {
+    color: #00b7c1;
+  }
+
+}
+.address-title {
+
+  @include e('copy-button') {
+
+  }
+}
+
+
+.content__row {
+  mat-card {
+    mat-card-content {
+      padding: 0;
+    }
+  }
+}
+
+.command-list {
+  @include e('status') {
+    @include m('enabled') {
+      color: rgb(53, 158, 53);
+    }
+    @include m('disabled') {
+      color: rgb(196, 66, 66);
+    }
+    @include m('resetted') {
+      color: rgb(92, 92, 209);
+    }
+  }
+}
+
+.mat-column-connect {
+  flex: none;
+  width: 100px;
+}
+
+.mat-column-actions {
+  flex: none;
+  width: 130px;
+  text-align: center;
+}
+
+.mat-column-address {
+  flex: 1 1 10%;
+
+}
+
+.raw-data {
+  font-family: monospace;
+  font-size: 11px;
+  @include media('>=1280px') {
+
+    font-size: 12px;
+  }
+}
+.mat-table {
+  @include e('mat-row') {
+    @include m('active') {
+      background: rgb(210, 240, 242);
+    }
+  }
+}
+
+.sensor-cell {
+  @include e('description') {
+    color: $group-header-text-color;
+  }
+}
+
+.commands-header {
+  margin-right: 15%;
+}
+
+.control-button {
+  width: 100px;
+}

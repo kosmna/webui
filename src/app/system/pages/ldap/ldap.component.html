@@ -1,0 +1,82 @@
+<div class="content" fxLayout="row" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile">
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>
+            <h2 class="mat-title"  i18n="card title" i18n> Authentication Providers </h2> 
+        </mat-card-title>        
+        <span fxFlex></span>
+        <button color="accent" loopMaterialMiniFab mat-mini-fab class="center-block" (click)="createDialog()"
+          matTooltip="Add a Provider" i18n-matTooltip>
+          <mat-icon>add</mat-icon>
+        </button>
+        <span fxFlex="5px"></span>
+      </mat-card-header>
+      <mat-card-content fxLayout="column">
+        <div class="table-container">
+          <mat-table #authProvidersTable [dataSource]="dataSource" class="wrap-cells">
+            <ng-container cdkColumnDef="bindDN">
+              <mat-header-cell *cdkHeaderCellDef i18n> Bind DN </mat-header-cell>
+              <mat-cell *cdkCellDef="let provider"> {{ provider.bindDN }} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="host">
+              <mat-header-cell *cdkHeaderCellDef fxFlex i18n>  Host </mat-header-cell>
+              <mat-cell *cdkCellDef="let provider" fxFlex> {{ provider.host }} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="name">
+              <mat-header-cell *cdkHeaderCellDef fxFlex i18n> Name </mat-header-cell>
+              <mat-cell *cdkCellDef="let provider" fxFlex> {{ provider.name }} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="port">
+              <mat-header-cell *cdkHeaderCellDef i18n> Port </mat-header-cell>
+              <mat-cell *cdkCellDef="let provider"> {{ provider.port }} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="tls">
+              <mat-header-cell *cdkHeaderCellDef i18n> TLS </mat-header-cell>
+              <mat-cell *cdkCellDef="let provider"> {{ provider.tls ? 'Yes' : 'No' }} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="actions">
+              <mat-header-cell *cdkHeaderCellDef i18n>Actions</mat-header-cell>
+              <mat-cell *cdkCellDef="let provider">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="configureDialog(provider)">
+                    <mat-icon>settings</mat-icon>
+                    <span i18n>Configure</span>
+                  </button>
+                  <button mat-menu-item (click)="removeDialog(provider)">
+                    <mat-icon>delete</mat-icon>
+                    <span i18n>Remove</span>
+                  </button>
+                  <button mat-menu-item (click)="upProvider(provider)">
+                    <mat-icon>arrow_upward</mat-icon>
+                    <span i18n>Up</span>
+                  </button>
+                  <button mat-menu-item (click)="downProvider(provider)">
+                    <mat-icon>arrow_downward</mat-icon>
+                    <span i18n>Down</span>
+                  </button>
+                </mat-menu>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *cdkHeaderRowDef="columnsDefinition"></mat-header-row>
+            <mat-row *cdkRowDef="let provider; columns: columnsDefinition;" class="row"></mat-row>
+          </mat-table>
+          <div *ngIf="dataSource.data.length === 0" fxLayout="row" fxLayoutAlign="center center" class="empty-table-container">
+            <span i18n>
+              NO AUTHENTICATION PROVIDERS FOUND
+            </span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

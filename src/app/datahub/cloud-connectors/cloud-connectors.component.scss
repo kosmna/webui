@@ -1,0 +1,69 @@
+@import 'variables';
+.add-connector-fab {
+  position: absolute;
+  right: 50px;
+  bottom: 50px;
+}
+
+.center-block {
+  margin: auto;
+}
+
+.mat-column-id,
+.mat-column-clientID,
+.mat-column-status,
+.mat-column-actions {
+  flex: none;
+}
+
+.mat-column-id {
+  width: 160px;
+}
+
+.mat-column-clientID {
+  width: 200px;
+}
+
+.mat-column-actions {
+  width: 40px;
+}
+
+.mat-column-status {
+  width: 140px;
+}
+
+.row {
+  border-left: 4px solid transparent;
+}
+
+.disconnected {
+  border-left: 4px solid $disabled-color;
+}
+
+.ok {
+  border-left: 4px solid $enabled-color;
+}
+
+.disabled {
+  border-left: 4px solid $warn-color;
+}
+
+.disconnected .mat-column-status {
+  color: $disabled-color;
+  ;
+}
+
+.ok .mat-column-status {
+  color: $enabled-color;
+}
+
+.disabled .mat-column-status {
+  color: $warn-color;
+}
+
+// #cloud-connector-data-table {
+//   min-width: 1000px;
+// }
+mat-cell.wrap-cells {
+  padding-right: 5px;
+}

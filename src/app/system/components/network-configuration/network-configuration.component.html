@@ -1,0 +1,108 @@
+<div class="network-configuration">
+<form [formGroup]="interfaceForm" (submit)="checkSubmit()">
+  <!-- <mat-card loopCard loopMaterialCard>
+    <mat-card-header>
+      <mat-card-title></mat-card-title>
+      <mat-card-subtitle class="title"> Configuration</mat-card-subtitle>
+    </mat-card-header> -->
+    <div fxLayout="column" fxLayoutAlign="space-between stretch">
+      <div class="loop-fieldset" fxLayout="column nowrap" fxLayoutGap="10px">
+        <div class="group-header loop-fieldset__main-header loop-fieldset__header--mobile">
+          <span i18n>
+              {{this.networkInterface?.name}} settings 
+          </span>
+          <!-- <span>
+              
+          </span> -->
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between baseline" fxLayoutGap="20px">
+          <!-- <mat-form-field fxFlex>
+            <input matInput formControlName="name" type="text" placeholder="Name" readonly>
+          </mat-form-field> -->
+          <mat-checkbox formControlName="wan" (change)="checkFields()" i18n>WAN</mat-checkbox>
+        </div>
+      </div>
+      <fieldset formGroupName="wpa" class="loop-fieldset loop-fieldset--mobile" fxFlex *ngIf="isWireless">
+        <div class="group-header loop-fieldset__header loop-fieldset__header--mobile" i18n>WPA</div>
+
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field fxFlex fxFlex.lt-sm="100">
+            <input matInput formControlName="ssid" type="text" placeholder="SSID" [readonly]="isReadonly" i18n-placeholder>
+          </mat-form-field>
+          <mat-form-field fxFlex fxFlex.lt-sm="100">
+            <input matInput formControlName="pass" type="password" placeholder="Password" [readonly]="isReadonly" i18n-placeholder>
+          </mat-form-field>
+        </div>
+
+        <!-- <div fxLayout="row">
+          <mat-form-field fxFlex>
+            <input matInput formControlName="psk" type="text" placeholder="Pre-Shared Key" [readonly]="isReadonly">
+          </mat-form-field>
+        </div> -->
+
+      </fieldset>
+      <fieldset formGroupName="inet" class="loop-fieldset loop-fieldset--mobile" fxFlex>
+        <div class="group-header loop-fieldset__header loop-fieldset__header--mobile" i18n>IPv4</div>
+
+        <div fxLayout="row">
+          <mat-form-field fxFlex>
+            <mat-select class="loop-fieldset__select loop-fieldset__select--full-width" matInput formControlName="type" placeholder="Type" i18n-placeholder
+              (selectionChange)="checkType('inet')">
+              <mat-option *ngFor="let type of ip4Types" [value]="type.value">{{ type.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap.gt-sm="20px">
+          <mat-form-field class="loop-fieldset__input loop-fieldset__input--full-width" fxFlex fxFlex.lt-sm="100">
+            <input matInput formControlName="address" type="text" placeholder="CIDR"  i18n-placeholder [readonly]="isReadonly">
+            <mat-error *ngIf="addressFormGroup('inet').controls['address'].invalid">
+              {{ getIpv4ControlErrorMessage('address') }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex fxFlex.lt-sm="100" class="loop-fieldset__input loop-fieldset__input--full-width">
+            <input matInput formControlName="gateway" type="text" placeholder="Gateway" i18n-placeholder [readonly]="isReadonly">
+            <mat-error *ngIf="addressFormGroup('inet').controls['gateway'].invalid">
+              {{ getIpv4ControlErrorMessage('gateway') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </fieldset>
+
+      <fieldset formGroupName="inet6" class="loop-fieldset">
+        <div class="group-header loop-fieldset__header loop-fieldset__header--mobile" i18n>IPv6</div>
+        <div fxLayout="row">
+
+          <mat-form-field fxFlex>
+            <mat-select class="loop-fieldset__select loop-fieldset__select--full-width" matInput fxFlex formControlName="type" placeholder="Type" i18n-placeholder
+              (selectionChange)="checkType('inet6')">
+              <mat-option *ngFor="let type of ip6Types" [value]="type.value">{{ type.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </div>
+
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          
+          <mat-form-field fxFlex fxFlex.lt-sm="100" class="loop-fieldset__input ">
+            <input matInput formControlName="address" type="text" placeholder="CIDR" [readonly]="isReadonly" i18n-placeholder>
+            <mat-error i18n>
+              Please enter a valid CIDR
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="loop-fieldset__input " fxFlex fxFlex.lt-sm="100">
+            <input matInput formControlName="gateway" type="text" placeholder="Gateway" [readonly]="isReadonly" i18n-placeholder>
+          </mat-form-field>
+
+        </div>
+      </fieldset>
+    </div>
+    <div>
+      <button mat-button loopButton loopClearButton type="submit" [disabled]="!allowSubmit" i18n>Update</button>
+      <button mat-button loopButton color="warn" type="button" (click)="reset()" i18n>Cancel</button>
+    </div>
+  <!-- </mat-card> -->
+</form>
+</div>

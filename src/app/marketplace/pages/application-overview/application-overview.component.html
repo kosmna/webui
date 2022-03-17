@@ -1,0 +1,47 @@
+<section class="overview__container" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
+  <ng-container *ngIf="(selectedContainer$ | async) as selectedContainer">
+    <div *ngIf="(processInfo$ | async) as processInfo" fxLayout="row-reverse" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+      fxLayoutAlign.lt-sm="start stretch">
+      <mat-form-field>
+        <mat-select (selectionChange)="selectContainer($event.value)" placeholder="Container" [value]="selectedContainer">
+          <mat-option *ngFor="let item of (networkInformation$ | async) as list" [value]="item">
+            {{ item.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <section fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutAlign="start start">
+        <div fxLayout="column">
+          <span class="mat-caption">IP</span>
+          <span class="mat-body">{{ processInfo.ipAddress }}</span>
+        </div>
+        <div fxLayout="column">
+          <span class="mat-caption">Ports</span>
+          <span class="mat-body">{{ processInfo.ports }}</span>
+        </div>
+        <div fxLayout="column">
+          <span class="mat-caption">State</span>
+          <span class="mat-body">{{ processInfo.state }}</span>
+        </div>
+      </section>
+    </div>
+    <mat-divider></mat-divider>
+  </ng-container>
+  <div>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="8px">
+      <loop-area-chart fxFlex title="CPU" yAxisTitle="%" [series]="cpuUtilizationSeries" [seriesData]="cpuUtilization$ | async"
+        [seriesColors]="cpuSeriesColors" [maximumY]="100" [animationSpeed]="3000"></loop-area-chart>
+      <loop-area-chart fxFlex title="Memory Load" yAxisTitle="%" [series]="memoryLoadSeries" [seriesData]="memoryLoad$ | async"
+        [seriesColors]="memorySeriesColors" [maximumY]="100" [animationSpeed]="3000"></loop-area-chart>
+    </div>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="8px">
+      <loop-area-chart fxFlex title="Network" yAxisTitle="MiB" [series]="networkUtilizationSeries" [seriesData]="networkUtilization$ | async"
+        [seriesColors]="networkSeriesColors" [animationSpeed]="3000"></loop-area-chart>
+      <loop-area-chart fxFlex title="Storage" yAxisTitle="MiB" [series]="storageIoSeries" [seriesData]="storageIo$ | async"
+        [seriesColors]="storageIoColors" [animationSpeed]="3000"></loop-area-chart>
+    </div>
+  </div>
+  <div *ngIf="applicationLogs$ | async as applicationLogs">
+    <mat-divider></mat-divider>
+    <loop-app-log [data]="applicationLogs" (refresh)="refreshLogs()" (download)="downloadLogs(applicationLogs)"></loop-app-log>
+  </div>
+</section>

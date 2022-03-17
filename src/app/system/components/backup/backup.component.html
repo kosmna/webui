@@ -1,0 +1,105 @@
+<div class="content" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile" fxLayout="column" fxLayoutGap="20px">
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header>
+        <mat-card-title>
+            <h2 class="mat-title"  i18n="card title" i18n> Backup/Restore Configuration</h2> 
+        </mat-card-title>          
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <div fxFlex fxLayout="column nowrap">
+              <span class="mat-subhead" i18n>Backup configuration</span>
+              <span class="mat-caption" [fxHide.xs]="true" i18n>Request and download configuration from the device</span>
+            </div>
+            <button mat-button loopClearButton (click)="backup()" [disabled]="disableTrial" i18n>Backup</button>
+            <a [href]="backupConfigurationUri" download="backup.json" #downloadConfiguration class="backup__button--hiden"></a>
+          </mat-list-item>
+          <!-- <mat-divider></mat-divider> -->
+          <mat-list-item>
+            <div fxFlex fxLayout="column nowrap">
+              <span class="mat-subhead" i18n>Restore configuration</span>
+              <span class="mat-caption" [fxHide.xs]="true" i18n>Select a file and upload configuration to the device</span>
+            </div>
+            <loop-file-input #restoreConfiguration (onUpload)="restoreClick($event)" fileMsg="Restore" i18n-fileMsg  accept=".json" [simpleButton]="true" [disabled]="disableTrial">
+            </loop-file-input>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+    
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header>
+        <mat-card-title>
+          <h2 class="mat-title">
+              Restore/Backup to the Cloud
+          </h2>
+        </mat-card-title>
+        
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <div fxFlex fxLayout="column nowrap">
+              <span class="mat-subhead" i18n>Backup to the cloud</span>
+              <span class="mat-caption" [fxHide.xs]="true" i18n>Save current configuration to the cloud</span>
+            </div>
+            <button mat-button loopClearButton (click)="saveCloudBackup()" [disabled]="disableTrial" i18n>Save</button>            
+          </mat-list-item>            
+        </mat-list>
+        <h3 class="mat-subheading-2 table-header" i18n>Saved Backups</h3>
+        <mat-table [dataSource]="cloudListDataSource" matSort   matSortActive="name" matSortDirection="desc">
+            <ng-container cdkColumnDef="ts">
+              <mat-header-cell *cdkHeaderCellDef  mat-sort-header i18n>Date</mat-header-cell>
+              <mat-cell *cdkCellDef="let row"> {{row.ts | date: 'yyyy-MM-dd HH:mm'}} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="size">
+              <mat-header-cell *cdkHeaderCellDef  mat-sort-header i18n>Size</mat-header-cell>
+              <mat-cell *cdkCellDef="let row"> {{formatBytes(row.size, 2)}} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="action">
+              <mat-header-cell *cdkHeaderCellDef > </mat-header-cell>
+              <mat-cell *cdkCellDef="let row"> 
+                  <button mat-stroked-button (click)="restoreCloud(row.id)" [disabled]="disableTrial" i18n>
+                    Restore
+                  </button>                
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *cdkHeaderRowDef="columns"></mat-header-row>
+            <mat-row *cdkRowDef="let device; columns: columns;"></mat-row>
+          </mat-table>        
+      </mat-card-content>
+    </mat-card>    
+    <!-- <mat-card loopCard loopMaterialCard>
+      <mat-card-header>
+        <mat-card-title></mat-card-title>
+        <mat-card-subtitle class="title" i18n>Create/Apply Configuration Template</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <div fxFlex fxLayout="column nowrap">
+              <span class="mat-subhead">Create template</span>
+              <span class="mat-caption" [fxHide.xs]="true">Create and download configuration template from the device</span>
+            </div>
+            <button mat-button (click)="backupTemplate()" loopClearButton [disabled]="disableTrial">Create</button>
+            <a [href]="templateConfigurationUri" download="template.json" #downloadTemplate class="backup__button--hiden"></a>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <div fxFlex fxLayout="column nowrap">
+              <span class="mat-subhead">Apply template</span>
+              <span class="mat-caption" [fxHide.xs]="true">Select a file and upload configuration template to the device</span>
+            </div>
+            <loop-file-input #restoreTemplate (onUpload)="restoreTemplateClick($event)" fileMsg="Apply" accept=".json" [simpleButton]="true" [disabled]="disableTrial">
+            </loop-file-input>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card> -->
+  </div>
+</div>

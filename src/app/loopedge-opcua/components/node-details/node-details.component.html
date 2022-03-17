@@ -1,0 +1,80 @@
+<section *ngIf="!!node;else noNodeSelected">
+  <mat-tab-group [disableRipple]="false">
+    <mat-tab label="Information">
+      <mat-card class="section-block__card" loopCard loopMaterialCard>
+        <mat-card-header>
+          <mat-card-title i18n>Node description</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-table [dataSource]="dataSource">
+            <ng-container *ngFor="let item of displayFields" [matColumnDef]="item">
+              <mat-header-cell fxFlex *matHeaderCellDef> {{ item[0].toUpperCase() + item.substring(1) }}
+              </mat-header-cell>
+              <mat-cell fxFlex *matCellDef="let element"> {{ element[item] }} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayFields"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayFields;"></mat-row>
+          </mat-table>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="section-block__card" loopCard loopMaterialCard [fxShow]="childrenSource.data.length > 0">
+        <mat-card-header>
+          <mat-card-title i18n>Node children</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-table [dataSource]="childrenSource">
+            <ng-container *ngFor="let item of childrenDisplayFields" [matColumnDef]="item">
+              <mat-header-cell fxFlex *matHeaderCellDef> {{ item[0].toUpperCase() + item.substring(1) }}
+              </mat-header-cell>
+              <mat-cell fxFlex *matCellDef="let element"> {{ element[item] }} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="childrenDisplayFields"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: childrenDisplayFields;"></mat-row>
+          </mat-table>
+        </mat-card-content>
+      </mat-card>
+
+    </mat-tab>
+    <mat-tab label="Configuration">
+      <mat-card>
+        <mat-card-content>
+          <form [formGroup]="configForm" (submit)="saveNode()">
+            <div fxLayout="column nowrap" fxLayoutAlign="start stretch">
+              <ng-container *ngFor="let item of formFields">
+                <mat-form-field floatPlaceholder="auto" fxFlex>
+                  <input matInput [formControlName]="item" type="text" required [placeholder]="item[0].toUpperCase() + item.substring(1)">
+                </mat-form-field>
+              </ng-container>
+              <div *ngIf="dataFormFields.length > 0" formGroupName="data" fxLayout="row wrap" fxLayoutGap="5px">
+                <ng-container *ngFor="let item of dataFormFields">
+                  <ng-container [ngSwitch]="item">
+                    <mat-form-field *ngSwitchCase="'dataType'" fxFlex>
+                      <mat-select [formControlName]="item" [placeholder]="item[0].toUpperCase() + item.substring(1)">
+                        <mat-option *ngFor="let type of dataTypes" [value]="type">
+                          {{ type }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field *ngSwitchDefault floatPlaceholder="auto" fxFlex>
+                      <input matInput [formControlName]="item" type="text" required [placeholder]="item[0].toUpperCase() + item.substring(1)">
+                    </mat-form-field>
+                  </ng-container>
+                </ng-container>
+              </div>
+              <div>
+                <button mat-stroked-button loopButton type="submit" i18n>Update</button>
+              </div>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+</section>
+<ng-template #noNodeSelected>
+  <div fxFlexFill fxLayout="column nowrap" fxLayoutAlign="center center">
+    <span class="mat-title" i18n>No node selected</span>
+  </div>
+</ng-template>

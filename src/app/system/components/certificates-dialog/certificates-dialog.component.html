@@ -1,0 +1,32 @@
+<h2 matDialogTitle class="theme-bottom-border" i18n>Add Certificates</h2>
+<mat-dialog-content >
+  <form [formGroup]="certificatesForm">
+    <!-- SSL Certificate  -->
+    <mat-form-field class="full-width" >
+      <textarea matInput formControlName="cert" rows="7" placeholder="SSL certificate" i18n-placeholder></textarea>
+      <mat-error *ngIf="certificatesForm.controls['cert'].hasError('required')" i18n>
+          SSL certificate is  <strong>required</strong>
+        </mat-error>
+    </mat-form-field>
+  
+    <!-- CA chain -->
+    <mat-form-field class="full-width" matLine>
+      <textarea matInput formControlName="caChain" rows="7" placeholder="CA chain" i18n-placeholder></textarea>
+      <mat-error *ngIf="certificatesForm.controls['caChain'].hasError('required')" i18n>
+          CA chain is <strong>required</strong>
+        </mat-error>
+    </mat-form-field>
+        
+    <!-- Private key -->
+    <mat-form-field class="full-width" matLine>
+      <textarea matInput formControlName="certKey" rows="7" placeholder="Private Key" i18n-placeholder></textarea>
+      <mat-error *ngIf="certificatesForm.controls['certKey'].hasError('required')" i18n>
+          Private key is <strong>required</strong>
+        </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions  fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+  <button  loopButton loopClearButton mat-button loopSubmitOnEnter [disabled]="!certificatesForm.valid" [matDialogClose]="certificatesForm.value" i18n>Submit</button>
+  <button  mat-button loopButton color="warn" [matDialogClose]="false" i18n>Cancel</button>
+</mat-dialog-actions>

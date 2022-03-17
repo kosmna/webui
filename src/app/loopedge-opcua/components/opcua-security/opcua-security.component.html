@@ -1,0 +1,54 @@
+<section fxLayout="column nowrap" fxLayoutAlign="start stretch" class="security-container" fxLayoutGap="16px">
+  <section fxLayout="row nowrap" fxLayoutAlign="end center" fxLayoutGap="16px" *ngIf="status$ | async as status">
+    <div fxFlex="grow" class="info-block">
+      <span class="mat-caption info-block__value" i18n>Port: <strong>{{ port }}</strong></span>
+    </div>
+    <loop-status-display [positive]="status?.status === 'RUNNING'" [statusText]="status?.status"></loop-status-display>
+    <div [ngSwitch]="status?.status">
+      <button *ngSwitchCase="'STOPPED'" mat-stroked-button (click)="start()" color="accent" [disabled]="status.status === 'STARTING...' || status.status === 'STOPPING...' || status.status === 'RESETTING...'"
+        i18n>
+        Start
+      </button>
+      <button *ngSwitchDefault mat-stroked-button (click)="stop()" [disabled]="status.status === 'STARTING...' || status.status === 'STOPPING...' || status.status === 'RESETTING...'" i18n>
+        Stop
+      </button>
+    </div>
+    <button mat-stroked-button (click)="reset()" color="warn" [disabled]="status.status === 'STARTING...' || status.status === 'STOPPING...' || status.status === 'RESETTING...' || status.status === 'STOPPED'"
+      i18n>
+      Reset
+    </button>
+  </section>
+  <section>
+    <span class="section-block__heading mat-subheading-2" i18n>Policy management</span>
+    <mat-card class="section-block__card" loopCard loopMaterialCard>
+      <mat-card-header>
+        <mat-card-title i18n>Policies</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <loop-security-modes [modes]="modes$ | async" (updateSecurityMode)="updateSecurityModes($event)"></loop-security-modes>
+      </mat-card-content>
+    </mat-card>
+  </section>
+  <section>
+    <span class="section-block__heading mat-subheading-2" i18n>Authentication management</span>
+    <loop-authentication-types (updateAuthenticationTypes)="updateAuthenticationTypes($event)" [authenticationTypes]="policies$ | async"></loop-authentication-types>
+  </section>
+  <section>
+    <span class="section-block__heading mat-subheading-2" i18n>User management</span>
+    <mat-card class="section-block__card" loopCard loopMaterialCard>
+      <mat-card-header fxLayout="row nowrap" fxLayoutAlign="start center">
+        <mat-card-title i18n>Users</mat-card-title>
+        <span fxFlex></span>
+        <div class="section-card__buttons">
+          <button mat-icon-button (click)="showUserDialog()" matTooltip="Add User" i18n-matTooltip matTooltipPosition="before">
+            <mat-icon class="mat-18">add_circle</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <loop-user-management (generatePassword)="resetPassword($event)" (updateUser)="showUserDialog($event)"
+          (deleteUser)="deleteUser($event)" [users]="users$ | async"></loop-user-management>
+      </mat-card-content>
+    </mat-card>
+  </section>
+</section>

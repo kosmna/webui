@@ -1,0 +1,10 @@
+.switcher {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 8px;
+  &__title {
+    margin: 0;
+  }
+  &__button--selected {
+    color: rgb(70, 182, 123);
+  }
+}

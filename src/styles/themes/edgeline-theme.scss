@@ -1,0 +1,117 @@
+@import '~@angular/material/theming';
+@import 'theme-mixin';
+
+
+// Global variables
+$black-87-opacity: rgba(black, 0.87);
+$white-87-opacity: rgba(white, 0.87);
+
+// Material theme
+$edgeline-primary: (50 : #e8ebec,
+100 : #c6ccd0,
+200 : #a1aab1,
+300 : #7b8892,
+400 : #5e6f7a,
+500 : #425563,
+600 : #3c4e5b,
+700 : #334451,
+800 : #2b3b47,
+900 : #1d2a35,
+A100 : #7bc0ff,
+A200 : #48a8ff,
+A400 : #1590ff,
+A700 : #0083fb,
+contrast: (50: $black-87-opacity,
+100: $black-87-opacity,
+200: $black-87-opacity,
+300: white,
+400: white,
+500: $white-87-opacity,
+600: $white-87-opacity,
+700: $white-87-opacity,
+800: $white-87-opacity,
+900: $white-87-opacity,
+A100: $black-87-opacity,
+A200: white,
+A400: $white-87-opacity,
+A700: $white-87-opacity,
+));
+
+$edgeline-accent: (50 : #e0f6f1,
+100 : #b3e8db,
+200 : #80d9c4,
+300 : #4dcaac,
+400 : #26be9a,
+500 : #00b388,
+600 : #00ac80,
+700 : #00a375,
+800 : #009a6b,
+900 : #008b58,
+A100 : #b7ffe0,
+A200 : #84ffcb,
+A400 : #51ffb5,
+A700 : #37ffaa,
+contrast: (50: $black-87-opacity,
+100: $black-87-opacity,
+200: $black-87-opacity,
+300: white,
+400: white,
+500: $white-87-opacity,
+600: $white-87-opacity,
+700: $white-87-opacity,
+800: $white-87-opacity,
+900: $white-87-opacity,
+A100: $black-87-opacity,
+A200: white,
+A400: $white-87-opacity,
+A700: $white-87-opacity,
+));
+
+$edgeline-warn: (50 : #fee2e9,
+100 : #fdb6c8,
+200 : #fb85a4,
+300 : #f95480,
+400 : #f83064,
+500 : #f70b49,
+600 : #f60a42,
+700 : #f50839,
+800 : #f30631,
+900 : #f10321,
+A100 : #ffffff,
+A200 : #ffe5e7,
+A400 : #ffb2b8,
+A700 : #ff98a1,
+contrast: (50: $black-87-opacity,
+100: $black-87-opacity,
+200: $black-87-opacity,
+300: white,
+400: white,
+500: $white-87-opacity,
+600: $white-87-opacity,
+700: $white-87-opacity,
+800: $white-87-opacity,
+900: $white-87-opacity,
+A100: $black-87-opacity,
+A200: white,
+A400: $white-87-opacity,
+A700: $white-87-opacity,
+));
+$edgeline-app-primary: mat-palette($edgeline-primary);
+$edgeline-app-accent: mat-palette($edgeline-accent);
+$edgeline-app-warn: mat-palette($edgeline-warn);
+$edgeline-app-theme: mat-light-theme($edgeline-app-primary, $edgeline-app-accent, $edgeline-app-warn);
+$edgeline-dark-primary: mat-palette($edgeline-primary);
+$edgeline-dark-accent: mat-palette($edgeline-accent);
+$edgeline-dark-warn: mat-palette($edgeline-warn);
+$edgeline-dark-theme: mat-dark-theme($edgeline-app-primary, $edgeline-app-accent, $edgeline-app-warn);
+
+.edgeline-theme {
+  @include angular-material-theme($edgeline-app-theme);
+}
+
+.edgeline-dark-theme {
+  @include angular-material-theme($edgeline-dark-theme);
+}
+
+@include set-custom-theme-class($edgeline-app-theme, 'edgeline-theme');
+@include set-custom-theme-class($edgeline-dark-theme, 'edgeline-dark-theme');

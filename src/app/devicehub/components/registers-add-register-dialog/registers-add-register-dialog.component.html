@@ -1,0 +1,141 @@
+<h2 matDialogTitle *ngIf="updateMode" class="theme-bottom-border" i18n> Edit Tag</h2>
+  <h2 matDialogTitle *ngIf="!updateMode" class="theme-bottom-border" i18n> Add Tag </h2>
+<mat-dialog-content class="add-register-form">
+  <div fxLayout="column" class="content">
+    <form fxLayout="row wrap" fxLayoutGap="20px" [formGroup]="addRegisterForm">
+      <!-- showForm ? 48 : 100 -->
+      <mat-form-field class="input-field" [fxFlex]="100" fxFlex.lt-md="100">
+        <mat-select matInput formControlName="deviceId" placeholder="Select a Device" i18n-placeholder fxFlex.lt-md="100">
+          <mat-option *ngFor="let device of devices" [value]="device.id">{{device.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!--
+      <mat-form-field
+      *ngIf="showForm" fxFlex="48" fxFlex.lt-md="100"
+      class="input-field"
+      >
+        <mat-select matInput fxFlex="grow" formControlName="valueType" placeholder="Value Type" (change)="toggleRegisters($event)">
+          <mat-option>NONE</mat-option>
+          <mat-option *ngFor="let type of registerTypes" [value]="getType(type)">{{getType(type)}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addRegisterForm.controls['valueType'].hasError('required')">This field is required</mat-error>
+      </mat-form-field> -->
+
+    </form>
+
+    <form *ngIf="showForm" [formGroup]="dynamicForm" fxLayout="row wrap" fxLayoutGap="20px">
+
+      <ng-container *ngFor="let input of metaInputs; let i = index;">
+        <!-- Input  [fxFlex]=" input.name === 'description' || input.name === 'tagName' || (i === metaInputs.length -1 && i % 2 == 0) ? 98 : 48" -->
+        <mat-form-field *ngIf="input.type !=='select'" [fxFlex]="100" fxFlex.lt-md="100" class="input-field" [class.hidden]="input?.hidden"
+          [class.input-field--no-margin-right]=" input.name === 'description'  || input.name === 'tagName' || i === metaInputs.length -1 || (i === metaInputs.length -1 && i % 2 == 0) || i % 2 !== 0 ? true : false">
+          <input (focus)="focus[i]  =false" (blur)="focus[i]=true" matInput type="{{input.type}}" [formControlName]="input.name" placeholder="{{input.placeholder ? input.placeholder : (input.name | camelcaseToHuman )}}" > 
+          <mat-hint *ngIf="!focus[i]" align="start" [@hint]>{{input?.description}}</mat-hint>
+          <mat-error *ngIf="dynamicForm.controls[input.name].hasError('required')" i18n>This field is required</mat-error>
+          <mat-error *ngIf="dynamicForm.controls[input.name].hasError('max')" i18n>Maximum allowed address value is {{dynamicForm.controls[input.name].errors.max.max}}</mat-error>
+          <mat-error *ngIf="dynamicForm.controls[input.name].hasError('min')" i18n>Minimum allowed address value is {{dynamicForm.controls[input.name].errors.min.min}}</mat-error>
+          <mat-error *ngIf="dynamicForm.controls[input.name].hasError('maxLength')" i18n>Input only allows {{input.maxLength}} characters</mat-error>
+
+        </mat-form-field>
+
+        <!-- Select input i === metaInputs.length -1 && i % 2 == 0 ? 100 : 48 -->
+        <mat-form-field *ngIf="input.type ==='select'" [fxFlex]="100" fxFlex.lt-md="100" [class.input-field--no-margin-right]=" (i === metaInputs.length -1 && i % 2 == 0) || i % 2 !== 0   ? true : false">
+          <mat-select #select [formControlName]="input.name" placeholder="{{input.placeholder ? input.placeholder : (input.name | camelcaseToHuman ) }}"
+            matInput fxFlex (selectionChange)="reflectSelectChanges($event, input)">
+            <mat-option *ngFor="let option of optionsFilter(input.name, input.options)" [value]="option.value">
+              <span fxLayoutAlign="space-between">
+                <span>
+                  {{option.name}}
+                </span>
+                <span *ngIf="select.panelOpen">
+                  {{option.optionalName}}
+                </span>
+              </span>
+            </mat-option>
+          </mat-select>
+          <mat-hint [@hint]>{{input?.description}}</mat-hint>
+          <mat-error *ngIf="dynamicForm.controls[input.name].hasError('required')" i18n>This field is required</mat-error>
+        </mat-form-field>
+      </ng-container>
+    </form>
+    <mat-accordion *ngIf="showForm" multi="true">
+      <!-- Expansion panel for Topics  -->
+      <mat-expansion-panel *ngIf="updateMode">
+        <mat-expansion-panel-header i18n>Topics</mat-expansion-panel-header>
+        <div>
+          <mat-list dense>
+            <h3 matSubheader i18n> Raw Topics</h3>
+            <mat-list-item>
+              {{rawTopic}}
+            </mat-list-item>
+            <h3 matSubheader *ngIf="ipsoTopic" i18n> IPSO Topics</h3>
+            <mat-list-item *ngIf="ipsoTopic">
+              {{ipsoTopic}}
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </mat-expansion-panel>
+      <!-- Expansion panel for Topics  -->
+
+      <!-- Expansion panel for Table  -->
+
+      <mat-expansion-panel *ngIf="registerDataSource" [expanded]="showTable">
+        <mat-expansion-panel-header i18n="header for register table" i18n>Register Table</mat-expansion-panel-header>
+        <div class="table">
+          <mat-table class="table__inner" #table [dataSource]="registerDataSource">
+
+            <ng-container cdkColumnDef="name">
+              <mat-header-cell *cdkHeaderCellDef i18n>Name</mat-header-cell>
+              <mat-cell class="table__cell" *cdkCellDef="let row">{{row.name}}</mat-cell>
+            </ng-container>
+
+
+            <ng-container cdkColumnDef="valueTypes">
+              <mat-header-cell *cdkHeaderCellDef i18n>Value Types </mat-header-cell>
+              <mat-cell class="table__cell" *cdkCellDef="let row">{{row.valueTypes}}</mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="addressFormat">
+              <mat-header-cell *cdkHeaderCellDef i18n>Address Format</mat-header-cell>
+              <mat-cell class="table__cell" *cdkCellDef="let row">{{row.addressFormat}}</mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="minAddress">
+              <mat-header-cell *cdkHeaderCellDef i18n>Min Address</mat-header-cell>
+              <mat-cell class="table__cell" *cdkCellDef="let row">{{row.minAddress}}</mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="maxAddress">
+              <mat-header-cell *cdkHeaderCellDef i18n>Max Address</mat-header-cell>
+              <mat-cell class="table__cell" *cdkCellDef="let row">{{row.maxAddress}}</mat-cell>
+            </ng-container>
+
+
+            <ng-container cdkColumnDef="description">
+              <mat-header-cell *cdkHeaderCellDef i18n>Description</mat-header-cell>
+              <mat-cell class="table__cell" *cdkCellDef="let row">{{row.description}}</mat-cell>
+            </ng-container>
+
+            <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row [@table] class="table__row  table__row--odd-gray-background" *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+
+          </mat-table>
+        </div>
+      </mat-expansion-panel>
+      <!-- Expansion panel for Table  -->
+    </mat-accordion>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button *ngIf="showForm" mat-button loopButton loopClearButton loopSubmitOnEnter type="submit" (click)="onSubmit()" >
+    <ng-container [ngSwitch]="updateMode">
+      <span *ngSwitchCase="true" i18n>
+          Update Tag
+      </span>
+      <span *ngSwitchCase="false" i18n>
+          Add Tag
+      </span>
+    </ng-container>
+  </button>
+  <button mat-button loopButton color="warn" [matDialogClose]="false" i18n>Cancel</button>
+</mat-dialog-actions>

@@ -1,0 +1,113 @@
+@import 'mixins';
+@import 'variables';
+@import 'include-media';
+
+.register-filters {
+  // margin-top: 10px;
+  padding: 0 8px;
+  font-size: 12px;
+}
+
+.table {
+  @include e('inner') {
+    min-width: 900px;
+    background-color: initial;
+  }
+
+  @include e('row') {
+    min-height: 40px;
+  }
+
+  @include e('cell') {
+    font-size: 11px;
+
+    @include m('mobile') {
+      @include media('<=phone') {
+        font-size: 10px;
+      }
+    }
+
+    @include m('truncate-cell') {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @include m('actions') {
+      max-width: 50px;
+    }
+
+  }
+
+  @include e('head-cell') {
+    @include m('mobile') {
+      font-size: 10px;
+    }
+
+    @include m('action-head') {
+      padding-left: 14px;
+      max-width: fit-content
+    }
+  }
+}
+
+.menu-item {
+  @include e('input') {
+    height: 64px;
+    padding-top: 8px;
+  }
+}
+
+//For checkbox
+.mat-column-select {
+  overflow: initial;
+}
+
+.cell-status {
+  min-width: 30px;
+}
+
+
+.highlighted {
+  background: #dcdcdc;
+}
+
+.left-container {
+  @include e('help-menu') {}
+}
+
+.menu {
+  @include e('button') {
+    @include m('delete') {}
+
+    @include m('highlighted') {
+      background: #dcdcdc;
+    }
+  }
+}
+
+
+.mat-paginator {
+  background: none !important;
+}
+
+.small-icon,
+:host ::ng-deep .copy__icon {
+  @include md-icon-size(20px);
+}
+
+.actions-container {
+  padding: 5px;
+}
+
+.warning {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+}
+
+.menu-element {
+  &__container {
+    padding: 8px 16px;
+  }
+}

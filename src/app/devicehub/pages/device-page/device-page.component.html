@@ -1,0 +1,8 @@
+<!-- <loop-help [content]="content"></loop-help> -->
+<loop-devices
+(createDevice)="createDevice($event)"
+(deleteDevice)="deleteDevice($event)"
+(updateDevice)="updateDevice($event)"
+(refreshDevice)="refreshDevice($event)"
+[allowedRole] = "restrictedView"
+></loop-devices>

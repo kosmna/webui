@@ -1,0 +1,25 @@
+<div *ngIf="showWarning" class="banner-warning loop-dark-theme " fxLayout="row" >
+
+  <div class="banner-warning__container" 
+    [ngClass]="expireDays >= 5 ? 'banner-warning__container--warning' : 'banner-warning__container--danger'" 
+    fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px" fxFlex="1 1 100">
+    <mat-icon>
+      warning
+    </mat-icon>
+    <ng-container *ngIf="trial; else default">
+      <p i18n fxHide.lt-md>
+        Trial license will expire in {expireDays, plural, =0 {today} =1 {day} other {{{expireDays}} days}}
+      </p>
+    </ng-container>
+
+    <ng-template #default>
+      <p i18n>
+        License will expire in {expireDays, plural, =0 {today} =1 {day} other {{{expireDays}} days}}
+      </p>
+    </ng-template>
+
+    <button class="banner-warning__button" mat-button loopClearButton routerLink="/system/license" i18n>
+      Upgrade
+    </button>
+  </div>
+</div>

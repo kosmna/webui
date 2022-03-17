@@ -1,0 +1,78 @@
+<h1 matDialogTitle i18n>Connector</h1>
+
+<mat-dialog-content>
+  <form [formGroup]="connectorForm" fxLayout="column nowrap" fxLayoutAlign="start stretch">
+    <mat-form-field fxFlex>
+      <mat-select formControlName="providerId" placeholder="Provider" #provider reqired (selectionChange)="selectProvider(provider.value)">
+        <mat-option *ngFor="let provider of data.providers" [value]="provider.id">
+          {{ provider.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="connectorForm.controls['providerId'].hasError('required')" i18n="Provider input error hint">
+        Provider is
+        <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <div formGroupName="config" fxLayout.gt-sm="row wrap" fxLayoutGap.gt-sm="10px" fxLayout="column nowrap" class="dynamic-group">
+      <ng-container *ngFor="let item of formElements">
+        <ng-container [ngSwitch]="isEnumerable(selectedProvider.schema.properties[item])">
+          <mat-form-field *ngSwitchCase="true" fxFlex.gt-sm class="dynamic-group__input">
+            <mat-select [formControlName]="item" placeholder="{{selectedProvider.schema.properties[item]._label}}">
+              <mat-option *ngFor="let choice of selectedProvider.schema.properties[item].enum" [value]="choice">
+                {{ choice }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <ng-container *ngSwitchDefault>
+            <ng-container [ngSwitch]="!selectedProvider.schema.properties[item]._multiline">
+              <mat-form-field *ngSwitchCase="true" fxFlex.gt-sm class="dynamic-group__input">
+                <input matInput [formControlName]="item" [type]="fieldType(selectedProvider.schema.properties[item])"
+                  placeholder="{{selectedProvider.schema.properties[item]._label}}">
+                <mat-error *ngIf="connectorForm.controls['config'].controls[item].hasError('required')" i18n>
+                  {{ selectedProvider.schema.properties[item]._label }} is
+                  <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="connectorForm.controls['config'].controls[item].hasError('minlength')" i18n>
+                  {{ selectedProvider.schema.properties[item]._label }} min length is
+                  <strong>{{ selectedProvider.schema.properties[item].minLength }}</strong>
+                </mat-error>
+                <mat-error *ngIf="connectorForm.controls['config'].controls[item].hasError('maxlength')" i18n>
+                  {{ selectedProvider.schema.properties[item]._label }} max length is
+                  <strong>{{ selectedProvider.schema.properties[item].maxLength }}</strong>
+                </mat-error>
+                <mat-error *ngIf="connectorForm.controls['config'].controls[item].hasError('min')" i18n>
+                  {{ selectedProvider.schema.properties[item]._label }} minimum value is
+                  <strong>{{ selectedProvider.schema.properties[item].minimum }}</strong>
+                </mat-error>
+                <mat-error *ngIf="connectorForm.controls['config'].controls[item].hasError('max')" i18n>
+                  {{ selectedProvider.schema.properties[item]._label }} maximum value is
+                  <strong>{{ selectedProvider.schema.properties[item].maximum }}</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field *ngSwitchDefault fxFlex="100" class="dynamic-group__input">
+                <textarea matInput matTextareaAutosize [formControlName]="item" placeholder="{{selectedProvider.schema.properties[item]._label}}"></textarea>
+                <mat-error *ngIf="connectorForm.controls['config'].controls[item].hasError('required')" i18n>
+                  {{ selectedProvider.schema.properties[item]._label }} is
+                  <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="connectorForm.controls['config'].controls[item].hasError('minlength')" i18n>
+                  {{ selectedProvider.schema.properties[item]._label }} min length is
+                  <strong>{{ selectedProvider.schema.properties[item].minLength }}</strong>
+                </mat-error>
+                <mat-error *ngIf="connectorForm.controls['config'].controls[item].hasError('maxlength')" i18n>
+                  {{ selectedProvider.schema.properties[item]._label }} max length is
+                  <strong>{{ selectedProvider.schema.properties[item].maxLength }}</strong>
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayoutGap="8px">
+  <button mat-stroked-button matDialogClose color="warn" i18n>Cancel</button>
+  <button mat-stroked-button [disabled]="connectorForm.invalid" (click)="closeDialog()" i18n>OK</button>
+</mat-dialog-actions>

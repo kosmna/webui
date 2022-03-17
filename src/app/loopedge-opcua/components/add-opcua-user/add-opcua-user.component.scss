@@ -1,0 +1,15 @@
+.password-section {
+  &__generated-password {
+    background: aliceblue;
+    border-radius: 16px;
+    padding: 0 8px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      background: #f4a460;
+      color: white;
+      transition: all 200ms ease-in;
+    }
+  }
+}

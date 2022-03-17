@@ -1,0 +1,26 @@
+<section class="content" fxLayout="column" fxLayoutAlign="start stretch">
+  <div class="content__inner content--mobile" fxLayout="row wrap">
+
+    <!-- Device List -->
+
+    <!-- Add Device Card -->
+    <ng-container *ngIf="allowedRole">
+      <loop-add-card #addCard class="add-device-card" (click)="showAddDeviceDialog()" tooltip="Connect Device" i18n-tooltip fxFlex="1 1 325px"
+        fxFlex.lt-md="100"></loop-add-card>
+    </ng-container>
+    <ng-container *ngFor="let device of devices | paginate: {  id: 'devicePagination', currentPage: pageNumber, itemsPerPage: itemsPerPage}">
+      <loop-device-card fxFlex="1 1 325px" fxFlex.lt-md="100" [@scaleInOut]="animation" [device]="device" [allowedRole]="allowedRole"
+        (refresh)="refreshDevices($event)" (delete)="showRemoveDeviceDialog($event)" (edit)="showEditDeviceDialog($event) "
+        [disabledLoading]="disabledLoading">
+      </loop-device-card>
+
+    </ng-container>
+
+  </div>
+
+  <loop-paginator fxFlex *ngIf="itemsPerPage <= deviceLength" id='devicePagination' (pageChange)="setPage($event)">
+
+  </loop-paginator>
+
+
+</section>

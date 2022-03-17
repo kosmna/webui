@@ -1,0 +1,66 @@
+<section fxLayout="column" fxLayoutAlign="none center">
+  <div class="content">
+    <mat-card *ngFor="let section of sections" loopCard loopMaterialCard>
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between baseline">
+        <mat-card-title>
+            <h2 class="mat-title"  i18n> {{ section }}</h2> 
+        </mat-card-title>          
+        <span fxFlex></span>
+        <button *ngIf="allowAdd(section)" color="accent" loopMaterialMiniFab mat-mini-fab class="center-block" (click)="addOperation(section)">
+          <mat-icon>add</mat-icon>
+        </button>
+        <span fxFlex="5px"></span>
+      </mat-card-header>
+      <mat-card-content fxLayout="column">
+
+        <mat-list *ngIf="!isTableSection(section)">
+          <div *ngFor="let item of addOnConfig.model | searchFilter:section">
+            <mat-list-item [ngSwitch]="item.type">
+
+              <loop-element [item]="item" (onButtonToggle)="buttonToggle($event)" (onSlideToggle)="slideToggle($event)"></loop-element>
+
+            </mat-list-item>
+            <mat-divider></mat-divider>
+          </div>
+        </mat-list>
+
+        <div fxFlex *ngIf="isTableSection(section)">
+          <mat-table #table [dataSource]="datasource" [fxHide]="datasource.length === 0">
+
+            <ng-container *ngFor="let column of displayedColumns" cdkColumnDef="{{column}}">
+              <mat-header-cell *cdkHeaderCellDef> {{ capitalize(column) }} </mat-header-cell>
+              <mat-cell *cdkCellDef="let row">
+                <div [ngSwitch]="column">
+                  <div *ngSwitchCase="'actions'">
+                    <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+
+                    <mat-menu #appMenu="matMenu">
+                      <button *ngFor="let operation of tableSectionOperations(section)" mat-menu-item (click)="tableAction(operation, row)">
+                        <mat-icon>{{ operation.icon }}</mat-icon>
+                        <span>{{ operation.name }}</span>
+                      </button>
+                    </mat-menu>
+
+                  </div>
+                  <div *ngSwitchDefault>
+                      {{ row[column] }}
+                  </div>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+
+          <div class="mat-title" [fxShow]="datasource.length === 0" fxLayoutAlign="center center">
+            No items created.
+          </div>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

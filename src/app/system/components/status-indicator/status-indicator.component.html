@@ -1,0 +1,9 @@
+<section class="status" fxLayout="row nowrap" fxLayoutAlign="start baseline" fxLayoutGap="10px">
+  <div class="status__indicator" [ngClass]="{'status__indicator--online' : status, 'status__indicator--offline' : !status}"></div>
+  <div fxLayout.lt-lg="column wrap" fxLayout="row nowrap" fxLayoutAlign="start baseline" fxLayoutGap.gt-md="10px">
+    <span class="mat-title status__name">{{ apiVersion.name }}</span>
+    <span class="mat-body status__version">
+      {{ version }}+{{ gitVersion }}
+    </span>
+  </div>
+</section>

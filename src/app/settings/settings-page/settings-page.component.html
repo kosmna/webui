@@ -1,0 +1,141 @@
+<div fxLayout="row" fxLayoutAlign="start stretch" fxLayout.lt-md="column">
+  <form [formGroup]="appearanceForm" (submit)="saveChanges()" fxFlex="40">
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header>
+        <mat-card-title>Appearance</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayoutAlign="center center">
+        <div fxFlex fxLayout="column">
+          <mat-form-field>
+            <input matInput formControlName="textColor" placeholder="Text Color" readonly />
+            <div class="color-preview" [style.background]="textColor">
+              <div [(colorPicker)]="textColor" (colorPickerChange)="selectTextColor($event)"></div>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput formControlName="backgroundColor" placeholder="Background Color" readonly />
+            <div class="color-preview" [style.background]="backgroundColor">
+              <div [(colorPicker)]="backgroundColor" (colorPickerChange)="selectBackgroundColor($event)"></div>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput formControlName="sidenavBackground" placeholder="Sidenav Background" readonly />
+            <div class="color-preview" [style.background]="sidenavBackground">
+              <div [(colorPicker)]="sidenavBackground" (colorPickerChange)="selectSidenavBackground($event)"></div>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput formControlName="sidenavColor" placeholder="Sidenav Text Color" readonly />
+            <div class="color-preview" [style.background]="sidenavColor">
+              <div [(colorPicker)]="sidenavColor" (colorPickerChange)="selectSidenavColor($event)"></div>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput formControlName="primaryAccentColor" placeholder="Primary Accent Color" readonly />
+            <div class="color-preview" [style.background]="primaryAccentColor">
+              <div [(colorPicker)]="primaryAccentColor" (colorPickerChange)="selectPrimaryAccentColor($event)"></div>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="url" formControlName="logoURL" placeholder="Logo URL">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-select #themeSelect placeholder="Change Theme" (selectionChange)="applyTheme(themeSelect.value)">
+              <mat-option *ngFor="let theme of themes" [value]="theme">{{theme}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-card-actions>
+            <button loopButton loopClearButton mat-button type="submit">Save</button>
+            <button loopButton loopClearButton mat-button (click)="resetTheme()" type="reset">Reset</button>
+          </mat-card-actions>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </form>
+
+  <mat-card loopCard loopMaterialCard fxFlex="60">
+    <mat-card-header>
+      <mat-card-title>Preview Theme File</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <pre>{{ appearanceForm.value | json }}</pre>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+<div fxLayout="row" fxLayoutAlign="start start" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start stretch">
+  <div fxFlex="40" fxFlex.lt-md="100">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Additional Settings</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+        <mat-list>
+          <h3 matSubheader>Log Events</h3>
+          <mat-list-item>
+            <p matLine>Log ajax calls to dev console.</p>
+
+            <mat-slide-toggle #logToggle [checked]="logger | async" (change)="toggleLog()" loopMaterialToggle>{{logger
+              |
+              async}}</mat-slide-toggle>
+          </mat-list-item>
+          <mat-list-item>
+            <p matLine>Show/Hide internal errors in notifications list</p>
+
+            <mat-slide-toggle #logToggle [checked]="showBackendNotifications | async" (change)="toggleNotifications()"
+              loopMaterialToggle>{{ showBackendNotifications | async }}</mat-slide-toggle>
+          </mat-list-item>
+
+          <h3 matSubheader>App Versions</h3>
+          <mat-list-item>
+            <span matLine>
+              App Version
+            </span>
+            <span class="mat-caption">
+              {{appversion}}
+            </span>
+          </mat-list-item>
+          <mat-list-item>
+            <span matLine>
+              Angular Version
+            </span>
+            <span class="mat-caption">
+              {{angularVersion}}
+            </span>
+          </mat-list-item>
+          <h3 matSubheader>Intercom Settings</h3>
+          <mat-list-item>
+            <p matLine> Start Intercom </p>
+            <button loopButton loopClearButton mat-button (click)="startIntercom()">
+              Start
+            </button>
+          </mat-list-item>
+          <mat-list-item fxLayout="column">
+            <p matLine> Shut Down Intercom </p>
+            <button loopButton loopClearButton mat-button (click)="shutDownIntercom()">
+              Stop
+            </button>
+          </mat-list-item>
+
+          <h3 matSubheader>Preview Components</h3>
+          <mat-list-item>
+            <p matLine>Show/Hide heartbeat component</p>
+
+            <mat-slide-toggle #logToggle [checked]="heartbeatEnabled$ | async" (change)="toggleComponent('Heartbeat')"
+              loopMaterialToggle></mat-slide-toggle>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="60"></div>
+</div>

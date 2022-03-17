@@ -1,0 +1,12 @@
+@import 'mixins';
+
+.input-file {
+    display: none;
+  }
+
+.mat-column-actions {
+    max-width: 8%;
+  }
+.mat-column-valid {
+  max-width: 40px;
+}

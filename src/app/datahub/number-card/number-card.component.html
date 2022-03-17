@@ -1,0 +1,25 @@
+<mat-card  class="total-card total-card--mobile"fxLayout="row"  >
+  <div fxLayoutAlign="center center">
+    <mat-icon class="total-card__icon total-card__icon--mobile">
+      {{icon}}
+    </mat-icon>
+  </div>
+
+  <div fxLayout="column"  fxLayout.lt-md="row" fxLayoutAlign="start center" fxLayoutAlign.lt-md="space-between" fxFlex="100">
+    
+    <span  loopCounter [step]="'20'" [countFrom]="countFrom" [countTo]="countTo" [duration]="'1.5'" [subject$]="counterSubj$" fxFlex class="total-card__output  total-card__output--mobile" fxLayoutAlign="center center" >
+      <!-- {{counter | async }} {{unit}} -->
+      {{output}} {{unit}}
+    </span>
+  
+    <div class="total-card__title"  fxLayoutAlign.lt-md="center center">
+      <span>
+        {{title}}
+      </span>
+    </div>
+<!-- 
+    <span fxFlex class="total-card__output total-card__output--mobile" fxLayoutAlign="center start"  fxLayoutAlign.lt-md="end center" fxHide.gt-sm>
+        {{input}} {{unit}}
+    </span> -->
+  </div>
+</mat-card>

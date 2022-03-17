@@ -1,0 +1,45 @@
+@import 'variables';
+@import 'mixins';
+@import 'include-media';
+
+
+
+
+
+
+.table {
+  margin-top: 30px;
+  overflow: auto;
+
+  @include e('inner') {
+
+  }
+
+  @include e('row') {
+
+    @include m('odd-gray-background:nth-child(odd)') {
+      background-color: #efefef;
+      
+    }
+  }
+
+  @include e('cell'){
+    font-size: 11px;
+  }
+
+}
+
+.content {
+  padding-bottom: 8px;
+}
+
+.input-field {
+
+  @include media('<=960px') {
+    margin-right: 0px !important;
+  }
+
+  @include m('no-margin-right') {
+    margin-right: 0 !important;
+  }
+}

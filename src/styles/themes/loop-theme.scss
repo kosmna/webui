@@ -1,0 +1,117 @@
+@import '~@angular/material/theming';
+@import 'theme-mixin';
+// @include mat-core();
+
+// Global variables
+$black-87-opacity: rgba(black, 0.87);
+$white-87-opacity: rgba(white, 0.87);
+
+// Material theme
+$loop-primary: (50: #677e9b,
+100: #5c728c,
+200: #52657d,
+300: #48596e,
+400: #3e4c5e,
+500: #34404f,
+600: #2a3440,
+700: #202730,
+800: #282828,
+900: #1c1c1c,
+A100: #778ba5,
+A200: #8698af,
+A400: #95a5ba,
+A700: #000000,
+contrast: (50: $black-87-opacity,
+100: $black-87-opacity,
+200: $black-87-opacity,
+300: white,
+400: white,
+500: $white-87-opacity,
+600: $white-87-opacity,
+700: $white-87-opacity,
+800: $white-87-opacity,
+900: $white-87-opacity,
+A100: $black-87-opacity,
+A200: white,
+A400: $white-87-opacity,
+A700: $white-87-opacity,
+));
+
+$loop-accent: (50: #1b4730,
+100: #235a3d,
+200: #2a6c49,
+300: #317f56,
+400: #389162,
+500: #3fa46f,
+600: #57be88,
+700: #69c595,
+800: #7ccda2,
+900: #8ed4af,
+A100: #57be88,
+A200: #46b67b,
+A400: #3fa46f,
+A700: #a1dbbc,
+contrast: (50: $black-87-opacity,
+100: $black-87-opacity,
+200: $black-87-opacity,
+300: white,
+400: white,
+500: $white-87-opacity,
+600: $white-87-opacity,
+700: $white-87-opacity,
+800: $white-87-opacity,
+900: $white-87-opacity,
+A100: $black-87-opacity,
+A200: white,
+A400: $white-87-opacity,
+A700: $white-87-opacity,
+));
+
+$loop-warn: (50: #fb86a5,
+100: #fa6e93,
+200: #f95580,
+300: #f93c6e,
+400: #f8245b,
+500: #f70b49,
+600: #e10741,
+700: #c80739,
+800: #b00632,
+900: #97052b,
+A100: #fc9fb7,
+A200: #fdb8ca,
+A400: #fdd0dc,
+A700: #7e0424,
+contrast: (50: $black-87-opacity,
+100: $black-87-opacity,
+200: $black-87-opacity,
+300: white,
+400: white,
+500: $white-87-opacity,
+600: $white-87-opacity,
+700: $white-87-opacity,
+800: $white-87-opacity,
+900: $white-87-opacity,
+A100: $black-87-opacity,
+A200: white,
+A400: $white-87-opacity,
+A700: $white-87-opacity,
+));
+$loop-app-primary: mat-palette($loop-primary);
+$loop-app-accent: mat-palette($loop-accent);
+$loop-app-warn: mat-palette($loop-warn);
+$loop-app-theme: mat-light-theme($loop-app-primary, $loop-app-accent, $loop-app-warn);
+$loop-dark-primary: mat-palette($loop-primary);
+$loop-dark-accent: mat-palette($loop-accent);
+$loop-dark-warn: mat-palette($loop-warn);
+$loop-dark-theme: mat-dark-theme($loop-app-primary, $loop-app-accent, $loop-app-warn);
+
+.loop-dark-theme {
+  @include angular-material-theme($loop-dark-theme);
+}
+
+.loop-theme {
+  @include angular-material-theme($loop-app-theme);
+}
+
+@include set-custom-theme-class($loop-app-theme, 'loop-theme');
+@include set-custom-theme-class($loop-dark-theme, 'loop-dark-theme');

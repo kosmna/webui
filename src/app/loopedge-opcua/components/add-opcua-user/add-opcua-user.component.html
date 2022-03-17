@@ -1,0 +1,62 @@
+<h1>
+  <ng-container [ngSwitch]="data?.resetPassword">
+    <ng-container *ngSwitchCase="true">
+      <span i18n>
+        Reset User Password
+      </span>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+
+      <ng-container [ngSwitch]="data?.editUser">
+        <ng-container *ngSwitchCase="true">
+          <span i18n>
+            Updated User
+          </span>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <span i18n>
+            Add User
+          </span>
+        </ng-container>
+      </ng-container>
+
+    </ng-container>
+  </ng-container>
+</h1>
+<mat-dialog-content>
+  <form [formGroup]="userForm">
+    <div fxLayout="column nowrap" fxLayoutAlign="start stretch">
+      <div fxLayout="row nowrap" fxLayoutAlign="start baseline" fxLayoutGap="16px">
+        <mat-form-field floatPlaceholder="auto" fxFlex>
+          <input matInput formControlName="username" type="text" required placeholder="Username">
+          <mat-error *ngIf="userForm.controls['username'].hasError('required')" i18n>
+            Username is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-checkbox formControlName="disabled" i18n>Disabled</mat-checkbox>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="createdUserInfo" class="password-section">
+    <div fxLayout="row nowrap" fxLayoutAlign="center center" fxLayoutGap="16px">
+      <h3 class="mat-subheading-2" i18n>Password</h3>
+      <h4 class="mat-subheading-1 password-section__generated-password" (click)="copy(createdUserInfo.password)"
+        matTooltip="Click to copy" matTooltipShowDelay="200" matTooltip-i18n>{{createdUserInfo.password}}</h4>
+    </div>
+
+    <p fxHide.lt-sm i18n class="mat-caption" i18n>Make sure you save this password. You will not be able to access it
+      again!</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayoutGap="16px">
+  <ng-container [ngSwitch]="!!createdUserInfo">
+    <ng-container *ngSwitchCase="true"><button mat-stroked-button loopButton matDialogClose="createdUserInfo" i18n>Close</button></ng-container>
+    <ng-container *ngSwitchDefault>
+      <button mat-stroked-button color="accent" loopButton (click)="saveUser()" [disabled]="userForm.pristine || userForm.invalid"
+        i18n>Save</button>
+      <button mat-stroked-button color="warn" loopButton matDialogClose i18n>Cancel</button>
+    </ng-container>
+  </ng-container>
+</mat-dialog-actions>

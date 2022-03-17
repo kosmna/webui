@@ -1,0 +1,51 @@
+@import 'mixins';
+@import 'include-media';
+
+.add-device-form {
+  /* width: 500px; */
+  margin-bottom: 1.5em;
+}
+
+.form-content {
+  min-height: 3em;
+}
+
+.mat-select {
+  .mat-select-placeholder {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+.form-content[style*="column"] {
+  .mat-select {
+    width: 100%;
+  }
+
+  .mat-form-field {
+    width: 100%;
+  }
+}
+
+mat-dialog-actions[style*=column] {
+  .mat-button+.mat-button {
+    margin-left: 0;
+  }
+}
+
+.input-field {
+  margin-top: 10px;
+  margin-bottom: 10px;
+    @include media('<=960px') {
+      margin-right: 0px;
+    }
+  
+    @include m('no-margin-right') {
+      margin-right: 0 !important;
+    }
+  }
+
+div.form-content[hidden] { 
+    display: none !important; 
+}

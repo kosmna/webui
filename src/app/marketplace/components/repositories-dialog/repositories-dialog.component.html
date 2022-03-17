@@ -1,0 +1,55 @@
+<h2 matDialogTitle class="theme-bottom-border" i18n>Repositories</h2>
+<mat-dialog-content>
+
+  <div [ngSwitch]="repositories.length === 0">
+    <div *ngSwitchCase="true" fxLayout="row" fxLayoutAlign="center center">
+      <span *ngIf="!loading" class="mat-typography" i18n>No Repositories Found</span>
+    </div>
+    <mat-tab-group *ngSwitchDefault>
+      <mat-tab *ngFor="let repository of repositories" label="{{repository.name | forwardSlash}}">
+        <div [fxHide]="!dataSources[repository.name] || dataSources[repository.name].data.length === 0">
+          <mat-table #table [dataSource]="dataSources[repository.name]">
+
+            <ng-container matColumnDef="tag">
+              <mat-header-cell *matHeaderCellDef i18n> Tag </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.tag}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="architecture">
+              <mat-header-cell *matHeaderCellDef i18n> Arch </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.architecture}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="created">
+              <mat-header-cell *matHeaderCellDef i18n> Created </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.created | date:'yyyy-MM-dd HH:mm'}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="layers">
+              <mat-header-cell   fxFlex="50px" *matHeaderCellDef i18n> Layers </mat-header-cell>
+              <mat-cell fxFlex="50px" *matCellDef="let element"> {{ element.layers }} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+        <div [fxShow]="dataSources[repository.name] && dataSources[repository.name].data.length === 0" fxLayout="row" fxLayoutAlign="center center" class="empty-table-container">
+          <span *ngIf="!loading" class="mat-typography" i18n>
+            No Tags Defined
+          </span>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div *ngIf="loading" class="loading" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5px">
+    <mat-progress-spinner class="loading__circle" [mode]="'indeterminate'" [strokeWidth]="2"></mat-progress-spinner>
+    <span class="loading__text" i18n>
+      Geting data
+    </span>
+    
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions *ngIf="!loading" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+  <button mat-button loopButton color="warn" [matDialogClose]="" i18n>Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,117 @@
+@import '~@angular/material/theming';
+@import 'theme-mixin';
+
+
+// Global variables
+$black-87-opacity: rgba(black, 0.87);
+$white-87-opacity: rgba(white, 0.87);
+
+// Material theme
+$parker-primary: (50 : #e0e0e0,
+100 : #b3b3b3,
+200 : #808080,
+300 : #4d4d4d,
+400 : #262626,
+500 : #000000,
+600 : #000000,
+700 : #000000,
+800 : #000000,
+900 : #000000,
+A100 : #a6a6a6,
+A200 : #8c8c8c,
+A400 : #737373,
+A700 : #666666,
+contrast: (50: $black-87-opacity,
+100: $black-87-opacity,
+200: $black-87-opacity,
+300: white,
+400: white,
+500: $white-87-opacity,
+600: $white-87-opacity,
+700: $white-87-opacity,
+800: $white-87-opacity,
+900: $white-87-opacity,
+A100: $black-87-opacity,
+A200: white,
+A400: $white-87-opacity,
+A700: $white-87-opacity,
+));
+
+$parker-accent: (50 : #e0f6f8,
+100 : #b3e9ec,
+200 : #80dbe0,
+300 : #4dcdd4,
+400 : #26c2ca,
+500 : #00b7c1,
+600 : #00b0bb,
+700 : #00a7b3,
+800 : #009fab,
+900 : #00909e,
+A100 : #c9f9ff,
+A200 : #96f4ff,
+A400 : #63efff,
+A700 : #49ecff,
+contrast: (50: $black-87-opacity,
+100: $black-87-opacity,
+200: $black-87-opacity,
+300: white,
+400: white,
+500: $white-87-opacity,
+600: $white-87-opacity,
+700: $white-87-opacity,
+800: $white-87-opacity,
+900: $white-87-opacity,
+A100: $black-87-opacity,
+A200: white,
+A400: $white-87-opacity,
+A700: $white-87-opacity,
+));
+
+$parker-warn: (50 : #fee2e9,
+100 : #fdb6c8,
+200 : #fb85a4,
+300 : #f95480,
+400 : #f83064,
+500 : #f70b49,
+600 : #f60a42,
+700 : #f50839,
+800 : #f30631,
+900 : #f10321,
+A100 : #ffffff,
+A200 : #ffe5e7,
+A400 : #ffb2b8,
+A700 : #ff98a1,
+contrast: (50: $black-87-opacity,
+100: $black-87-opacity,
+200: $black-87-opacity,
+300: white,
+400: white,
+500: $white-87-opacity,
+600: $white-87-opacity,
+700: $white-87-opacity,
+800: $white-87-opacity,
+900: $white-87-opacity,
+A100: $black-87-opacity,
+A200: white,
+A400: $white-87-opacity,
+A700: $white-87-opacity,
+));
+$parker-app-primary: mat-palette($parker-primary);
+$parker-app-accent: mat-palette($parker-accent);
+$parker-app-warn: mat-palette($parker-warn);
+$parker-app-theme: mat-light-theme($parker-app-primary, $parker-app-accent, $parker-app-warn);
+$parker-dark-primary: mat-palette($parker-primary);
+$parker-dark-accent: mat-palette($parker-accent);
+$parker-dark-warn: mat-palette($parker-warn);
+$parker-dark-theme: mat-dark-theme($parker-app-primary, $parker-app-accent, $parker-app-warn);
+
+.parker-theme {
+  @include angular-material-theme($parker-app-theme);
+}
+
+.parker-dark-theme {
+  @include angular-material-theme($parker-dark-theme);
+}
+
+@include set-custom-theme-class($parker-app-theme, 'parker-theme');
+@include set-custom-theme-class($parker-dark-theme, 'parker-dark-theme');

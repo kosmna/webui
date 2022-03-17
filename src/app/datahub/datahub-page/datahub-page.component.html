@@ -1,0 +1,23 @@
+<mat-tab-group #tabGroup
+(selectedTabChange)="tabChanged($event)">
+  <mat-tab label="DataHub" i18n-label>
+    
+    <div fxLayout="column" fxLayoutGap="10px">
+      <div>
+        <loop-cloud-connectors></loop-cloud-connectors>
+      </div>
+      <div>
+        <loop-raw-subscriptions
+        *ngIf="canAccess"
+        ></loop-raw-subscriptions>
+      </div>
+    </div>
+
+  </mat-tab>
+  <mat-tab label="Stats" i18n-label>
+    <loop-datahub-stats
+    [tabIndex]="tabObs$"
+    [canAccess]="canAccess"
+    ></loop-datahub-stats>
+  </mat-tab>
+</mat-tab-group>

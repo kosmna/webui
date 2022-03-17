@@ -1,0 +1,40 @@
+<div class="content" fxLayout="row" fxLayoutAlign="center">
+  <div class="content__inner content--mobile" fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+      <mat-form-field class="search__form-field" fxFlex>
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput placeholder="Search Applications" i18n-placeholder #search>
+      </mat-form-field>
+      <mat-button-toggle-group #group="matButtonToggleGroup" (change)="selectViewMode(group.value)" class="disable-shadow"
+        [value]="viewMode">
+        <mat-button-toggle value="cards">
+          <mat-icon>view_module</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="table">
+          <mat-icon>view_headline</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div [ngSwitch]="viewMode" *ngIf="applications$ | async as marketplaceApps">
+      <ng-container *ngIf="marketplaceApps.length > 0;else noApps">
+        <loop-grid-view [applications]="(marketplaceApps | searchFilter: search.value | orderBy: 'name')" (start)="startApplication($event)"
+          (stop)="stopApplication($event)" (refresh)="refreshApplication($event)" (uninstall)="confirmApplicationUninstall($event)"
+          [allowedRole]="restrictView" *ngSwitchCase="'cards'"></loop-grid-view>
+        <loop-table-view [applications]="(marketplaceApps | searchFilter: search.value | orderBy: 'name')" (start)="startApplication($event)" (stop)="stopApplication($event)"
+          (refresh)="refreshApplication($event)" (uninstall)="confirmApplicationUninstall($event)" [allowedRole]="restrictView"
+          *ngSwitchCase="'table'"></loop-table-view>
+      </ng-container>
+      <ng-template #noApps>
+        <div fxLayout="row" fxLayoutAlign="center stretch" *ngIf="!applicationsExist">
+          <div fxFlex="80" fxLayout="column" fxLayoutAlign="center center" class="no-items-found">
+            <mat-icon>do_not_disturb_on</mat-icon>
+            <!-- <span class="mat-display-1" i18n>No applications found.</span> -->
+            <span class="mat-display-1" i18n>NO APPLICATIONS FOUND</span>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+
+  </div>
+</div>

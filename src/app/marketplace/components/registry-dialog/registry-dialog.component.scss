@@ -1,0 +1,7 @@
+@import 'mixins';
+
+.table-container {
+  @include e('title') {
+    border-bottom: 1px solid #aaa;
+  }
+}

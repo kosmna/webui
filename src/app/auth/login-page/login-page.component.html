@@ -1,0 +1,16 @@
+<loop-login
+  [credentialError]="credentialError"
+  [connectionError]="connectionError"
+  [providers]="providers"
+  (login)="tryLogin($event)"
+  (logout)="logout()"
+  (passReset)="onPasswordReset($event)"
+  [logoSrc]="logo"
+  [resetPassword]="resetPassword"
+  [checkingLogin]="checkingLogin"
+  [loadingLogin]="loadingLogin"
+  [loadingReset]="loadingReset"
+  [successful]="successful"
+  [loggedInReset]="loggedInReset"
+  (showElua)="showEulaNotLoggedIn()">
+</loop-login>

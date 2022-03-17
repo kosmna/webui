@@ -1,0 +1,29 @@
+<h1 matDialogTitle i18n>Subscribe</h1>
+
+<form [formGroup]="subscriptionForm">
+  <mat-dialog-content>
+    <section fxLayout="column nowrap" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+      <div fxLayout="row nowrap" fxLayout.lt-md="column nowrap" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+        <mat-form-field floatPlaceholder="auto" fxFlex>
+          <input matInput formControlName="name" type="text" required placeholder="Local Data Topic">
+          <mat-error *ngIf="subscriptionForm.controls['name'].hasError('required')">
+            <span i18n>Topic name is</span>
+            <strong i18n> required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-form-field floatPlaceholder="auto">
+        <textarea matTextareaAutosize matInput formControlName="description" placeholder="Description"></textarea>
+      </mat-form-field>
+    </section>
+  </mat-dialog-content>
+
+  <mat-dialog-actions fxLayoutAlign="start center" fxLayoutGap="8px">
+    <button mat-stroked-button color="warn" matDialogClose i18n>Cancel</button>
+    <button mat-stroked-button [disabled]="subscriptionForm.invalid" [matDialogClose]="subscriptionForm.value" i18n>OK</button>
+    <span fxFlex></span>
+    <mat-slide-toggle formControlName="enabled" color="accent" i18n>
+      Enable
+    </mat-slide-toggle>
+  </mat-dialog-actions>
+</form>

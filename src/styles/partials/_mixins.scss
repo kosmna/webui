@@ -1,0 +1,35 @@
+@mixin e($element) {
+    &__#{$element} {
+        @content;
+    }
+}
+
+@mixin m($modifier) {
+    &--#{$modifier} {
+        @content;
+    }
+}
+// allias full names
+
+@mixin modifier($m) {
+    @include m($m) {
+        @content;
+    }
+}
+@mixin element($e) {
+    @include e($e) {
+        @content;
+    }
+}
+
+@mixin shadow($e){
+	:host ::ng-deep #{$e} {
+		@content;
+	}
+}
+
+@mixin md-icon-size($size: 24px) {
+    font-size: $size;
+    height: $size;
+    width: $size;
+  }

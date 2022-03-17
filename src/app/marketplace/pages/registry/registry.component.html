@@ -1,0 +1,76 @@
+<div class="content" fxLayout="row" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile">
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-card-title>
+          <h2 class="mat-title" i18n> Container Registry </h2>
+        </mat-card-title>
+        <span fxFlex></span>
+        <button *ngIf="allowAccess" mat-icon-button (click)="newRegistryDialog()" matTooltip="Define Registry">
+          <mat-icon class="mat-18">add_circle</mat-icon>
+        </button>
+        <span fxFlex="5px"></span>
+      </mat-card-header>
+      <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+      <div class="table-container" [fxHide]="dataSource.data.length === 0">
+        <mat-table #table [dataSource]="dataSource">
+
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef i18n> Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="address">
+            <mat-header-cell *matHeaderCellDef i18n> Address </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="username">
+            <mat-header-cell *matHeaderCellDef i18n> Username </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.username}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="tlsSkipVerify">
+            <mat-header-cell *matHeaderCellDef i18n> Skip TLS </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.tlsSkipVerify ? 'Yes' : 'No' }} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef i18n> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="showRepositoriesDialog(element)">
+                  <mat-icon>storage</mat-icon>
+                  <span i18n>Repositories</span>
+                </button>
+                <button mat-menu-item (click)="updateRegistryDialog(element)">
+                  <mat-icon>edit</mat-icon>
+                  <span i18n>Edit</span>
+                </button>
+                <button mat-menu-item (click)="confirmDeleteRegistry(element)">
+                  <mat-icon>delete</mat-icon>
+                  <span i18n>Remove</span>
+                </button>
+              </mat-menu>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [class.hidden]="dataSource.data.length < paginator.pageSizeOptions[0]" [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 20]">
+        </mat-paginator>
+      </div>
+      <div [fxShow]="dataSource.data.length === 0" fxLayout="row" fxLayoutAlign="center center" class="empty-table-container">
+        <span i18n>
+          No Registries Defined
+        </span>
+      </div>
+    </mat-card>
+  </div>
+</div>

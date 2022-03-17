@@ -1,0 +1,25 @@
+@import 'mixins';
+@import 'variables';
+
+.status {
+  margin: 8px;
+  @include e('indicator') {
+    border-radius: 50%;
+    width: 1.1em;
+    height: 1.1em;
+    margin: 0 1em;
+    @include m('online') {
+      background: $enabled-color;
+    }
+    @include m('offline') {
+      background: $disabled-color;
+    }
+  }
+  @include e('name') {
+    margin-bottom: 0;
+    color: $group-header-text-color;
+  }
+  @include e('version') {
+    color: $group-header-text-color;
+  }
+}

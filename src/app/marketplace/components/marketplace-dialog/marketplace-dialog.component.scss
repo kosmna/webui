@@ -1,0 +1,47 @@
+.small-icon{
+    max-height: 115px;
+    max-width: 145px;
+}
+.app-description{
+    li {
+        list-style-type: none;
+    }
+}
+.app-categories{
+    max-width: 300px;
+
+    li {
+        list-style: none;
+        border-bottom: solid 2px  #46b67b;
+    }
+}
+.topic-tag {
+    display: inline-block;
+    padding: 0.3em 0.9em;
+    margin: 0 0.5em 0.5em 0;
+    white-space: nowrap;
+    background-color: #f1f8ff;
+    border-radius: 3px;
+}
+.small-icon-container {
+    height: 115px;
+    width: 145px;
+    text-align: center;
+}
+mat-progress-spinner {
+    height: 155px;
+    width: auto;
+}
+
+.mat-dialog-header {
+    max-height: 115px;
+}
+mat-dialog-content {
+    padding-top: 30px;
+}
+// :host /deep/ pre span {white-space: normal;}
+// :host /deep/ .string { color: green; }
+// :host /deep/ .number { color: #f70b49; }
+// :host /deep/ .boolean { color: blue; }
+// :host /deep/ .null { color: magenta; }
+// :host /deep/ .key { color: #34404f; }

@@ -1,0 +1,20 @@
+@import 'variables';
+
+.status-display {
+  border-radius: 4px;
+  border: 1px solid black;
+  font-weight: bold;
+  line-height: 18px;
+  text-align: center;
+  padding: 2px 4px;
+
+  &--enabled {
+    border-color: $enabled-color;
+    color: $enabled-color;
+  }
+
+  &--disabled {
+    border-color: $disabled-color;
+    color: $disabled-color;
+  }
+}

@@ -1,0 +1,90 @@
+@import 'variables';
+@import 'mixins';
+@import 'include-media';
+
+
+.chart-grid-item {
+  overflow: hidden;
+}
+
+.dashboard-card {
+  height: calc(100% - 10px);
+  width: calc(100% - 12px);
+
+  @include e('title') {
+
+    text-align: center;
+
+    @include e('text') {
+      font-weight: 900;
+    }
+  }
+}
+
+.dashboard-container {
+  /* Normally this would be -15px like the .gridster-container override below but there is an extra 20px overflow */
+
+  margin: auto;
+  width: calc(100% - 35px);
+
+  @include e('toolbar') {
+    margin-left: 20px;
+    margin-top: 8px;
+  }
+}
+
+.toolbar {
+  @include e('title') {
+    font-size: 18px;
+  }
+}
+
+.card-container {
+  height: 320px;
+}
+
+@include shadow('div.gridster-item-inner') {
+  height: inherit
+}
+
+@include shadow('.gridster-container') {
+  margin-top: 15px;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+gridster-item:hover {
+  outline: 2px solid #333;
+  z-index: 999;
+}
+
+gridster-item.is-dragging {
+  cursor: move;
+}
+
+gridster-item.is-resizing {
+  opacity: 0.4;
+}
+
+.panel-heading {
+  cursor: move;
+}
+
+/* Overrides for gridster */
+.position-highlight {
+  background: #333;
+  border-radius: 5px;
+}
+
+.menu {
+  @include e('title') {
+    border-bottom: solid 2px $accent-color;
+    pointer-events: none;
+  }
+
+  @include e('trigger') {
+    color: $side-nav-expanded-color;
+  }
+}

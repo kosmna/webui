@@ -1,0 +1,52 @@
+<form [formGroup]="subscriptionForm" (submit)="submitSubscription()">
+  <h2 matDialogTitle class="theme-bottom-border" i18n>{{ isNewSubscription ? 'Add' : 'Update' }} Topic</h2>
+  <mat-dialog-content fxLayout="column nowrap" fxLayoutAlign="space-between stretch" *ngIf="!isLoading">
+
+    <div formGroupName="cloudConnector">
+      <mat-form-field fxFlex>
+        <mat-select formControlName="id" placeholder="Cloud Connector" (selectionChange)="connectorSelect()" required>
+          <mat-option *ngFor="let connector of availableCloudConnectors" [value]="connector.id">
+            {{ connector.uri }} ( {{ connector.name }} )
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="subscriptionForm.controls['cloudConnector'].controls['id'].hasError('required')" i18n>
+          Cloud connector is <strong>required</strong> to create topic.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field fxFlex>
+      <input matInput formControlName="name" type="text" placeholder="Topic Name" i18n-placeholder>
+      <mat-error *ngIf="subscriptionForm.controls['name'].hasError('required')" i18n>
+        <!-- Name is <strong>required</strong> -->
+        DataHub topic data needs to be synced to the cloud
+      </mat-error>
+      <mat-error *ngIf="subscriptionForm.controls['name'].hasError('duplicateName')" i18n>
+        Topic <strong>already exist</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex>
+      <input matInput formControlName="description" type="text" placeholder="Description" i18n-placeholder>
+    </mat-form-field>
+
+  </mat-dialog-content>
+  <mat-dialog-content *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center">
+    <mat-spinner mode="indeterminate" strokeWidth="10"></mat-spinner>
+  </mat-dialog-content>
+  <div>
+    <mat-dialog-actions fxLayoutGap="5px" *ngIf="!isLoading">
+      <button mat-button loopButton loopClearButton type="submit" [disabled]="!subscriptionForm.valid">
+        <span i18n *ngIf="isNewSubscription; else update;">
+          Create
+        </span>
+        <ng-template #update>
+          <span>
+            Update
+          </span>
+        </ng-template>
+      </button>
+      <button mat-button mat-button loopButton color="warn" [matDialogClose]="false" i18n>Cancel</button>
+    </mat-dialog-actions>
+  </div>
+</form>

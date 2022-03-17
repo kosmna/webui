@@ -1,0 +1,13 @@
+<div fxLayout="row" fxLayoutGap="24px">
+  <section fxHide.lt-sm="true" class="statistics-heading" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+    <div class="statistics-heading__icon" fxLayoutAlign="center start" *ngIf="iconName">
+      <mat-icon>{{ iconName }}</mat-icon>
+    </div>
+    <div class="statistics-heading__title">
+      <ng-content select="[block-title]"></ng-content>
+    </div>
+  </section>
+  <section fxFlex fxLayoutAlign="center center" class="statistics-data">
+    <ng-content select="[block-data]"></ng-content>
+  </section>
+</div>

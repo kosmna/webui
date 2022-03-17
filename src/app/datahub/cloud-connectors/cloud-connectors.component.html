@@ -1,0 +1,100 @@
+<mat-card loopCard loopMaterialCard class="fill-height">
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+    <mat-card-title>
+      <h2 class="mat-title" i18n="title | Datahub cloud connectors"> Cloud Connectors </h2>
+    </mat-card-title>
+    <!-- <mat-card-subtitle class="title" </mat-card-subtitle> -->
+    <span fxFlex></span>
+    <button mat-icon-button *ngIf="restrictedView" matTooltip="Add Cloud Connector" i18n-matTooltip class="center-block"
+      (click)="addConnector()" [disabled]="!restrictedView">
+      <mat-icon class="mat-18">add_circle</mat-icon>
+    </button>
+    <span fxFlex="5px"></span>
+  </mat-card-header>
+  <mat-card-content fxLayout="column">
+    <div [fxShow]="dataSource.data.length !== 0" class="table-container">
+      <mat-table #cloudConnectorsTable [dataSource]="dataSource" class="wrap-cells" id="cloud-connector-data-table"
+        matSort>
+        <!-- <ng-container cdkColumnDef="id">
+          <mat-header-cell *cdkHeaderCellDef i18n="id for clould connector"> ID </mat-header-row>
+          <mat-cell *cdkCellDef="let connector"> {{ connector.id }} </mat-cell>
+        </ng-container> -->
+
+        <ng-container cdkColumnDef="name">
+          <mat-header-cell *cdkHeaderCellDef fxFlex i18n="name of clould connector" mat-sort-header> Name
+          </mat-header-cell>
+          <mat-cell *cdkCellDef="let connector" class="wrap-cells" fxFlex> {{ connector.name | truncate:[40, '...'] }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="uri">
+          <mat-header-cell *cdkHeaderCellDef fxFlex i18n="uri header cloud connectors" mat-sort-header> URI
+          </mat-header-cell>
+          <mat-cell *cdkCellDef="let connector" class="wrap-cells" fxFlex> {{ connector.uri | truncate:[60, '...']}}
+          </mat-cell>
+        </ng-container>
+
+        <!-- <ng-container cdkColumnDef="clientID">
+          <mat-header-cell *cdkHeaderCellDef i18n="table header"> Client ID </mat-header-cell>
+          <mat-cell *cdkCellDef="let connector"> {{ connector.clientID }} </mat-cell>
+        </ng-container> -->
+
+        <ng-container cdkColumnDef="status">
+          <mat-header-cell *cdkHeaderCellDef i18n="table header" mat-sort-header> Status </mat-header-cell>
+          <mat-cell *cdkCellDef="let connector" matTooltip="{{ connector.state?.lastError?.msg }}"> {{
+            connector.state?.status || 'POLLING' }} </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="actions">
+          <mat-header-cell *cdkHeaderCellDef i18n="table header">Actions</mat-header-cell>
+          <mat-cell *cdkCellDef="let connector">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="editConnector(connector)">
+                <mat-icon>{{(connector.editable) ? 'edit' : 'remove_red_eye'}}</mat-icon>
+                <ng-container [ngSwitch]="connector.editable">
+                  <span *ngSwitchCase="true" i18n>
+                    Edit
+                  </span>
+                  <span *ngSwitchCase="false" i18n>
+                    View Details
+                  </span>
+                </ng-container>
+              </button>
+              <button *ngIf="connector.editable" mat-menu-item (click)="removeConnector(connector)">
+                <mat-icon>delete</mat-icon>
+                <span i18n="delete cloud connector">Remove</span>
+              </button>
+              <button mat-menu-item (click)="toggleConnector(connector)">
+                <mat-icon>power</mat-icon>
+
+                <ng-container [ngSwitch]="isConnectorEnabled(connector)">
+                  <span *ngSwitchCase="true" i18n>
+                    Disable
+                  </span>
+                  <span *ngSwitchCase="false" i18n>
+                    Enable
+                  </span>
+                </ng-container>
+          
+              </button>
+            </mat-menu>
+
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *cdkHeaderRowDef="columnsDefinition"></mat-header-row>
+        <mat-row *cdkRowDef="let connector; columns: columnsDefinition;" class="row" [ngClass]="connector.state?.status.toLowerCase()"></mat-row>
+      </mat-table>
+      <!-- Paginator -->
+      <mat-paginator #paginator [class.hidden]="dataSource.data.length < paginator.pageSizeOptions[0]" [length]="dataSource.data.length"
+        [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[10, 15, 20, 25]">
+      </mat-paginator>
+    </div>
+    <div class="mat-title" [fxShow]="dataSource.data.length === 0" fxLayoutAlign="center center" i18n="no connectors added">
+      No cloud connectors defined.
+    </div>
+  </mat-card-content>
+</mat-card>

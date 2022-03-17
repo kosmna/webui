@@ -1,0 +1,48 @@
+<h1 matDialogTitle>Browse OPC UA Tags</h1>
+
+<mat-dialog-content>
+  <section fxLayout="column nowrap" fxLayoutGap="16px" fxLayoutAlign="start stretch">
+    <div fxLayout="row nowrap" fxLayoutGap="16px" fxLayoutGap.lt-sm="8px" fxLayout.lt-sm="column nowrap"
+      fxLayoutAlign.lt-sm="start stretch" fxLayoutAlign="start center">
+      <mat-form-field fxFlex>
+        <mat-select #selectDevice (selectionChange)="getTags(selectDevice.value)" placeholder="Select A Device">
+          <mat-option *ngFor="let device of devices" [value]="device">
+            {{device.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div [ngSwitch]="!!tags">
+      <div *ngSwitchCase="false" class="browse-tags__no-device mat-subheading-2">No device selected.</div>
+      <div *ngSwitchDefault fxFlexFill>
+        <tree-root class="tags-tree" [nodes]="tags" [options]="options" (select)="select($event)" (deselect)="deselect($event)">
+          <ng-template #loadingTemplate>Loading tags, please wait....</ng-template>
+          <ng-template #treeNodeTemplate let-node let-index="index">
+            <div fxLayout="column" class="tree-node">
+              <div fxLayout="row nowrap" fxLayoutGap="4px" fxLayoutAlign="start center" fxLayoutAlign.lt-sm="start start"
+                fxLayout.lt-sm="column nowrap">
+                <span class="mat-body">{{ node.data.name }}</span>
+                <div fxLayout="row nowrap" fxLayoutGap="4px">
+                  <span *ngIf="node.data.type || node.data.tag" [fxHide.lt-sm]="true">-</span>
+                  <span class="output tree-node__type" *ngIf="node.data.type">{{node.data.type}}</span>
+                  <span *ngIf="node.data.type && node.data.tag" [fxHide.lt-sm]="true">/</span>
+                  <span class="output tree-node__tag" *ngIf="node.data.tag">{{node.data.tag}}</span>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </tree-root>
+      </div>
+    </div>
+  </section>
+
+</mat-dialog-content>
+<mat-dialog-actions fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="space-between stretch" fxLayoutAlign="center center">
+  <button mat-button loopButton loopClearButton loopSubmitOnEnter (click)="onSubmit()" [disabled]="selectedData.length < 1">Add</button>
+  <button mat-button loopButton color="warn" [matDialogClose]="false" i18n>Cancel</button>
+  <span fxFlex></span>
+  <div *ngIf="selectedData.length > 0" class="browse-tags__count">
+    Tags selected: <strong>{{selectedData.length}}</strong>
+  </div>
+</mat-dialog-actions>

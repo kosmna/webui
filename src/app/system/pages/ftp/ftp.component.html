@@ -1,0 +1,140 @@
+<section class="content" fxLayout="row" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile" fxLayout="column" fxLayoutGap="20px">
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header>
+        <mat-card-title>
+          <h2 class="mat-title" i18n="card title" i18n> FTP Server Service</h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <!-- <mat-list-item matLine>
+            <span >
+              Port
+            </span>
+            <span class="output">
+              &nbsp;
+              {{status.port}}
+            </span>
+          </mat-list-item>
+          <mat-divider></mat-divider> -->
+        </mat-list>
+
+        <mat-list>
+          <mat-list-item *ngIf="!status.running">
+            <div fxLayout="row" fxLayoutAlign="space-between center" matLine>
+              <p i18n>
+                Service stopped
+              </p>
+              <button loopButton loopClearButton mat-button *ngIf="restrictedView" [disabled]="isLoading" (click)="startFtp()"
+                i18n>
+                Start
+              </button>
+            </div>
+          </mat-list-item>
+
+          <mat-list-item *ngIf="status.running">
+            <div fxLayout="row" fxLayoutAlign="space-between center" matLine>
+              <p i18n>
+                Service running
+              </p>
+              <button loopButton mat-raised-button *ngIf="restrictedView" color="warn" [disabled]="isLoading" (click)="stopFtp()"
+                i18n>
+                Stop
+              </button>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item class="reboot-ftp" *ngIf="restrictedView">
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start start" fxLayoutAlign="space-between center"
+              fxLayoutGap.lt-sm="6px" matLine>
+
+              <span fxFlex class="reboot-ftp__text reboot-ftp__text--mobile" i18n>
+                Start service automatically
+              </span>
+              <mat-slide-toggle [(ngModel)]="reboot" (change)="automaticReboot()" [checked]="status.enabled">
+                <ng-container [ngSwitch]="status.enabled">
+                  <span *ngSwitchCase="true" i18n>
+                    Enabled
+                  </span>
+                  <span *ngSwitchCase="false" i18n>
+                    Disabled
+                  </span>
+                </ng-container>
+              </mat-slide-toggle>
+            </div>
+          </mat-list-item>
+
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card loopCard loopMaterialCard [class.hidden]="!restrictedView">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+
+        <mat-card-title>
+          <h2 class="mat-title" i18n="card title" i18n>Users</h2>
+        </mat-card-title>
+
+        <span fxFlex></span>
+        <button mat-icon-button matTooltip="Add User" i18n-matTooltip (click)="addUser()">
+          <mat-icon class="mat-18">add_circle</mat-icon>
+        </button>
+        <span fxFlex="5px"></span>
+      </mat-card-header>
+      <mat-progress-bar *ngIf="loadingBar && !isLoading" mode="indeterminate"></mat-progress-bar>
+      <div class="table-container">
+        <mat-table #table [dataSource]="userDatasource" matSort id="user-data-table" [fxHide]="!restrictedView">
+
+          <ng-container cdkColumnDef="username">
+            <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Username</mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> {{row.username}} </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="disabled">
+            <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Enable</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">
+
+              <mat-slide-toggle class="example-margin" [checked]="!row.disabled" (click)="editUser(row)" i18n>
+                {{ (!row.disabled) ? 'true' : 'false' }}
+              </mat-slide-toggle>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="actions">
+            <mat-header-cell *cdkHeaderCellDef i18n>Actions</mat-header-cell>
+            <mat-cell *cdkCellDef="let user">
+
+              <mat-menu #appMenu="matMenu">
+
+                <button mat-menu-item (click)="resetPassword(user)">
+                  <mat-icon>lock</mat-icon>
+                  <span i18n>Reset Password</span>
+                </button>
+
+                <button mat-menu-item (click)="deleteUser(user)">
+                  <mat-icon>delete</mat-icon>
+                  <span i18n>Delete User</span>
+                </button>
+              </mat-menu>
+
+              <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+
+            </mat-cell>
+          </ng-container>
+
+
+          <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        </mat-table>
+
+        <div class="mat-title" [fxShow]="userDatasource.data.length === 0" fxLayoutAlign="center center" i18n>
+          No users created.
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</section>

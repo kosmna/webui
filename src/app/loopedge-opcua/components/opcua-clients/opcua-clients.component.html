@@ -1,0 +1,68 @@
+<mat-table [dataSource]="dataSource" *ngIf="dataSource.data.length > 0;else noRecords">
+  <ng-container matColumnDef="id">
+    <mat-header-cell fxFlex *matHeaderCellDef i18n> ID
+    </mat-header-cell>
+    <mat-cell fxFlex *matCellDef="let element"> {{ element.id }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="ca_verified">
+    <mat-header-cell fxFlex="0 0 110px" *matHeaderCellDef i18n> CA Verified
+    </mat-header-cell>
+    <mat-cell fxFlex="0 0 110px" *matCellDef="let element">
+      <loop-status-display [positive]="element.ca_verified" [statusText]="element.ca_verified ? 'VERIFIED' : 'NOT VERIFIED'"></loop-status-display>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="trusted">
+    <mat-header-cell fxFlex="0 0 110px" *matHeaderCellDef i18n> Trusted
+    </mat-header-cell>
+    <mat-cell fxFlex="0 0 110px" *matCellDef="let element">
+      <loop-status-display [positive]="element.trusted" [statusText]="element.trusted ? 'TRUSTED' : 'REJECTED'"></loop-status-display>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="info">
+    <mat-header-cell fxFlex="0 0 40px" fxLayoutAlign="center center" *matHeaderCellDef i18n> Info
+    </mat-header-cell>
+    <mat-cell fxFlex="0 0 40px" fxLayoutAlign="center center" *matCellDef="let element">
+      <button mat-icon-button matTooltip="Show information" color="primary" (click)="showInfo.emit(element)">
+        <mat-icon>info</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef  fxFlex="0 0 auto" i18n> Actions
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" fxFlex="0 0 auto">
+      <button mat-icon-button [matMenuTriggerFor]="actionsMenu">
+        <mat-icon class="mat-18">more_vert</mat-icon>
+      </button>
+      <mat-menu #actionsMenu="matMenu">
+        <button mat-menu-item (click)="deleteCertificate.emit(element)">
+          <mat-icon class="mat-18">delete</mat-icon>
+          <span i18n>
+            Delete
+          </span>
+        </button>
+        <button mat-menu-item (click)="toggleTrusted.emit(element)">
+          <mat-icon class="mat-18">security</mat-icon>
+          <ng-container *ngIf="element.trusted; else reject">
+            <span i18n>
+              Reject
+            </span>
+          </ng-container>
+          <ng-template #reject>
+            <span i18n>
+              Trust
+            </span>
+          </ng-template>
+  
+        </button>
+      </mat-menu>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+</mat-table>
+<ng-template #noRecords>
+  <section fxLayout="row nowrap" fxLayoutAlign="center center">
+    <p class="mat-body-1" i18n>No clients connected.</p>
+  </section>
+</ng-template>

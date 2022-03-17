@@ -1,0 +1,18 @@
+
+<h2 matDialogTitle class="theme-bottom-border" i18n>Write Value</h2>
+<form [formGroup]="writeRegisterForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div fxLayout="column">
+
+      <div fxLayout="row" class="form-content">
+        <mat-form-field fxFlex="grow">
+          <input matInput formControlName="value" type="text" placeholder="Register Value" i18n-placeholder>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button loopButton loopClearButton type="submit" i18n>Write</button>
+    <button mat-button loopButton color="warn" [matDialogClose]="false" i18n>Cancel</button>
+  </mat-dialog-actions>
+</form>

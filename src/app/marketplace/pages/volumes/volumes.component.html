@@ -1,0 +1,8 @@
+<mat-card loopCard loopMaterialCard>
+  <mat-card-header fxLayout="row nowrap" fxLayoutAlign="start center">
+    <mat-card-title i18n>Volumes</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="table-card__content">
+    <loop-volumes-list [volumes]="volumes$ | async" (deleteVolume)="deleteVolume($event)"></loop-volumes-list>
+  </mat-card-content>
+</mat-card>

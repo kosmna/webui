@@ -1,0 +1,69 @@
+<div class="content" fxLayout="row" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile">
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-card-title>
+          <h2 class="mat-title" i18n> Marketplace</h2>
+        </mat-card-title>
+        <span fxFlex></span>
+        <button mat-icon-button (click)="createMp()" matTooltip="Add a Marketplace">
+          <mat-icon class="mat-18">add_circle</mat-icon>
+        </button>
+        <span fxFlex="5px"></span>
+      </mat-card-header>
+      <mat-progress-bar *ngIf="mpLoading" mode="indeterminate"></mat-progress-bar>
+      <div class="table-container">
+        <mat-table #table [dataSource]="mpDatasource" matSort id="marketplace-data-table" [fxHide]="!mpDatasource.data.length">
+
+          <ng-container matColumnDef="branch">
+            <mat-header-cell *matHeaderCellDef mat-sort-header i18n="git branch">Branch</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              {{row.branch}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header i18n>ID</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              {{row.id}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header i18n>Name</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              {{row.name}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="private">
+            <mat-header-cell fxFlex="0 0 80px" *matHeaderCellDef i18n>Private</mat-header-cell>
+            <mat-cell fxFlex="0 0 80px" *matCellDef="let row">
+              {{row.private ? 'Yes' : 'No'}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell fxFlex="0 0 auto" *matHeaderCellDef i18n>Actions</mat-header-cell>
+            <mat-cell fxFlex="0 0 auto" *matCellDef="let row">
+
+              <button (click)="deleteMp(row)" mat-icon-button>
+                <mat-icon>delete</mat-icon>
+              </button>
+
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        </mat-table>
+        <div *ngIf="marketplaces.length === 0" fxLayout="row" fxLayoutAlign="center center" class="empty-table-container">
+          <span i18n>
+            NO MARKETPLACES FOUND
+          </span>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

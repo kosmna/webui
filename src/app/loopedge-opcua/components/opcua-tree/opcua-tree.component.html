@@ -1,0 +1,7 @@
+<div class="tree">
+  <tree-root class="opc-tree" [nodes]="nodeList" [options]="options" (activate)="nodeActivate($event)" (deactivate)="nodeDeactivate($event)"
+    [fxHide]="nodeList.length === 0"></tree-root>
+</div>
+<div *ngIf="nodeList.length === 0" fxFlexFill fxLayout="column nowrap" fxLayoutAlign="start center">
+  <span class="mat-body-1" i18n>No nodes defined. Create or Import nodes.</span>
+</div>

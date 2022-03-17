@@ -1,0 +1,77 @@
+<form [formGroup]="marketplaceForm">
+  <h2 matDialogTitle class="theme-bottom-border" i18n>Add Marketplace</h2>
+  <mat-dialog-content>
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
+      <div fxLayout="column">
+        <span class="mat-caption marketplace-form__subgroup-title" i18n>Default Marketplace</span>
+        <mat-divider></mat-divider>
+      </div>
+      <div fxLayout="row" class="mat-typography" fxLayoutAlign="space-between center">
+        <span class="mat-body-1" *ngIf="defaultExist" i18n>
+          Default Marketplace has been added.
+        </span>
+        <span *ngIf="!defaultExist" i18n>
+          Default Marketplace has not been added yet.
+        </span>
+        <button loopButton mat-stroked-button [disabled]="defaultExist" (click)="addDefault()" i18n>
+          Add
+        </button>
+      </div>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
+      <div fxLayout="column">
+        <span class="mat-caption marketplace-form__subgroup-title" i18n>Custom Marketplace</span>
+        <mat-divider></mat-divider>
+      </div>
+      <div fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutGap="8px">
+
+        <mat-form-field fxFlex>
+          <input matInput formControlName="name" placeholder="Name" type="text" i18n-placeholder="name of branch">
+          <mat-error *ngIf="marketplaceForm.controls['name'].hasError('required')" i18n>
+            Marketplace name is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+          <input matInput formControlName="branch" placeholder="Branch" type="text" i18n-placeholder="git a branch">
+          <mat-error *ngIf="marketplaceForm.controls['branch'].hasError('required')" i18n>
+            Branch name is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+      <div fxLayoutAlign="start center" fxLayoutGap="8px">
+        <mat-form-field fxFlex>
+          <input matInput formControlName="url" placeholder="URL" type="text" i18n-placeholder="url placeholder">
+          <mat-error *ngIf="marketplaceForm.controls['url'].hasError('required')" i18n>
+            URL address is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-checkbox formControlName="tls_skip_verify">Skip TLS</mat-checkbox>
+      </div>
+      <mat-form-field>
+        <textarea matInput formControlName="certificate_authority" placeholder="Certificate Authority"
+          [matTextareaAutosize]="true"></textarea>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+    <mat-slide-toggle formControlName="private">
+      <ng-container [ngSwitch]="marketplaceForm.get('private').value">
+        <span *ngSwitchCase="true" i18n>
+          Private
+        </span>
+        <span *ngSwitchCase="false" i18n>
+          Public
+        </span>
+      </ng-container>
+    </mat-slide-toggle>
+    <span fxFlex></span>
+    <button loopButton mat-stroked-button [disabled]="!marketplaceForm.valid" (click)="addCustom()" i18n>Add</button>
+    <button mat-stroked-button loopButton color="warn" [matDialogClose]="" i18n>Cancel</button>
+  </mat-dialog-actions>
+</form>

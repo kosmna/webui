@@ -1,0 +1,16 @@
+
+.submit-actions {
+    margin-left: 1px;
+}
+
+mat-dialog-actions {
+    overflow: hidden;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+mat-form-field[hidden] { 
+    display: none; 
+}

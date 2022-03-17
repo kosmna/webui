@@ -1,0 +1,15 @@
+.breadcrumbs {
+  height: 31px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 0 10px;
+
+  * {
+    color: rgba(0, 0, 0, 0.6)
+  }
+
+  &__route-name {
+    &--active {
+      font-weight: bold;
+    }
+  }
+}

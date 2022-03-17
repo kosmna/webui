@@ -1,0 +1,26 @@
+.unavailable {
+  padding: 10px;
+  border: 2px solid #46b67b;
+}
+
+.no-items-found {
+  font-size: 2em;
+  text-align: center;
+  min-height: 400px;
+}
+
+.no-items-found mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin: 5px auto;
+}
+
+.disable-shadow {
+  box-shadow: none;
+}
+
+
+.search {
+ margin: 10px;
+}

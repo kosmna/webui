@@ -1,0 +1,31 @@
+@import 'mixins';
+
+mat-icon {
+  @include md-icon-size(72px);
+}
+
+.statistics-heading {
+  margin-left: 48px;
+
+  &__icon {
+    width: 100px;
+  }
+
+  &__title {
+    width: 150px;
+    font: 500 20px/32px 'Proxima Nova';
+  }
+}
+
+.statistics-data {
+  padding: 16px 0;
+}
+
+:host>div {
+  padding: 16px 0;
+  box-shadow: 5px 5px 10px -7px rgba(0, 0, 0, .2);
+}
+
+:host:last-child>div {
+  border-bottom: none;
+}

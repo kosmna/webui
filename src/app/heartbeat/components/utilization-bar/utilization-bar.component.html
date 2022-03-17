@@ -1,0 +1,14 @@
+<div class="mat-elevation-z4 bar">
+  <div fxLayout="column" fxLayoutAlign="center stretch" class="bar__background" [ngClass]="[status]" fxLayoutGap="4px"
+    fxFlexFill>
+    <section class="bar__heading" fxLayout="row" fxLayoutGap="24px">
+      <span fxFlex class="title">{{ barTitle }}</span>
+      <span>{{ value + ' ' + units }} of {{ total + ' ' + units }}</span>
+    </section>
+    <section class="bar__progress">
+      <div class="progress__background" fxFlexFill fxLayoutAlign="start stretch">
+        <div class="progress__value" [style.width.%]="percentage"></div>
+      </div>
+    </section>
+  </div>
+</div>

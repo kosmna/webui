@@ -1,0 +1,21 @@
+<div class="content" fxLayout="row" fxLayoutAlign="center start">
+  <div class="content__inner content__inner--mobile" fxFlex>
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header>
+        <mat-card-title>
+          <h2 class="mat-title" i18n="card title" i18n>Device Public Key</h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="row" fxLayoutAlign="center center">
+        <mat-form-field class="content__form-field" fxFlex>
+          <textarea matInput [(ngModel)]="publicKey.pubKey" placeholder="" rows="10" cols="80" readonly="true"></textarea>
+        </mat-form-field>
+
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <loop-copy-button class="content__copy-button" [content]="publicKey.pubKey"></loop-copy-button>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

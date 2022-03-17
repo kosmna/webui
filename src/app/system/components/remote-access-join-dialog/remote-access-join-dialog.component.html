@@ -1,0 +1,6 @@
+<div fxLayoutGap="10px">  
+  <mat-form-field>
+    <input #networkID matInput placeholder="Network ID" i18n-placeholder>
+  </mat-form-field>
+  <button type="submit" loopSubmitOnEnter mat-button loopButton loopClearButton [matDialogClose]="networkID.value" i18n>Join Network</button>
+</div>

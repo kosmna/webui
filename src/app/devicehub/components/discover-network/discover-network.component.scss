@@ -1,0 +1,40 @@
+@import 'mixins';
+@import 'variables';
+
+.sub-title {
+    margin-left: 16px;
+}
+
+.discover-network {
+    @include e('sub-title') {
+        padding-left: 16px;
+        margin-top: 21px;
+        font-weight: 700;
+    }
+}
+
+
+.header {
+    min-width: 95%;
+    @include e('title') {
+
+        @include e('icon') {
+            margin-top: -20px;
+        }
+
+        @include e('text') {
+
+        }
+    }
+}
+
+.panel-description {
+    @include e('icon') {
+        @include md-icon-size(20px);        
+    }
+
+    @include e('text') {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}

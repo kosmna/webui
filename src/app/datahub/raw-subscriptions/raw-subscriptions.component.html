@@ -1,0 +1,81 @@
+<mat-card loopCard loopMaterialCard class="fill-height">
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+    <mat-card-title>
+      <h2 class="mat-title" i18n="title"> Topics </h2>
+    </mat-card-title>
+    <span fxFlex></span>
+    <button mat-icon-button *ngIf="restrictedView" matTooltip="Add Topic" i18n-matTooltip class="center-block" (click)="subscribeToTopic()"
+      [disabled]="!restrictedView">
+      <mat-icon class="mat-18">add_circle</mat-icon>
+    </button>
+    <span fxFlex="5px"></span>
+  </mat-card-header>
+  <mat-card-content fxLayout="column">
+    <div [fxShow]="dataSource.length !== 0" class="table-container">
+      <mat-table #rawSubscriptionsTable [dataSource]="dataSource" id="raw-sub-data-table" matSort>
+        <ng-container cdkColumnDef="name">
+          <mat-header-cell *cdkHeaderCellDef fxFlex i18n="header on datahub topics" mat-sort-header> Topic </mat-header-cell>
+          <mat-cell *cdkCellDef="let row" fxFlex class="wrap-cells"> {{ row.name }} </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="description">
+          <mat-header-cell *cdkHeaderCellDef fxFlex="15" i18n mat-sort-header> Description </mat-header-cell>
+          <mat-cell *cdkCellDef="let row" fxFlex="15"> {{ row.description | truncate:[60, '...'] }} </mat-cell>
+        </ng-container>
+
+        <!-- <ng-container cdkColumnDef="cloudConnectorID">
+          <mat-header-cell *cdkHeaderCellDef fxFlex="15" i18n> Cloud Connector ID </mat-header-row>
+          <mat-cell *cdkCellDef="let row" fxFlex="15"> {{ row.cloudConnector?.id }} </mat-cell>
+        </ng-container> -->
+
+        <ng-container cdkColumnDef="cloudConnectorURI">
+          <mat-header-cell *cdkHeaderCellDef fxFlex="25" i18n mat-sort-header> Cloud Connector URI </mat-header-cell>
+          <mat-cell *cdkCellDef="let row" fxFlex="25" class="wrap-cells"> {{ row.cloudConnector?.uri | truncate:[60,
+            '...'] }} </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="cloudConnectorName">
+          <mat-header-cell *cdkHeaderCellDef fxFlex="15" i18n mat-sort-header> Cloud Connector Name </mat-header-cell>
+          <mat-cell *cdkCellDef="let row" fxFlex="15"> {{ row.cloudConnector?.name }} </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="topicStatus">
+          <mat-header-cell *cdkHeaderCellDef i18n mat-sort-header="enabled"> Enabled </mat-header-cell>
+          <mat-cell *cdkCellDef="let row">
+            <mat-slide-toggle [checked]="row.enabled" (change)="toggleTopic(row)">
+            </mat-slide-toggle>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="actions">
+          <mat-header-cell *cdkHeaderCellDef i18n="column header for grouped buttons">Actions</mat-header-cell>
+          <mat-cell *cdkCellDef="let row">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="editConnector(row)">
+                <mat-icon>edit</mat-icon>
+                <span i18n>Edit</span>
+              </button>
+              <button mat-menu-item (click)="unsubscribeFromTopic(row)">
+                <mat-icon>delete</mat-icon>
+                <span i18n>Remove</span>
+              </button>
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *cdkHeaderRowDef="columnsDefinition"></mat-header-row>
+        <mat-row *cdkRowDef="let row; columns: columnsDefinition;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginator [class.hidden]="dataSource.length < paginator.pageSizeOptions[0]" [length]="dataSource.length"
+        [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[10, 15, 20, 25]">
+      </mat-paginator>
+    </div>
+    <div class="mat-title" [fxShow]="dataSource.length === 0" fxLayoutAlign="center center" i18n>
+      No topics defined.
+    </div>
+
+  </mat-card-content>
+</mat-card>

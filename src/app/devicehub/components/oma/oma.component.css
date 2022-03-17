@@ -1,0 +1,11 @@
+.mat-column-actions, .mat-column-valueType {
+  flex: none;
+}
+
+.mat-column-actions {
+  width: 40px;
+}
+
+.mat-column-valueType {
+  width: 100px;
+}

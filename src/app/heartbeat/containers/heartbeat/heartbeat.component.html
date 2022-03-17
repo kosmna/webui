@@ -1,0 +1,70 @@
+<div fxLayout="column">
+  <section fxFlexFill fxLayout="row" fxLayout.lt-sm="column">
+    <div fxFlex="0 0 500px" fxFlex.lt-sm="100" fxLayout="column" fxLayoutAlign="start stretch">
+      <loop-statistics-block>
+        <span block-title>Devices <br />& Tags</span>
+        <div fxFlex block-data fxLayout="row" fxLayoutGap="48px">
+          <div fxFlex fxLayoutAlign="center center" *ngIf="devices$ | async as devices">
+            <loop-radial-chart [value]="devices.used" [total]="devices.licensed" [showPercentage]="false" [titles]="['Devices']"></loop-radial-chart>
+          </div>
+          <div fxFlex fxLayoutAlign="center center" *ngIf="tags$ | async as tags">
+            <loop-heartbeat-counter [count]="tags.used" [title]="'Tags'"></loop-heartbeat-counter>
+          </div>
+        </div>
+      </loop-statistics-block>
+      <loop-statistics-block>
+        <span block-title>Message Broker<br />& Routing</span>
+        <div fxFlex block-data fxLayout="row" fxLayoutGap="48px" fxLayoutGap.lt-lg="8px">
+          <div fxFlex fxLayoutAlign="center center">
+            <loop-heartbeat-counter [count]="messagesPerSecond$ | async" [title]="'Messages / Second'"></loop-heartbeat-counter>
+          </div>
+        </div>
+      </loop-statistics-block>
+      <loop-statistics-block>
+        <span block-title>Data Processing<br />& Analytics</span>
+        <div fxFlex block-data fxLayout="row" fxLayoutGap="48px" fxLayoutGap.lt-lg="8px">
+          <div fxFlex fxLayoutAlign="center center">
+            <loop-heartbeat-counter [count]="flowsNumber$ | async" [title]="'Flows'"></loop-heartbeat-counter>
+          </div>
+          <div fxFlex fxLayoutAlign="center center">
+            <loop-heartbeat-counter [count]="0" [title]="'Functions'"></loop-heartbeat-counter>
+          </div>
+        </div>
+      </loop-statistics-block>
+      <loop-statistics-block>
+        <span block-title>Edge Applications</span>
+        <div fxFlex block-data fxLayout="row" fxLayoutGap="48px" fxLayoutGap.lt-lg="8px">
+          <div fxFlex fxLayoutAlign="center center" *ngIf="heartbeatApplications$ | async as applications">
+            <loop-radial-chart [value]="applications.used" [total]="applications.licensed" [showPercentage]="false"
+              [colors]="['#79B473']" [titles]="['Applications']"></loop-radial-chart>
+          </div>
+        </div>
+      </loop-statistics-block>
+      <loop-statistics-block>
+        <span block-title>Cloud <br />& Integrations</span>
+        <div fxFlex block-data fxLayout="row" fxLayoutGap="48px" fxLayoutGap.lt-lg="8px">
+          <div fxFlex fxLayoutAlign="center center">
+            <div fxLayout="column" fxLayoutAlign="center center" class="cloud-counters">
+              <div class="cloud-counters__item">{{ loopCloud$ | async }} <span class="cloud-counters__item-name">LoopCloud</span></div>
+              <div class="cloud-counters__item">{{ integrations$ | async }} <span class="cloud-counters__item-name">Integrations</span></div>
+            </div>
+          </div>
+          <div fxFlex fxLayoutAlign="center center" *ngIf="remoteNetworks$ | async as networks">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+              <loop-radial-chart [value]="networks.used" [total]="networks.licensed" [showPercentage]="false" [colors]="['#7389B4']"
+                [titles]="['Networks']"></loop-radial-chart>
+            </div>
+          </div>
+        </div>
+      </loop-statistics-block>
+    </div>
+    <div fxFlex class="heartbeat__charts">
+      <loop-heartbeat-charts></loop-heartbeat-charts>
+    </div>
+  </section>
+  <section fxLayoutAlign="start start" fxLayoutGap="16px" class="status-bar" fxHide.lt-sm="true">
+    <loop-module-status *ngFor="let api of api$ | async" fxFlex [moduleName]="api.name" [moduleStatus]="api.status"></loop-module-status>
+    <loop-utilization-bar *ngIf="storageUtilization$ | async as storage" barTitle="Storage Utilization" units="GiB"
+      [total]="(storage.totalSize / 1000000).toFixed()" [value]="(storage.dataSize / 1000000).toFixed()" [status]="calculateStorageStatus(storage.dataSize, storage.totalSize)"></loop-utilization-bar>
+  </section>
+</div>

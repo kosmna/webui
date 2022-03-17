@@ -1,0 +1,40 @@
+@import '~@angular/material/theming';
+@import 'theme-button';
+@import 'theme-container';
+@import 'mixins';
+@import 'tag';
+@import 'variables';
+
+@mixin set-custom-theme-class($theme, $themeName) {
+  // Extract whichever individual palettes you need from the theme.
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent); //Use mat-color to extract individual colors from a palette as necessary.
+  $warn: map-get($theme, warn);
+  $accent-color: mat-color($accent, 500);
+  $warn-color: mat-color($warn, 500);
+
+  @include set-container-theme($theme, $themeName);
+  @include set-button-theme($theme, $themeName);
+
+  .#{$themeName} {
+    .theme-border {
+      border: 2px dashed mat-color($accent, 500) !important;
+    }
+
+    .theme-color {
+      color: mat-color($accent, 500);
+    }
+
+
+    .theme-bottom-border {
+      border-bottom: solid 2px $accent-color;
+    }
+
+
+
+    @include setTagThemeColor($accent-color, $warn-color);
+
+  }
+
+
+}

@@ -1,0 +1,44 @@
+
+@import 'variables';
+@import 'mixins';
+
+.loop-tag {
+    display: inline-block;
+    padding: 0.3em 0.9em;
+    margin: 0px 0px 3px 0;
+    white-space: nowrap;
+    border-radius: 3px;
+    color: white;
+
+
+
+    @include m('primary') {
+      background-color: $primary-color;
+    }
+    @include m('enabled') {
+      background-color: $enabled-color;
+    }
+    @include m('disabled') {
+      background-color: $disabled-color;
+    }
+    @include  m('side-card') {
+      border-radius: 0px 0px 6px 0px;
+      position: relative;
+    }
+    @include m('table') {
+      font-size: 12px;
+    }
+  }
+  
+
+  @mixin setTagThemeColor($accent-color, $warn-color) {
+    .loop-tag {
+        @include m('warn') {
+            background-color: $warn-color;
+        }
+        @include m('accent') {
+            background-color: $accent-color;
+        }
+    }
+
+   }

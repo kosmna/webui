@@ -1,0 +1,56 @@
+@import '~@angular/material/theming';
+
+@mixin set-container-theme($theme, $themeName) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $accent-color: mat-color($accent, 500);
+
+  .#{$themeName} {
+    .loop-toolbar {
+      color: mat-color($primary, default-contrast);
+      background-color: mat-color($primary);
+    }
+
+    // TODO: Remove parker-dark-theme and Apply its custom theme, sidenav relies on Parker dark theme  for white text
+    // .parker-dark-theme {
+
+
+    // }
+    & .mat-nav-list .mat-list-item {
+      color: white;
+    }
+
+    & .mat-list-item.active,
+    & .mat-list-item.mat-list-item-focus.active {
+      color: white;
+      background: $accent-color;
+      -webkit-transition: all .2s;
+      transition: all .2s;
+
+      &:hover {
+        background: $accent-color;
+        filter: brightness(105%);
+        -webkit-filter: brightness(105%);
+        -moz-filter: brightness(105%);
+        -o-filter: brightness(105%);
+        -ms-filter: brightness(105%);
+      }
+
+      &:focus {
+        background: $accent-color;
+      }
+    }
+
+    .user-name {
+      color: $accent-color;
+    }
+  }
+
+  @if $themeName=='loop-theme' {
+    .#{$themeName} {
+      .loop-toolbar {
+        background: url('/assets/BackgroundPattern.svg');
+      }
+    }
+  }
+}

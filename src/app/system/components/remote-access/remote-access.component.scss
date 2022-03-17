@@ -1,0 +1,25 @@
+
+
+@import 'variables';
+@import 'mixins';
+@import 'include-media';
+
+.addr-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.add-network-card {
+  height: 288px;
+  margin-bottom: 20px;
+}
+
+.network-info {
+  margin-bottom: 10px;
+}
+
+.network-info h4 {
+  margin: 0;
+}
+

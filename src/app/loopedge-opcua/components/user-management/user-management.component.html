@@ -1,0 +1,50 @@
+<mat-table [dataSource]="dataSource" *ngIf="dataSource.data.length > 0;else noRecords">
+  <ng-container matColumnDef="username">
+    <mat-header-cell fxFlex *matHeaderCellDef i18n> Username
+    </mat-header-cell>
+    <mat-cell fxFlex *matCellDef="let element"> {{ element.username }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="disabled">
+    <mat-header-cell fxFlex="0 0 100px" *matHeaderCellDef i18n> Status
+    </mat-header-cell>
+    <mat-cell fxFlex="0 0 100px" *matCellDef="let element">
+      <loop-status-display [positive]="!element.disabled"></loop-status-display>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <mat-header-cell fxFlex="0 0 auto" *matHeaderCellDef i18n> Actions
+    </mat-header-cell>
+    <mat-cell fxFlex="0 0 auto" *matCellDef="let element">
+      <button mat-icon-button [matMenuTriggerFor]="actionsMenu">
+        <mat-icon class="mat-18">more_vert</mat-icon>
+      </button>
+      <mat-menu #actionsMenu="matMenu">
+        <button mat-menu-item (click)="updateUser.emit(element)">
+          <mat-icon class="mat-18">edit</mat-icon>
+          <span i18n>
+            Edit
+          </span>
+        </button>
+        <button mat-menu-item (click)="generatePassword.emit(element)">
+          <mat-icon class="mat-18">refresh</mat-icon>
+          <span i18n>
+            Password
+          </span>
+        </button>
+        <button mat-menu-item (click)="deleteUser.emit(element)">
+          <mat-icon class="mat-18">delete</mat-icon>
+          <span i18n>
+            Remove
+          </span>
+        </button>
+      </mat-menu>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+</mat-table>
+<ng-template #noRecords>
+  <section fxLayout="row nowrap" fxLayoutAlign="center center">
+    <p class="mat-body-1" i18n>No users added.</p>
+  </section>
+</ng-template>

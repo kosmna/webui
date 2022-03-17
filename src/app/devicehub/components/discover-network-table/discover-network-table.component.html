@@ -1,0 +1,83 @@
+<mat-table [dataSource]="dataSource" class="table" matSort>
+  <ng-container cdkColumnDef=hostname>
+    <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Hostname</mat-header-cell>
+    <mat-cell class="table__cell" *cdkCellDef="let row">{{row.hostname}}</mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="ipv4">
+    <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>IPV4</mat-header-cell>
+    <mat-cell class="table__cell table__cell--no-wrap" *cdkCellDef="let row; let b = index;">
+      {{ row.ipv4 }}
+      <loop-copy-button class="table__cell__copy-button" [content]="row.ipv4">
+      </loop-copy-button>
+    </mat-cell>
+  </ng-container>
+  <ng-container cdkColumnDef="lastSeen">
+    <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Last Seen</mat-header-cell>
+    <mat-cell *cdkCellDef="let row">
+      {{ row.lastSeen | date:'HH:mm:ss' }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="mac">
+    <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n >MAC</mat-header-cell>
+    <mat-cell *cdkCellDef="let row"> {{ row.mac }} </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="macVendor">
+    <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Mac Vendor</mat-header-cell>
+    <mat-cell class="truncate-cell" *cdkCellDef="let row"> {{ row.macVendor }} </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="online">
+    <mat-header-cell *cdkHeaderCellDef fxFlex="0 0 5%" mat-sort-header i18n>Online</mat-header-cell>
+    <mat-cell *cdkCellDef="let row" fxFlex="0 0 5%">
+      <span class="dot" [ngClass]="{'dot--online':row.online, 'dot--offline': !row.online}"></span>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="plcVendor">
+    <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>PLC Vendor</mat-header-cell>
+    <mat-cell *cdkCellDef="let row"> {{ row.plcVendor }} </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="tcpPorts">
+    <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>TCP Ports</mat-header-cell>
+    <mat-cell *cdkCellDef="let row" class="wrap-cells">
+      {{ row.tcpPorts | addSpace }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="udpPorts">
+    <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>UDP Ports</mat-header-cell>
+    <mat-cell *cdkCellDef="let row" class="wrap-cells">
+      {{ row.udpPorts }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="ports">
+    <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Ports</mat-header-cell>
+    <mat-cell *cdkCellDef="let row" class="wrap-cells">
+      {{ row.ports | addSpace }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="actions">
+    <mat-header-cell *cdkHeaderCellDef fxFlex="0 0 3%"></mat-header-cell>
+    <mat-cell *cdkCellDef="let row" fxFlex="0 0 3%" fxLayout="row" fxLayoutAlign="end">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item [disabled]="true">
+          <mat-icon>merge_type</mat-icon>
+          <span i18n>Connect</span>
+        </button>
+      </mat-menu>
+    </mat-cell>
+  </ng-container>
+
+
+  <mat-header-row *cdkHeaderRowDef="columnsDefinition"></mat-header-row>
+  <mat-row class="table__row  table__row--odd-gray-background" *cdkRowDef="let row; columns: columnsDefinition;"></mat-row>
+</mat-table>

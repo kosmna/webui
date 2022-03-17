@@ -1,0 +1,240 @@
+<section class="content" fxLayout="row" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile">
+    <mat-card loopCard loopMaterialCard *ngIf="restrictedView && !isWhiteLabel" class="activation-card">
+      <mat-card-header>
+        <mat-card-title>
+          <h2 class="mat-title" i18n="card title" i18n> Cloud Activation</h2>
+        </mat-card-title>
+
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="table-container">
+          <mat-table [dataSource]="cloudDataScource" *ngIf="deviceCloudStatus.statusCode !=='DISCONNECTED'" class="device-table wrap-cells">
+            <ng-container cdkColumnDef="companyName">
+              <mat-header-cell *cdkHeaderCellDef i18n>Company Name</mat-header-cell>
+              <mat-cell *cdkCellDef="let row"> {{row.companyName}} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="projectName">
+              <mat-header-cell *cdkHeaderCellDef i18n>Project Name</mat-header-cell>
+              <mat-cell *cdkCellDef="let row"> {{row.projectName}} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="modelName">
+              <mat-header-cell *cdkHeaderCellDef i18n>Model Name</mat-header-cell>
+              <mat-cell *cdkCellDef="let row"> {{row.modelName }} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="deviceID">
+              <mat-header-cell *cdkHeaderCellDef i18n>Device ID</mat-header-cell>
+              <mat-cell *cdkCellDef="let row"> {{row.deviceID }} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="status">
+              <mat-header-cell *cdkHeaderCellDef i18n>Status</mat-header-cell>
+              <mat-cell *cdkCellDef="let row"> {{row.status }} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *cdkHeaderRowDef="deviceActivationcolumnsDefinition"></mat-header-row>
+            <mat-row *cdkRowDef="let device; columns: deviceActivationcolumnsDefinition;"></mat-row>
+          </mat-table>
+        </div>
+        <mat-list>
+          <mat-list-item>
+            <form matLine fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" [formGroup]="activateDeviceForm">
+
+              <mat-form-field matLine fxFlex>
+                <input matInput type="text" placeholder="Activation Code" formControlName="code" i18n-placeholder>
+                <mat-hint i18n>
+                  Enter the LoopCloud activation code for this device
+                </mat-hint>
+              </mat-form-field>
+              <button loopButton loopClearButton mat-button type="submit" (click)="registerCloud()" [disabled]="!activateDeviceForm.valid"
+                i18n>Activate</button>
+
+              <div [ngSwitch]="isLoadingCloud">
+                <mat-progress-spinner *ngSwitchCase="'loading'" mode="indeterminate" [diameter]="25" [strokeWidth]="2">
+                </mat-progress-spinner>
+                <div class="status-icon-container">
+                  <mat-icon *ngSwitchCase="'loaded'" class="accent" i18n>check</mat-icon>
+                  <mat-icon *ngSwitchCase="'failed'" class="warn" i18n>cancel</mat-icon>
+                </div>
+              </div>
+
+            </form>
+          </mat-list-item>
+        </mat-list>
+        <mat-list *ngIf="deviceCloudStatus.status == 'OK'">
+          <mat-list-item>
+            <p i18n matLine>De-register device from the cloud.</p>
+            <div layout="row" fxLayoutAlign="start center">
+              <button loopButton mat-raised-button color="warn" (click)="cloudDeactivate()" i18n>Deactivate</button>
+
+              <div [ngSwitch]="isLoadingCloud">
+                <mat-progress-spinner *ngSwitchCase="'loading'" mode="indeterminate" [diameter]="25" [strokeWidth]="2">
+                </mat-progress-spinner>
+                <div class="status-icon-container">
+                  <mat-icon *ngSwitchCase="'loaded'" class="accent" i18n>check</mat-icon>
+                  <mat-icon *ngSwitchCase="'failed'" class="warn" i18n>cancel</mat-icon>
+                </div>
+              </div>
+
+            </div>
+          </mat-list-item>
+        </mat-list>
+    <loop-activation-url  [activated]="deviceCloudStatus.status == 'OK'" [cloudUrl]="cloudUrl" (setToDefault)="setCloudDefault()" (setUrl)="setCloudUrl($event)"></loop-activation-url>
+
+      </mat-card-content>
+    </mat-card>
+
+    
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header>
+        <mat-card-title>
+          <h2 class="mat-title" i18n="card title" i18n> Status</h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="table-container">
+          <mat-table #table [dataSource]="deviceStatusDataSource" class="device-table">
+            <ng-container cdkColumnDef="lastActivityTS">
+              <mat-header-cell *cdkHeaderCellDef i18n> Last Activity</mat-header-cell>
+              <mat-cell *cdkCellDef="let status"> {{status.lastActivityTS | date: 'short'}} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="lastStatusChangeTS">
+              <mat-header-cell *cdkHeaderCellDef i18n> Last Status Change</mat-header-cell>
+              <mat-cell *cdkCellDef="let status"> {{status.lastStatusChangeTS | date: 'short'}} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="lastMessage">
+              <mat-header-cell *cdkHeaderCellDef i18n> Last Message</mat-header-cell>
+              <mat-cell *cdkCellDef="let status"> {{status.lastMessage}}</mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="lastStatus">
+              <mat-header-cell *cdkHeaderCellDef i18n> Last Status</mat-header-cell>
+              <mat-cell *cdkCellDef="let status"> {{status.status}} </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="statusCode">
+              <mat-header-cell *cdkHeaderCellDef i18n>Status Code</mat-header-cell>
+              <mat-cell *cdkCellDef="let status"> {{status.statusCode}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *cdkHeaderRowDef="deviceStatuscolumnsDefinition"></mat-header-row>
+            <mat-row *cdkRowDef="let connector; columns: deviceStatuscolumnsDefinition;"></mat-row>
+
+          </mat-table>
+          <div *ngIf="deviceStatusDataSource.data.length === 0" fxLayout="row" fxLayoutAlign="center center" class="empty-table-container">
+            <span i18n>
+              STATUS NOT AVAILABLE
+            </span>
+          </div>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+    
+    <mat-card loopCard loopMaterialCard *ngIf="restrictedView">
+      <mat-card-header>
+        <mat-card-title>
+          <h2 class="mat-title" i18n="card title" i18n> Manage</h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list *ngIf="restrictedView">
+          <mat-list-item>
+            <span matLine i18n>
+            Reboot Device
+            </span>
+            <button mat-button loopButton loopClearButton [disabled]="restartDisabled" (click)="rebotDevice()" i18n>
+              Reboot
+            </button>
+          </mat-list-item>
+          <mat-list-item>
+            <span matLine i18n>
+              Factory Restart Device
+            </span>
+
+            <button mat-button loopButton loopClearButton [disabled]="'true'" (click)="rebotDevice()" i18n>
+              Reset
+            </button>
+          </mat-list-item>
+
+          <mat-list-item>
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100">
+              <span fxFlex i18n>
+                Upload Firmware
+              </span>
+              <div fxLayoutGap="5px" fxLayout="row" fxLayoutAlign="center center">
+                <loop-file-input #fileInput fxFlex [disabled]="isLoading" (onUpload)="uploadFile($event)"
+                  [simpleButton]="true" accept=".upd"></loop-file-input>
+              </div>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card loopCard loopMaterialCard *ngIf="this.objectsDatascourceList">
+      <mat-card-header>
+        <mat-card-title>
+          <h2 class="mat-title" i18n="card title" i18n> Object Instances</h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-accordion [displayMode]="displayMode" [multi]="multi">
+          <mat-expansion-panel *ngFor="let object of objectsDatascourceList">
+            <mat-expansion-panel-header>{{object._divceObjectData.name}}</mat-expansion-panel-header>
+            <div class="table-container">
+              <mat-table [dataSource]="object" class="device-table wrap-cells">
+                <ng-container cdkColumnDef="path">
+                  <mat-header-cell *cdkHeaderCellDef fxFlex="20" i18n>Path</mat-header-cell>
+                  <mat-cell *cdkCellDef="let row" fxFlex="20"> {{row.objectID}}/{{row.instanceID}}/{{row.resourceID}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container cdkColumnDef="name">
+                  <mat-header-cell *cdkHeaderCellDef i18n>Name</mat-header-cell>
+                  <mat-cell *cdkCellDef="let row" fxFlex>{{row.objectName}}:{{row.name}} </mat-cell>
+                </ng-container>
+
+                <ng-container cdkColumnDef="value">
+                  <mat-header-cell *cdkHeaderCellDef i18n>Value</mat-header-cell>
+                  <mat-cell *cdkCellDef="let row" fxFlex>
+
+                    <div *ngIf="row.protected ==false" [ngSwitch]="row.value">
+                      <mat-progress-spinner *ngSwitchCase="'loading'" mode="indeterminate" [diameter]="25"
+                        [strokeWidth]="2"> </mat-progress-spinner>
+                      <mat-icon *ngSwitchCase="'failed'" matTooltip="you dont have access to view this value" class="warn"
+                        i18n>cancel</mat-icon>
+                      <span *ngSwitchDefault> {{row.value}}</span>
+                    </div>
+
+                    <span *ngIf="row.protected == true">
+                      <button mat-icon-button (click)="showProtectedValue(row)">
+                        <mat-icon matTooltip="click to view protected value">visibility_off</mat-icon>
+                      </button>
+                    </span>
+
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row *cdkHeaderRowDef="deviceObjectcolumnsDefinition"></mat-header-row>
+                <mat-row *cdkRowDef="let connector; columns: deviceObjectcolumnsDefinition;"></mat-row>
+              </mat-table>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <div *ngIf="objectsDatascourceList.length === 0" fxLayout="row" fxLayoutAlign="center center" class="empty-table-container">
+          <span i18n>
+            NO OBJECT INSTANCES FOUND
+          </span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</section>

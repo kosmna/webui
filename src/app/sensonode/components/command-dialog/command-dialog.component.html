@@ -1,0 +1,37 @@
+<form [formGroup]="form" (onSubmit)="submit()">
+<h2 matDialogTitle>Adjust Rate for Sensor <span loopInlineCode> {{node?.address}}</span> </h2>
+<div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center" class="warning-banner">
+  <mat-icon  class="warning-banner__icon">
+    warning
+  </mat-icon>
+  <h4 class="mat-subheading-1 warning-banner__text" >  <strong>Warning</strong>: For advanced users only. Changing these parameters has a direct impact on the battery life of the sensor.</h4>
+</div>
+
+<mat-dialog-content fxLayout="column" fxLayoutGap="25px">
+    <mat-form-field  fxFlex="100" >
+      <input matInput formControlName="pollRate" step="750" placeholder="Poll Interval" type="number"  min="0">
+      <mat-hint>
+        How often the sensor sends data to the receiver (in 750 msec increments). Set 0 for continuous streaming
+      </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field  fxFlex="100" >
+      <input matInput   formControlName="ackRate" placeholder="Acknowledgement Rate" type="number" min="0">
+      <mat-hint>
+          Listen for the commands from the receiver every "n" number of polls
+      </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field  fxFlex="100" >
+      <input matInput  formControlName="frequency" placeholder="LED Blink Rate" type="number"  min="0"> 
+      <mat-hint>
+          Blink the led on the sensor every "n" number of polls
+      </mat-hint>      
+    </mat-form-field>
+
+  </mat-dialog-content>
+  <mat-dialog-actions >
+    <button mat-button loopButton loopClearButton type="submit" i18n [disabled]="!form.valid" (click)="submit()">Set</button>
+    <button mat-button loopButton color="warn" [matDialogClose]="false" i18n>Cancel</button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,9 @@
+.button-card {
+  // 100% of container minus top/bottom margins
+  height: calc(100% - 8px * 2);
+  cursor: pointer;
+}
+
+:host {
+  height: 100%;
+}

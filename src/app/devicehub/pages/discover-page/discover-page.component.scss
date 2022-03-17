@@ -1,0 +1,17 @@
+@import 'mixins';
+@import 'variables';
+
+h1 {
+    margin-left: 16px;
+}
+.container {
+
+    @include e('inner') {
+        margin-top:$margin-top;
+        width: 98%;
+    }
+
+    @include e('title'){
+        margin: 0 16px 40px
+    }
+}

@@ -1,0 +1,78 @@
+@import 'variables';
+@import 'mixins';
+@import 'include-media';
+
+
+.stats {
+  margin: 0px;
+
+  @include e('output') {
+    color: $sub-header-text-color;
+  }
+
+}
+
+.device-card {
+
+  // min-width: 280px;
+  height: 310px;
+  margin: 10px;
+
+  @include e('header') {
+    
+    @include m('enabled-top-border') {
+      border-top: 5px solid $enabled-color;
+    }
+    
+    @include m('disabled-top-border') {
+      border-top: 5px solid $disabled-color;
+    }
+    
+  }
+  
+  @include e('content') {
+    margin-bottom: 0px;
+    padding: 4px;
+  }
+  
+  @include e('row'){
+    margin-top: 11px;
+  }
+}
+
+.app-header {
+ 
+  @include e('title') {
+    overflow: hidden;
+    max-width: 200px;    
+    font-size: 25px;
+
+    @include m('large-width-mobile') {
+
+      @include media('<960px'){
+        max-width: 775px;
+      }
+    }
+  
+  }
+  
+  @include e('subtitle') {
+    color: $sub-header-text-color;
+    max-width: 282px;    
+
+    @include m('large-width-mobile') {
+      
+      @include media('<960px') {
+        max-width: inherit;
+      }
+
+    }
+  }
+  
+  @include e('text') {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+  }
+}

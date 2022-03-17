@@ -1,0 +1,13 @@
+<mat-card class="section-block__card" loopCard loopMaterialCard>
+  <mat-card-header fxLayout="row nowrap" fxLayoutAlign="start center">
+    <mat-card-title i18n>Mount points</mat-card-title>
+    <span fxFlex></span>
+    <button *ngIf="allowAccess" mat-icon-button (click)="addStorageDialog()" matTooltip="Add new mount point">
+      <mat-icon class="mat-18">add_circle</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <loop-storage-list (editMountPoint)="getStorageDetails($event)" (deleteMountPoint)="deleteMountPoint($event)"
+      (toggleMount)="toggleMount($event)" [mountPoints]="mountPoints | async"></loop-storage-list>
+  </mat-card-content>
+</mat-card>

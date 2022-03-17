@@ -1,0 +1,26 @@
+.module-status {
+  color: #ffffff;
+  height: 40px;
+  background-color: #aaaaaa;
+  line-height: 40px;
+  text-align: center;
+  padding: 0 8px;
+
+  &__container {
+    &--status-ok {
+      background-color: #79B473;
+    }
+
+    &--status-warning {
+      background-color: #F57823;
+    }
+
+    &--status-fail {
+      background-color: rgb(218, 68, 68);
+    }
+
+    &--status-unknown {
+      background-color: #aaaaaa;
+    }
+  }
+}

@@ -1,0 +1,41 @@
+<mat-card class="section-block__card" loopCard loopMaterialCard>
+  <mat-card-header fxLayout="row nowrap" fxLayoutAlign="start center">
+    <mat-card-title><span [matBadge]="(certificates | async).length" matBadgeSize="medium" [matBadgeHidden]="(certificates | async).length === 0"
+        matBadgeColor="primary" matBadgeOverlap="false" i18n>Connected client certificates</span></mat-card-title>
+    <span fxFlex></span>
+    <div class="connections__menu">
+      <a mat-icon-button matTooltip="Download server certificate" href="/opcua/certs/server" target="_blank"
+        i18n-matTooltip>
+        <mat-icon>get_app</mat-icon>
+      </a>
+      <button mat-icon-button [matMenuTriggerFor]="settingsMenu" matTooltip="Show settings" i18n-matTooltip>
+        <mat-icon>settings</mat-icon>
+      </button>
+      <mat-menu #settingsMenu="matMenu">
+        <span mat-menu-item disableRipple="true" (click)="$event.stopPropagation()">
+          <mat-slide-toggle [checked]="autoRefresh" (change)="updateAutoRefresh($event.checked)" i18n>Auto-Refresh</mat-slide-toggle>
+        </span>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="reloadData()">
+          <mat-icon>refresh</mat-icon>
+          <span i18n>Refresh connections</span>
+        </button>
+      </mat-menu>
+      <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Show actions" i18n-matTooltip>
+        <mat-icon class="mat-18">more_vert</mat-icon>
+      </button>
+      <mat-menu #actionsMenu="matMenu">
+        <button mat-menu-item (click)="deleteAllCertificates()" [disabled]="(certificates | async).length === 0">
+          <mat-icon class="mat-18">delete</mat-icon>
+          <span i18n>
+            Delete all
+          </span>
+        </button>
+      </mat-menu>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <loop-opcua-clients (toggleTrusted)="toggleTrusted($event)" (deleteCertificate)="deleteCertificate($event)"
+      [clients]="certificates | async" (showInfo)="showCertificateInfo($event)"></loop-opcua-clients>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,73 @@
+<mat-card loopCard loopMaterialCard>
+  <!-- Search and filter options -->
+  <mat-card-header fxLayout="row">
+    <mat-card-title>
+        <h2 class="mat-title"  i18n="title" i18n> OMA Bindings </h2> 
+    </mat-card-title>
+
+    <span fxFlex></span>
+    <button color="accent" loopMaterialMiniFab mat-mini-fab class="center-block" (click)="addBindingDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+    <span fxFlex="5px"></span>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- Data table definition -->
+    <mat-table [dataSource]="dataSource" matSort>
+      <ng-container cdkColumnDef="instanceId">
+        <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Instance ID</mat-header-cell>
+        <mat-cell *cdkCellDef="let row">{{row.instanceId}}</mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="objectId">
+        <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Object ID</mat-header-cell>
+        <mat-cell *cdkCellDef="let row">{{row.objectId}}</mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="resourceId">
+        <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Resource ID</mat-header-cell>
+        <mat-cell *cdkCellDef="let row">{{row.resourceId}}</mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="topic">
+        <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Topic</mat-header-cell>
+        <mat-cell *cdkCellDef="let row">{{ row.topic }}</mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="valueType">
+        <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Type</mat-header-cell>
+        <mat-cell *cdkCellDef="let row">{{ row.valueType }}</mat-cell>
+      </ng-container>
+
+      <ng-container cdkColumnDef="actions">
+        <mat-header-cell *cdkHeaderCellDef i18n>Actions</mat-header-cell>
+        <mat-cell *cdkCellDef="let binding">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="updateBindingDialog(binding)">
+              <mat-icon>edit</mat-icon>
+              <span i18n>Edit</span>
+            </button>
+            <button mat-menu-item (click)="deleteBindingDialog(binding)">
+              <mat-icon>delete</mat-icon>
+              <span i18n>Remove</span>
+            </button>
+          </mat-menu>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Header -->
+      <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <!-- Paginator -->
+    <mat-paginator #paginator 
+      [class.hidden]="dataSource.dataLength < paginator.pageSizeOptions[0]"                    
+      [length]="dataSource.dataLength" 
+      [pageIndex]="0" 
+      [pageSize]="10" 
+      [pageSizeOptions]="[10, 15, 20, 25]"
+      >
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

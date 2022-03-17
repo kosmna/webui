@@ -1,0 +1,9 @@
+<div matTooltip="{{tooltip}}">
+  <mat-icon 
+    id="status-icon"
+    [class.negative]="color=='invalid'" 
+    [class.neutral]="color=='unknown' || !color" 
+    [class.positive]="color=='ok'">
+    lens
+  </mat-icon>
+</div>

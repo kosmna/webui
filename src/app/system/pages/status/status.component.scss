@@ -1,0 +1,42 @@
+@import 'mixins';
+@import 'variables';
+
+.legend {
+  margin: 8px;
+  @include e('indicator') {
+    border-radius: 50%;
+    width: 1.1em;
+    height: 1.1em;
+    margin: 0 1em;
+    @include m('online') {
+      background: $enabled-color;
+    }
+    @include m('offline') {
+      background: $disabled-color;
+    }
+  }
+}
+
+.card-grid {
+  @include e('data') {
+    padding: 16px;
+    border-bottom: 0.5px solid #ddd;
+    @include m('last') {
+      border-bottom: none;
+    }
+  }
+  @include e('vspacer') {
+    width: 1px; background: #ddd;
+  }
+}
+
+.info {
+  margin: 25px 8px;
+  @include e('last-check') {
+    color: $group-header-text-color;
+  }
+}
+
+.mat-card-content {
+  padding: 0;
+}

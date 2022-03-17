@@ -1,0 +1,18 @@
+@import '~@angular/material/theming';
+
+//Add proxima Nova font
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('/assets/fonts/proxima-webfont.eot');
+  src: url('/assets/fonts/proxima-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/assets/fonts/proxima-webfont.woff') format('woff'),
+    url('/assets/fonts/proxima-webfont.ttf') format('truetype'),
+    url('/assets/fonts/proxima-webfont.svg#proxima_nova_altregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+// Custom typography settings here
+$loop-typography-config: mat-typography-config($font-family: 'Proxima Nova');
+// @include angular-material-typography($loop-typography-config);
+@include mat-core($loop-typography-config);

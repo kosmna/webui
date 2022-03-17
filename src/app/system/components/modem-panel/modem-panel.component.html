@@ -1,0 +1,71 @@
+<mat-card loopCard loopMaterialCard *ngIf="dataSource.data.length > 0">
+  <mat-card-header>
+    <mat-icon mat-card-avatar>
+      network_cell
+    </mat-icon>
+    <mat-card-title>
+      <h2 class="mat-title" i18n>Modem Interfaces</h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-table [dataSource]="dataSource">
+      <ng-container cdkColumnDef="addrIPv4">
+        <mat-header-cell *cdkHeaderCellDef i18n>IPv4</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="truncate-cell"> {{ row.addrIPv4?.cidr}} </mat-cell>
+      </ng-container>
+
+      <ng-container cdkColumnDef="addrIPv6">
+        <mat-header-cell *cdkHeaderCellDef i18n>IPv6</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="truncate-cell"> {{ row.addrIPv6?.cidr}} </mat-cell>
+      </ng-container>
+
+
+      <ng-container cdkColumnDef="dns">
+        <mat-header-cell *cdkHeaderCellDef i18n> DNS</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="truncate-cell"> {{ row.dns | addSpace }} </mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="iccid">
+        <mat-header-cell *cdkHeaderCellDef i18n>ICCID</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="truncate-cell"> {{ row.iccid }} </mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="imei">
+        <mat-header-cell *cdkHeaderCellDef i18n>IMEI</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="truncate-cell"> {{ row.imei}} </mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="name">
+        <mat-header-cell *cdkHeaderCellDef i18n>Name</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="truncate-cell"> {{ row.name}} </mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="network">
+        <mat-header-cell *cdkHeaderCellDef i18n>Network</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="truncate-cell"> {{ row.network}} </mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="signalBars">
+        <mat-header-cell *cdkHeaderCellDef i18n>Bars</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="truncate-cell"> 
+          
+          <loop-wifi-quality [bars]="row.signalBars"
+           matTooltip="RSRP={{row.rsrpDbm}}dBm RSSI={{row.rssiDbm}}dBm">
+          </loop-wifi-quality>
+          
+        </mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="signalDBm">
+        <mat-header-cell *cdkHeaderCellDef i18n>dBm</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="truncate-cell"> 
+          {{ row.signalDBm }} 
+        </mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="status">
+        <mat-header-cell *cdkHeaderCellDef i18n="modem status">Status</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="truncate-cell"> {{ row.status}} </mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="apnAssigned">
+        <mat-header-cell *cdkHeaderCellDef i18n="APN">APN</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="truncate-cell"> {{ row.apnAssigned}} </mat-cell>
+      </ng-container>
+      <mat-header-row *cdkHeaderRowDef="columnsDef"></mat-header-row>
+      <mat-row *cdkRowDef="let row; columns: columnsDef"></mat-row>
+    </mat-table>
+  </mat-card-content>
+</mat-card>

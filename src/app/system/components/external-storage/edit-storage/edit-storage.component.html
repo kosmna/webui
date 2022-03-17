@@ -1,0 +1,61 @@
+<h1 matDialogTitle>Storage</h1>
+
+<mat-dialog-content>
+  <form [formGroup]="mountPointForm">
+    <section fxLayout="row nowrap" fxLayout.lt-sm="column nowrap" fxLayoutGap.gt-xs="16px">
+      <mat-form-field floatPlaceholder="auto" fxFlex>
+        <input matInput formControlName="name" type="text" required placeholder="Mount Point Name">
+        <mat-error *ngIf="mountPointForm.controls['name'].hasError('required')" i18n>
+          Mount point name is
+          <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="mountPointForm.controls['name'].hasError('unsupportedCharacter') && ! mountPointForm.controls['name'].hasError('required')" i18n>
+          Mount point name contains
+          <strong >unsupported</strong>
+          characters
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select [(value)]="storageType" placeholder="Type" i18n-placeholder #type>
+          <mat-option *ngFor="let type of storageTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <section fxLayout="column nowrap" fxLayoutGap="16px">
+      <div class="mat-subheading-1">{{ type.value || 'CIFS' }}</div>
+      <section>
+        <mat-form-field floatPlaceholder="auto" fxFlex>
+          <mat-label i18n>Share</mat-label>
+          <input matInput formControlName="share" type="text" required placeholder="//<hostname or address>/<share name>">
+          <mat-error *ngIf="mountPointForm.controls['share'].hasError('required')" i18n>
+            Share name is
+            <strong >required</strong>
+          </mat-error>
+        </mat-form-field>
+      </section>
+      <section fxLayout="row nowrap" fxLayout.lt-sm="column nowrap" fxLayoutGap.gt-xs="16px">
+        <mat-checkbox formControlName="readOnly" color="accent" i18n>Read Only</mat-checkbox>
+        <mat-checkbox formControlName="mountOnBoot" color="accent" i18n>Mount on Boot</mat-checkbox>
+      </section>
+      <section fxLayout="row nowrap" fxLayout.lt-sm="column nowrap" fxLayoutGap.gt-xs="16px">
+        <mat-form-field floatPlaceholder="auto" fxFlex>
+          <input matInput formControlName="username" type="text" placeholder="Username" i18n-placeholder>
+        </mat-form-field>
+        <mat-form-field floatPlaceholder="auto" fxFlex>
+          <input matInput formControlName="password" type="password" placeholder="{{ isEditDialog ? 'New Password' : 'Password' }}">
+        </mat-form-field>
+        <mat-form-field floatPlaceholder="auto" fxFlex>
+          <input matInput formControlName="domain" type="text" placeholder="Domain" i18n-placeholder>
+        </mat-form-field>
+      </section>
+    </section>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions attr.align="start">
+  <button mat-button matDialogClose i18n color="warn">Cancel</button>
+  <button mat-button i18n [disabled]="mountPointForm.invalid" (click)="submitForm()">Save</button>
+
+</mat-dialog-actions>

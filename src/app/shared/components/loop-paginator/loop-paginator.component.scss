@@ -1,0 +1,13 @@
+@import 'variables';
+@import 'mixins';
+
+.loop-pagination {
+ 
+    @include e('button') {
+        margin: 5px;
+    }
+
+}
+@include shadow('.loop-pagination--shadow-style') {
+    height: 76px;
+}

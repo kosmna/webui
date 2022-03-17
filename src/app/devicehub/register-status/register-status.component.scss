@@ -1,0 +1,18 @@
+@import 'variables';
+@import 'mixins';
+
+.negative {
+    color: $negative-color;
+}
+
+.positive {
+    color: $positive-color;
+}
+
+.neutral {
+    color: $neutral-color;
+}
+
+#status-icon {
+    @include  md-icon-size(15px)
+}

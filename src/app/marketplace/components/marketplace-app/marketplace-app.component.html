@@ -1,0 +1,29 @@
+<mat-card class="card card-hover" (click)="loading || onAppClick()" [class.skeletonCard]="loading" *ngIf="!loading; else skeletonCard;">
+  <div class="app-image-container" fxLayout="row" fxLayoutAlign="center center">
+    <img *ngIf="app?.image" [src]="app?.image" alt="app img">
+  </div>
+  <mat-card-content class="app-content">
+    <span class="name">
+      <h3 *ngIf="!loading">
+        {{app?.name | truncate:[45, '...']}}
+      </h3>
+    </span>
+    <span class="description">
+      <h5 *ngIf="!loading">
+        {{app?.description | truncate:[90, '...']}}
+      </h5>
+    </span>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #skeletonCard>
+  <mat-card class="card skeletonCard">
+    <div class="app-image-container" fxLayout="row" fxLayoutAlign="center center"></div>
+    <mat-card-content class="app-content">
+      <span class="name"></span>
+      <span class="name-loader"></span>
+      <span class="description"></span>
+      <span class="description-loader"></span>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

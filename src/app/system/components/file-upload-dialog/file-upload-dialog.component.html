@@ -1,0 +1,18 @@
+
+<h2 matDialogTitle class="theme-bottom-border">
+    {{title}}
+</h2>
+<mat-dialog-content *ngIf="!(isLoading | async)">
+    <span>
+        {{content}}
+    </span>
+</mat-dialog-content>
+
+<mat-dialog-content class="file-upload-dialog__loader"  *ngIf="isLoading | async" fxLayoutAlign="center center">
+    <mat-progress-spinner class="loading-spinner" mode="indeterminate" [strokeWidth]="5"></mat-progress-spinner>
+</mat-dialog-content>
+
+<mat-dialog-actions *ngIf="!(isLoading | async) && !successUpload" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+    <button  *ngIf="!fileUploaded"  loopButton loopClearButton mat-button (click)="uploadFile()" i18n>Ok</button>
+    <button  mat-button loopButton color="warn" [matDialogClose]="false" i18n>{{fileUploaded ? 'Close' : 'Cancel'}}</button>
+</mat-dialog-actions>

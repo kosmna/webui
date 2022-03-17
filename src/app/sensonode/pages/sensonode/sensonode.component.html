@@ -1,0 +1,360 @@
+<section class="content" fxLayout="row" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile">
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header>
+        <mat-icon mat-card-avatar>cloud</mat-icon>
+        <mat-card-title>
+          <h2 class="mat-title" >Voice of the Machine Cloud</h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="row" fxLayoutAlign="space-between">
+        <span i18n *ngIf="disableCloudButton" fxLayout="column" fxLayoutAlign="center center">
+          This device is successfully activated with Voice of the Machine Cloud
+        </span>
+        <button *ngIf="!!cloudButtonText" loopButton mat-raised-button color="primary" [disabled]="disableCloudButton"
+          (click)="activateCloud()">
+          <ng-container *ngIf="cloudActivation; else cloudActivateTxt">
+            <span i18n>
+              Activated
+            </span>
+          </ng-container>
+          <ng-template #cloudActivateTxt>
+            <span i18n>
+              Activate
+            </span>
+          </ng-template>
+        </button>
+        <button  *ngIf="disableCloudButton" loopButton mat-raised-button color="primary" (click)="refreshSnCik()" i18n>
+          Refresh
+        </button>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card loopCard loopMaterialCard class="info-card" *ngIf="serialInterfaces">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-icon mat-card-avatar>router</mat-icon>
+        <mat-card-title>
+          <h2 class="mat-title" > PRN</h2>
+        </mat-card-title>
+        <span fxFlex></span>
+
+        <button *ngIf="isDevelopment" mat-icon-button matTooltip="Add serial device" (click)="addSerialDevice()">
+          <mat-icon class="mat-18">add</mat-icon>
+        </button>
+        <button *ngIf="isDevelopment" mat-icon-button matTooltip="Remove serial device" (click)="removeSerialDevice()">
+          <mat-icon class="mat-18">remove</mat-icon>
+        </button>
+
+      </mat-card-header>
+      <div class="table-container">
+        <mat-table #serialTable [dataSource]="serialDataSource" class="wrap-cells info-table">
+          <ng-container cdkColumnDef="name">
+            <mat-header-cell *cdkHeaderCellDef i18n>Name</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.name}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="model">
+            <mat-header-cell *cdkHeaderCellDef i18n>Model</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.model}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="manufacturer">
+            <mat-header-cell *cdkHeaderCellDef i18n>Manufacturer</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.manufacturer}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="serialNum">
+            <mat-header-cell *cdkHeaderCellDef i18n>Serial #</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">{{row.serialNumber}}</mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="connect">
+            <mat-header-cell *cdkHeaderCellDef i18n></mat-header-cell>
+            <mat-cell *cdkCellDef="let row">
+              <button class="control-button" loopButton mat-raised-button color="primary" (click)="toggleConnection(row)" [disabled]="row.isLoading">
+                <ng-container [ngSwitch]="row.isConnected">
+                  <span *ngSwitchCase="true" i18n>
+                    Connected
+                  </span>
+                  <span *ngSwitchDefault i18n>
+                    Connect
+                  </span>
+                </ng-container>
+              </button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *cdkHeaderRowDef="['name', 'model', 'manufacturer', 'serialNum', 'connect']"></mat-header-row>
+          <mat-row *cdkRowDef="let row; columns: ['name', 'model', 'manufacturer', 'serialNum', 'connect']" (click)="selectInterface($event, row)"
+            [ngClass]="{'mat-table__mat-row--active': row.name === selectedInterface?.name}"></mat-row>
+        </mat-table>
+        <div *ngIf="serialDataSource.data.length === 0" fxLayout="row" fxLayoutAlign="center center" class="empty-table-container">
+          <span i18n>
+            NO SERIAL INTERFACES FOUND
+          </span>
+        </div>
+      </div>
+    </mat-card>
+
+    <div *ngIf="isAnyoneConnected && prnInfo" class="content__row" fxLayout="row" fxLayoutAlign="space-between">
+
+      <mat-card fxFlex="50" [@infoPanel]>
+        <mat-card-header>
+          <mat-card-title>
+            <!-- <h2 class="mat-title"  i18n> PRN Info</h2>  -->
+
+          </mat-card-title>
+          <mat-card-subtitle>
+            PRN Info
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list class="info-list">
+            <mat-list-item>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex>
+                <span fxFlex="30" i18n>Address</span>
+                <span class="info-list__output" fxFlex>{{prnInfo?.address}}</span>
+              </div>
+            </mat-list-item>
+
+            <mat-divider></mat-divider>
+
+            <mat-list-item>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex>
+                <span fxFlex="30" i18n>Date code</span>
+                <span class="info-list__output" fxFlex>{{prnInfo?.dateCode}}</span>
+              </div>
+            </mat-list-item>
+
+            <mat-divider></mat-divider>
+
+            <mat-list-item>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex>
+                <span fxFlex="30" i18n>Software</span>
+                <span class="info-list__output" fxFlex>{{prnInfo?.softwarePn}}</span>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card fxFlex="50" [@commandPanel]>
+        <mat-card-header>
+          <mat-card-title>
+          </mat-card-title>
+          <mat-card-subtitle>
+            PRN Commands
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list class="command-list">
+            <mat-list-item>
+              <div matLine fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                <span fxFlex i18n>Join Enable</span>
+                <span [@fadeInOut]="joinStatus === 1" class="command-list__status--enabled" i18n>Enabled</span>
+                <button class="control-button" color="primary" loopButton mat-raised-button (click)="setCommand('j1')" [disabled]="joinEnabled === 'loading'"
+                  >
+                  
+                  <ng-container [ngSwitch]="joinEnabled">
+
+                    <ng-container *ngSwitchCase="'loading'">
+                      <span i18n>
+                        Loading
+                      </span>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'Enable'">
+                      <span i18n>
+                        Enable
+                      </span>
+                    </ng-container>
+                  </ng-container>                
+                </button>
+              </div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+              <div matLine fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                <span fxFlex i18n>Join Disable</span>
+                <span [@fadeInOut]="joinStatus === 0 || joinStatus === -1" class="command-list__status--disabled" i18n>Disabled</span>
+                <button class="control-button" loopButton mat-raised-button color="primary" (click)="setCommand('j0')" [disabled]="joinDisabled === 'loading'">
+                  <ng-container [ngSwitch]="joinDisabled">
+
+                    <ng-container *ngSwitchCase="'loading'">
+                      <span i18n>
+                        Loading
+                      </span>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'Disable'">
+                      <span i18n>
+                        Disable
+                      </span>
+                    </ng-container>
+                  </ng-container>                
+                </button>
+              </div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+              <div matLine fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                <span fxFlex i18n>Reset</span>
+                <span [@fadeInOut]="joinStatus === -1" class="command-list__status--resetted" i18n>Done</span>
+                <button class="control-button" loopButton mat-raised-button color="primary" (click)="setCommand('jr')" [disabled]="joinReset === 'loading'"
+                  >
+                  <ng-container [ngSwitch]="joinReset">
+
+                    <ng-container *ngSwitchCase="'loading'">
+                      <span i18n>
+                        Loading
+                      </span>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'Reset'">
+                      <span i18n>
+                        Reset
+                      </span>
+                    </ng-container>
+                  </ng-container>  
+                  </button>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+    <mat-card *ngIf="isAnyoneConnected" loopCard loopMaterialCard @sensorList>
+      <mat-card-header>
+        <mat-icon mat-card-avatar mat-list-icon svgIcon="loop-senso-node" style="height: 40px"></mat-icon>
+        <mat-card-title></mat-card-title>
+        <mat-card-subtitle class="title" i18n>Sensors</mat-card-subtitle>
+      </mat-card-header>
+      <div class="table-container">
+        <mat-table #serialTable [dataSource]="sensorDataSource" class="wrap-cells sensor-table">
+
+          <ng-container cdkColumnDef="address">
+            <mat-header-cell *cdkHeaderCellDef i18n>Address</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">
+              <div fxLayout="column wrap" class="sensor-cell">
+                <div fxFlex>
+                  {{row.address}}
+                  <span class="mat-caption sensor-cell__description" *ngIf="row.velocityMode">
+                    - {{row?.velocityMode | capitalize}} {{row?.velocityRange}}
+                  </span>
+
+                </div>
+                <span fxFlex class="mat-caption sensor-cell__description">{{ sensorDescription(row) }}</span>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="linkId">
+            <mat-header-cell *cdkHeaderCellDef i18n fxFlex="10" i18n>Link ID</mat-header-cell>
+            <mat-cell *cdkCellDef="let row" fxFlex="10">{{row.linkId}}</mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="lastKnown">
+            <mat-header-cell *cdkHeaderCellDef i18n>Last Value</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">
+              <div class="raw-data" fxLayout="column wrap">
+                <span>
+                  {{showRawData(row)}}
+                </span>
+                <span style="font-size: 10px">
+                  {{row?.lastKnownData?.loggedTime | date:'full'}}
+                </span>
+              </div>
+
+
+            </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="actions">
+            <mat-header-cell *cdkHeaderCellDef i18n fxLayoutAlign="center" fxFlex="30" fxLayoutAlign="end">
+              <span class="commands-header">
+                Commands
+              </span>
+            </mat-header-cell>
+            <mat-cell *cdkCellDef="let row" fxLayoutAlign="end" fxFlex="30">
+
+              <!-- <button
+                class="command_icon-button"
+                mat-icon-button
+                matTooltip="Zero calibration"
+                (click)="zeroCalibration(row.linkId)">
+                <mat-icon
+                  class="accent-color_icon-button">
+                  gps_fixed
+                </mat-icon>
+              </button> -->
+
+              <!-- <button mat-icon-button
+                class="command_icon-button"
+                matTooltip="Span calibration"
+                (click)="spanCalibration(row.linkId)"
+              >
+                <mat-icon
+                  class="accent-color_icon-button">
+                  gps_not_fixed
+                </mat-icon>
+              </button> -->
+
+              <button *ngIf="showVibrationCommand(row)" class="command_icon-button" mat-icon-button matTooltip="Adjust Vibration Sensor"
+                (click)="rangeCommand(row)">
+                <mat-icon class="accent-color_icon-button">
+                  vibration
+                </mat-icon>
+              </button>
+
+              <button class="command_icon-button" mat-icon-button matTooltip="Update Sensor Rate" (click)="nodeRate(row)">
+                <mat-icon class="accent-color_icon-button">
+                  graphic_eq
+                </mat-icon>
+              </button>
+
+              <button class="command_icon-button" mat-icon-button matTooltip="Node identify" (click)="nodeIdentify(row)">
+                <mat-icon class="accent-color_icon-button">
+                  wb_sunny
+                </mat-icon>
+              </button>
+
+              <!-- <button
+                class="command_icon-button"
+                mat-icon-button
+                matTooltip="Node sleep"
+                (click)="nodeSleep(row.linkId)"  >
+                  <mat-icon
+                  class="accent-color_icon-button">
+                    local_hotel
+                  </mat-icon>
+              </button> -->
+
+              <!-- <button
+              class="command_icon-button"
+              mat-icon-button
+              matTooltip="Node reset"
+              (click)="nodeReset(row.linkId)">
+              <mat-icon
+                class="accent-color_icon-button">
+                replay
+              </mat-icon>
+            </button> -->
+
+              <button class="command_icon-button" mat-icon-button matTooltip="Delete node" i18n-matTooltip="Delete node"
+                (click)="nodeDelete(row)">
+                <mat-icon class="accent-color_icon-button">
+                  delete
+                </mat-icon>
+              </button>
+
+              <loop-copy-button [content]="copyContent(row.address)">
+              </loop-copy-button>
+
+            </mat-cell>
+
+          </ng-container>
+
+
+          <mat-header-row *cdkHeaderRowDef="['address', 'linkId', 'lastKnown','actions']"></mat-header-row>
+          <mat-row *cdkRowDef="let row; columns: ['address', 'linkId', 'lastKnown', 'actions']"></mat-row>
+        </mat-table>
+
+      </div>
+    </mat-card>
+
+  </div>
+</section>

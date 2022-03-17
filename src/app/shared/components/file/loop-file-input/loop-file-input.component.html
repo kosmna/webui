@@ -1,0 +1,51 @@
+<div class="upload-input" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="end center">
+  <span *ngIf="!simpleButton" fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="start center">
+
+    <button  class="delete-button" mat-icon-button *ngIf="file" type="button" color="primary" matTooltip="remove file" (click)="removeFile($event)" i18n-matTooltip>
+      <mat-icon>
+        delete
+      </mat-icon>
+    </button>
+    <!-- Side text -->
+    <span *ngIf="uploadMessage" class="mat-caption file-name">
+      {{uploadMessage}}
+    </span>
+
+  </span>
+  <!-- Upload button -->
+  <button class="file-button"  color="primary" [ngClass]="{'file-button--margin-right': !simpleButton}"  mat-raised-button type="button"  (click)="fileInput.click()"
+    *ngIf="!(submit && isLoaded) && !file"
+    [disabled]="disabled"
+    name="upload"
+    >
+    <mat-icon *ngIf="!simpleButton">
+      attach_file
+    </mat-icon>
+   <span *ngIf="fileMsg; else genericFileMsg">
+      
+      {{fileMsg}}
+    </span>
+
+    <ng-template #genericFileMsg>
+      <span i18n>
+        Select File
+      </span>
+    </ng-template>
+    
+  </button>
+  <!-- Submit button -->
+  <button
+    class="file-button"
+    [ngClass]="{'file-button--margin-right': !simpleButton}" mat-button loopButton loopClearButton 
+    *ngIf="submit && isLoaded"
+    (click)="submitFile(file)"
+    [disabled]="disabled"
+    name="submit">
+      {{submitTxt}}
+  </button>
+
+  <input #fileInput class="input-file" type="file" [attr.accept]="accept" [disabled]="disabled" (change)="uploadFile($event)"
+    [attr.accept]="accept" [disabled]="disabled">
+</div>
+
+

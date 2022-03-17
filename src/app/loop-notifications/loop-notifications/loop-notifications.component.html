@@ -1,0 +1,33 @@
+
+<mat-toolbar  [color]="topbar.color" *ngIf="displayTopbar && allowedPageTopbar" [@banner]>
+  <div fxLayout="row"  fxLayoutAlign="space-between center" fxFlex>
+    
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+      <mat-icon >
+        warning
+      </mat-icon>
+      <p class="">
+          {{topbar.msg}}
+      </p>      
+
+    </div>
+
+    
+    <button mat-icon-button (click)="closeTopbar()">
+      <mat-icon>
+        close
+      </mat-icon>
+    </button>
+  </div>
+
+</mat-toolbar>
+
+<!-- <ng-template #licenseWarning>
+  <p>
+    <span i18n>
+      Your license will expire in  {{licenseDays}}
+      {licenseDays, plural, =0 { day } other {days} } 
+    </span>
+
+  </p>
+</ng-template> -->

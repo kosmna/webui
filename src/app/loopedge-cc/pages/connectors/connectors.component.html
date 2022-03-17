@@ -1,0 +1,53 @@
+<loop-header-switcher [currentState]="selectedView" title="Integration" i18n-title></loop-header-switcher>
+<loop-list-filter (applyFilter)="filter($event)" [actions]="filterActions"></loop-list-filter>
+
+<section>
+  <section class="table-container">
+    <mat-table #table [dataSource]="dataSource" [fxHide]="dataSource.data.length === 0">
+
+      <ng-container matColumnDef="providerId">
+        <mat-header-cell *matHeaderCellDef i18n> Provider </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.providerId}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="enabled">
+        <mat-header-cell *matHeaderCellDef i18n> Status </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <loop-status-display [positive]="calculateStatus(element)" [statusText]="element.status" [matTooltip]="element.errMsg"></loop-status-display>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container *ngFor="let column of dynamicColumns" [matColumnDef]="column.key">
+        <mat-header-cell *matHeaderCellDef> {{ column.label }} </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div class="dynamic-column__cell-data">{{ getInstanceConfig(element)[column.key] }}</div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef i18n> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let action of allowedActions(element)" (click)="action.action(element)">
+              <mat-icon>{{ action.icon }}</mat-icon>
+              <span>{{ action.name }}</span>
+            </button>
+          </mat-menu>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectInstance(row)"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [fxHide]="dataSource.data.length === 0">
+    </mat-paginator>
+  </section>
+
+  <div [fxShow]="dataSource.data.length === 0" fxLayout="row" fxLayoutAlign="center center" class="mat-headline" i18n>
+    No Connectors Defined
+  </div>
+</section>

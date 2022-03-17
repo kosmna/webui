@@ -1,0 +1,39 @@
+$breakpoints: (phone: 425px, tablet: 768px, desktop: 1024px);
+$sub-header-text-color: rgba(0, 0, 0, 0.54);
+// card header variables
+$md-card-header-size: 40px;
+$md-card-radius: 2px;
+$padding: 16px;
+// main color
+$accent-color: #46b67b;
+$warn-color: #f70b49;
+$primary-color: #34404f;
+$border-color: rgba(0,0,0,0.121);
+// button
+$clear-button-color: #34404f;
+$clear-button-text-hover: #ffffff;
+$clear-button-disabled: rgba(0, 0, 0, 0.12);
+// tool-bar
+$loop-toolbar-icon-color:#f2f2f2;
+// toggle disabled/enabled
+$disabled-color: #f4a460;
+$enabled-color: #46b67b;
+
+// group header text
+$group-header-text-color: #999;
+// side-nav
+$side-nav-background-color: rgb(28, 28, 28);
+$side-nav-color: white;
+$side-nav-expanded-color: rgb(66, 66, 66);
+$gridster-background-color: #333;
+// login
+$login-title-color:white;
+
+$margin-top: 20px;
+$max-container-width: 90%;
+
+$positive-color: #46b67b;
+$negative-color: $warn-color;
+$neutral-color: #f4a460;
+
+$tree-gray-color: rgba(0, 0, 0, .24);

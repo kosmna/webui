@@ -1,0 +1,29 @@
+@import 'mixins';
+
+.topic-tag {
+    display: inline-block;
+    padding: 0.3em 0.9em;
+    margin: 0 0.5em 0.5em 0;
+    white-space: nowrap;
+    background-color: #f1f8ff;
+    border-radius: 3px;    
+}
+
+.loading-spinner {
+    height: 155px;
+    width: auto;
+}
+mat-list h4 {
+    padding-left: 5px;
+}
+
+@include shadow('div.mat-list-item-content') {
+    padding-left: 5px !important;
+}
+.subheader {
+    margin-top: 10px;
+}
+
+.password-content {
+    min-height: 165px;    
+}

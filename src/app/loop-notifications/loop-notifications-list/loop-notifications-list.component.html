@@ -1,0 +1,60 @@
+
+
+<mat-list>
+    <h3 matSubheader i18n>Notifications</h3>
+    <mat-list-item  *ngIf=" ( notificationList | async).length !!== 0 ">
+        <button  mat-raised-button color="primary" fxFlex (click)="deleteAll()" i18n>
+            Clear All 
+        </button>
+    </mat-list-item>
+    <ul class="notifications-list" > 
+        <ng-container *ngFor="let notification of ( notificationList | async)" >
+            <li  *ngIf="notification.type === 'serverError'" fxLayout="row" class="notifications-list__item notifications-list__item--server-error">
+                <div fxLayout="column" fxLayoutAlign="center center" class="notification-status"> 
+
+                    <mat-icon>priority_high</mat-icon>
+                    <span class="mat-caption">
+                    {{ notification.data.status}}
+                    </span>
+                </div>
+
+
+                <div class="notification-text" fxLayout="column" fxFlex="90">
+                    <a class="notification-text__text notification-text__text--link mat-body-1" target="_blank" [href]="notification.data.url" >
+                        {{notification.msg | truncate: truncatePipe }}
+                    </a>
+                    <span class="mat-caption notification-text__date">
+                        {{notification.timestamp | date: datePipe}}
+                    </span>              
+                </div>
+                <button  mat-icon-button (click)="deleteNotification(notification)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </li>
+
+
+            <li  *ngIf="notification.type === 'notification' || notification.type === 'license'" fxLayout="row" class="notifications-list__item notifications-list__item--notification">
+                <div fxLayout="row" fxLayoutAlign="center center" class="notification-status"> 
+                    <mat-icon>announcement</mat-icon>
+                </div>
+
+                <div  class="notification-text" fxLayout="column" fxFlex="90">
+                    <span class="notification-text__text otification-text__text--word-break mat-body-1">
+                        {{notification.msg | truncate: truncatePipe }}
+                    </span>
+                    <span class="mat-caption notification-text__date">
+                        {{notification.timestamp | date: datePipe}}
+                    </span>              
+                </div>
+                <button  mat-icon-button (click)="deleteNotification(notification)">
+                    <mat-icon>close</mat-icon>
+                </button>            
+            </li>
+        </ng-container>
+        <li  *ngIf=" ( notificationList | async).length === 0 " fxLayout="row" fxLayoutAlign="center center">
+             <span class="mat-body-2" i18n>
+                No Notifications 
+            </span>
+        </li>
+    </ul>
+</mat-list>

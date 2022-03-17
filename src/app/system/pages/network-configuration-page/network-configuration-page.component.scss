@@ -1,0 +1,30 @@
+@import 'variables';
+
+.no-extra-padding {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.interface-list {
+  padding: 0;
+}
+
+.interface-list > mat-list {
+  padding-top: 0;
+}
+
+.interface-button {
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+}
+
+.selected-interface {
+  border-left: 4px solid $accent-color;
+  background-color: rgba(70, 182, 123, .5);
+}
+
+.header {
+  font-size: 21px;
+  font-weight: 400;
+}

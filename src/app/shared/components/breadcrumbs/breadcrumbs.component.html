@@ -1,0 +1,14 @@
+<section class="breadcrumbs" fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="5px">
+  <ng-container *ngFor="let item of crumbs; let index = index">
+    <ng-container [ngSwitch]="item.active">
+      <span *ngIf="index !== 0" class="mat-caption">/</span>
+      <span *ngSwitchCase="true" class="mat-caption breadcrumbs__route-name--active">
+        {{ item.name }}
+      </span>
+      <a *ngSwitchDefault [routerLink]="item.route" class="mat-caption">
+        {{ item.name }}
+      </a>
+    </ng-container>
+
+  </ng-container>
+</section>

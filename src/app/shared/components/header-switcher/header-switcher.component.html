@@ -1,0 +1,12 @@
+<section fxLayout="row nowrap" class="switcher" fxLayoutAlign="start center">
+  <button mat-icon-button *ngFor="let action of leftHandSideActions" (click)="leftHandButtonClick.emit(action.actionName)"
+    [matTooltip]="action.tooltip" matTooltipShowDelay="400">
+    <mat-icon class="mat-18">{{ action.icon }}</mat-icon>
+  </button>
+  <span *ngIf="title" class="mat-headline switcher__title">{{ title }}</span>
+  <span fxFlex></span>
+  <button mat-icon-button *ngFor="let action of actions" (click)="selectState.emit(action.value)" [class.switcher__button--selected]="action.value === currentState"
+    [matTooltip]="action.tooltip" matTooltipShowDelay="400">
+    <mat-icon class="mat-18">{{ action.icon }}</mat-icon>
+  </button>
+</section>

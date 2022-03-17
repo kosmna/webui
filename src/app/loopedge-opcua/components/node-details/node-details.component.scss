@@ -1,0 +1,31 @@
+.tab-info-block {
+  margin: 8px;
+
+  &__heading {
+    padding: 8px;
+  }
+}
+
+.mat-column-dataType,
+.mat-column-type {
+  flex: none !important;
+  width: 80px;
+}
+
+
+.mat-column-name {
+  flex: none !important;
+  width: 150px;
+}
+
+.section-block {
+  margin: 8px;
+
+  &__heading {
+    padding: 8px;
+  }
+
+  &__card>mat-card-content {
+    padding: 0;
+  }
+}

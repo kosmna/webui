@@ -1,0 +1,9 @@
+<div class="tag-page-content">
+  <loop-registers [devices]="devices" (createRegister)="createRegister($event)" (updateRegister)="updateRegister($event)"
+    (deleteRegister)="deleteRegister($event)" (writeRegister)="readRegister($event)" (uploadRegisters)="uploadRegisters($event)"
+    (createBinding)="createBinding($event)" (updateBinding)="updateBinding($event)" (deleteBinding)="deleteBinding($event)"
+    [allowedRole]="restrictedView" (deleteMultiRegisters)="deleteMultiRegisters($event)" (downloadRegisters)="downloadRegisters()"
+    (createMultiRegisters)="createMultiRegisters($event)" (currentRegisters)="setcurrentRegisters($event)"
+    (toggleStatus)="toggleStatus($event)">
+  </loop-registers>
+</div>

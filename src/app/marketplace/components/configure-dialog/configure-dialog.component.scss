@@ -1,0 +1,14 @@
+@import 'variables';
+@import 'mixins';
+
+.row {
+  @include m('margin-top') {
+    margin-top: 15px;
+  }
+}
+
+.marketplace-form {
+  &__subgroup-title {
+    color: rgba(0, 0, 0, .4);
+  }
+}

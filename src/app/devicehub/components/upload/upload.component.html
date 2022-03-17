@@ -1,0 +1,63 @@
+<h2 *ngIf="showError" matDialogTitle class="theme-bottom-border" i18n>Upload Error</h2>
+<h2 *ngIf="!showError"  matDialogTitle class="theme-bottom-border" i18n>Upload Tags</h2>
+
+<form *ngIf="!showError" (ngSubmit)="onSubmit()">
+  <mat-dialog-content fxLayout="column" >
+    <div fxLayout="row" fxLayoutAlign="start" class="upload-container">
+      <loop-file-input
+        (onUpload)="onUpload($event)"
+        fileMsg="Select CSV"
+        [uploadMessage]="fileName"
+        (onCancel)="onCancel()"
+        accept=".csv">
+      </loop-file-input>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button loopButton loopClearButton type="submit" [disabled]="!file" i18n>Upload</button>
+    <button mat-button loopButton color="warn" [matDialogClose]="false" i18n>Cancel</button>
+  </mat-dialog-actions>
+</form>
+<mat-dialog-content *ngIf="showError">
+  <mat-list class="error-list" >
+    <ng-container *ngFor="let error of data; let i = index">
+      <mat-list-item class="error-list__item"  >
+
+      <div fxLayout="column"  style="height: inherit;">
+        <div  style="margin-top: 10px">
+          <span class="error-list__title " i18n> Line Number: {{error.lineNumber}}</span>        
+          
+          <span  class="mat-caption "  >
+              {{error.line}}
+          </span>
+    
+        </div>
+          
+          <span class=" no-wrap mat-body-2 mat-list-text error-list__description ">
+              {{error.error}}
+        </span>      
+
+      </div>
+
+        <!-- <mat-icon  mat-list-icon>
+          error_outline
+        </mat-icon> -->
+
+        <!-- <div >
+          <span>
+            line: {{error.lineNumber}}
+          </span> 
+          <button mat-icon-button (click)="showLine[i] = !!!showLine[i]">
+            <mat-icon>
+              remove_red_eye
+            </mat-icon>
+          </button>
+        </div>
+        <span [@line] class="mat-caption" matLine *ngIf="showLine[i]">
+          {{error.line}}
+        </span> -->
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </ng-container>
+  </mat-list>
+</mat-dialog-content>

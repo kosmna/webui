@@ -1,0 +1,168 @@
+<div class="content" fxLayoutAlign="center" >
+  <div class="content__inner content__inner--mobile" fxLayout="column" fxLayoutGap="20px">
+    <mat-card loopMaterialCard>
+      <mat-card-header>
+  
+        <mat-card-title>
+            <ng-container [ngSwitch]="allowManageLicense && restrictedView">
+              <h2 *ngSwitchCase="true" class="mat-title"  i18n="card title" i18n> Online Activation/Deactivation</h2> 
+              
+              <h2 *ngSwitchCase="false" class="mat-title"  i18n="card title" i18n> License Information </h2> 
+
+            </ng-container>
+        </mat-card-title>         
+      
+      </mat-card-header>
+      <mat-card-content>
+        <mat-toolbar *ngIf="!isValid" color="warn">
+          <span i18n>Your license has expired!</span>
+        </mat-toolbar>
+        <mat-toolbar *ngIf="licenseExists && license.expiryDays < 6 && license.expiryDays > 0" color="accent">
+          <span i18n>Your license will expire soon!</span>
+        </mat-toolbar>
+        <mat-list>
+          <mat-list-item class="license-status" >
+            <span fxFlex="10" fxFlex.lt-sm="20" i18n>
+              Status  
+            </span>
+            <span loopTag [tagColor]="(isValid ? 'accent' : 'warn')" >
+                <span *ngIf="isValid"  i18n>
+                    Active
+                </span>
+                <span *ngIf="!isValid" i18n >
+                    Not Active
+                </span>
+            </span>
+            <span class="license-status__trial-message" *ngIf="license?.trial" i18n>  
+              You are currently using a trial license
+            </span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item *ngIf="licenseExists && !isLicensePerpetual">
+            <span fxFlex="10" fxFlex.lt-sm="30" i18n>
+              Expires on
+            </span>
+            <div class="output" fxFlex>
+              <span>
+                {{license.expiryDate | date}} &nbsp;
+              </span>
+              <span class="caption" i18n>
+                {{ license.expiryDays }} days
+              </span>              
+            </div>
+              
+  
+          </mat-list-item>
+          <mat-divider *ngIf="licenseExists"></mat-divider>
+
+          <div *ngIf="!license?.trial && license?.key">
+            <mat-list-item>              
+              <span fxFlex="10" fxFlex.lt-sm="45" i18n>
+                Key
+              </span>
+              <span class="output">
+                {{ license?.key }}
+              </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+          </div>
+
+          <mat-list-item *ngIf="licenseExists && !license.trial && allowManageLicense && restrictedView">
+            <span fxFlex></span>
+            <button loopButton mat-raised-button color="warn" (click)="deactivateLicense()" i18n>Deactivate</button>
+            <div [ngSwitch]="isLoadingDeactiveOnline" fxFlex="5">
+              <div class="status-icons">
+                <mat-progress-spinner class="status-icons__spinner" *ngSwitchCase="'loading'" mode="indeterminate" [strokeWidth]="2" [diameter]="25"> </mat-progress-spinner>
+                <mat-icon *ngSwitchCase="'loaded'" class="accent" i18n>check</mat-icon>
+                <mat-icon *ngSwitchCase="'failed'" class="warn" i18n>cancel</mat-icon>
+              </div>
+            </div>
+          </mat-list-item>
+
+          <form [formGroup]="onlineActivation" (submit)="activateLicense()" *ngIf="(license?.trial || license?.status !== 'OK') && allowManageLicense && restrictedView">
+            <mat-list-item class="online-list-item">
+              <div fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="align-to-button">
+                <mat-form-field fxFlex>
+                  <input matInput placeholder="Enter License Key" type="text" formControlName="licenseKey" i18n-placeholder autofocus>
+                </mat-form-field>
+              </div>
+              <span fxFlex="5"></span>
+              <button loopButton loopClearButton mat-button type="submit" i18n >Activate</button>
+              <div class="status-icons" [ngSwitch]="isLoadingActivateOnline" fxFlex="5" fxLayoutAlign="center center">
+                <mat-progress-spinner class="spinner" *ngSwitchCase="'loading'" mode="indeterminate" [strokeWidth]="2" [diameter]="25"> </mat-progress-spinner>
+                <mat-icon *ngSwitchCase="'loaded'" class="accent">check</mat-icon>
+                <mat-icon *ngSwitchCase="'failed'" class="warn">cancel</mat-icon>
+              </div>
+            </mat-list-item>
+          </form>
+
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+    <mat-card loopMaterialCard class="license-offline-card" *ngIf="allowManageLicense && restrictedView">
+      <mat-card-header>
+        <mat-card-title>
+            <h2 class="mat-title"  i18n="card title" i18n> Offline Activation/Deactivation </h2> 
+        </mat-card-title>            
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+
+          <form [formGroup]="offlineRequest" (submit)="requestOfflineActivation()" *ngIf="license?.trial || license?.status !== 'OK' && restrictedView">
+            <mat-list-item>
+              <div fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="align-to-button">
+                <mat-form-field fxFlex>
+                  <input matInput placeholder="Enter License Key" type="text" formControlName="licenseKey" i18n-placeholder>
+                </mat-form-field>
+              </div>
+              <span fxFlex="5"></span>
+              <button loopButton loopClearButton mat-button type="submit" i18n>Request</button>
+              <div class="status-icons" [ngSwitch]="isLoadingActivateReqOffline" fxFlex="5" fxLayoutAlign="center center">
+                <mat-progress-spinner *ngSwitchCase="'loading'" mode="indeterminate" [strokeWidth]="2" [diameter]="25"> </mat-progress-spinner>
+                <mat-icon *ngSwitchCase="'loaded'" class="accent">check</mat-icon>
+                <mat-icon *ngSwitchCase="'failed'" class="warn">cancel</mat-icon>
+              </div>
+            </mat-list-item>
+          </form>
+          <ng-container *ngIf="activeOffKey">
+            <loop-key-container [activation]="true" [key]="key" (downloadKey)="downloadTxt($event)"></loop-key-container>
+          </ng-container>
+
+          <form [formGroup]="offlineActivation" (submit)="activateOffline()" *ngIf="license?.trial || license?.status !== 'OK'">
+            <mat-list-item>
+              <div fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="align-to-button">
+                <mat-form-field fxFlex>
+                  <input matInput placeholder="Paste License Key" type="text" formControlName="licenseKey" i18n-placeholder>
+                </mat-form-field>
+              </div>
+              <span fxFlex="5"></span>
+              <button loopButton loopClearButton mat-button i18n>Activate</button>
+              <div class="status-icons" [ngSwitch]="isLoadingActivateOffline" fxFlex="5" fxLayoutAlign="center center">
+                <mat-progress-spinner *ngSwitchCase="'loading'" mode="indeterminate" [strokeWidth]="2" [diameter]="25"> </mat-progress-spinner>
+                <mat-icon *ngSwitchCase="'loaded'" class="accent">check</mat-icon>
+                <mat-icon *ngSwitchCase="'failed'" class="warn">cancel</mat-icon>
+              </div>
+            </mat-list-item>
+          </form>
+
+          <mat-list-item *ngIf="licenseExists && !license.trial">
+            <div fxFlex>
+              <p i18n>Request Deactivation</p>
+            </div>
+            <button loopButton mat-raised-button color="warn" (click)="deactivateOffline()" [disabled]="license?.trial" i18n>Deactivate</button>
+            <div class="status-icons" [ngSwitch]="isLoadingDeactiveOffline" fxFlex="5"  fxLayoutAlign="center center">
+              <mat-progress-spinner *ngSwitchCase="'loading'" mode="indeterminate" [strokeWidth]="2" [diameter]="25"> </mat-progress-spinner>
+              <mat-icon *ngSwitchCase="'loaded'" class="accent">check</mat-icon>
+              <mat-icon *ngSwitchCase="'failed'" class="warn">cancel</mat-icon>
+            </div>
+          </mat-list-item>
+          
+          <ng-container *ngIf="deactiveOffKey">
+            <loop-key-container [activation]="false" [key]="key" (downloadKey)="downloadTxt($event)"></loop-key-container>
+          </ng-container>
+
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

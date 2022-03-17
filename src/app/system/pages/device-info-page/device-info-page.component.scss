@@ -1,0 +1,50 @@
+@import 'variables';
+@import 'include-media';
+@import 'mixins';
+
+.tab-container{
+    margin: 20px 5%;
+    &--mobile {
+        @include media("<=phone" ) {
+            margin: 20px 0;
+        }
+    }
+}
+
+.total-memory{
+    margin: 25px 15px 0px 0px;
+    line-height: 1.5;
+}
+mat-table {
+    min-width: 600px;
+}
+
+ h4.mat-line {
+    white-space:normal !important;
+    word-break: break-all !important;
+}
+
+.info {
+  @include e('output') {
+    word-break: break-all;
+  }
+}
+
+@include shadow('.mat-list-item-content')  {
+    overflow: hidden !important;
+}
+
+.mat-column-config {
+  flex: none;
+  width: 40px;
+}
+
+.empty-table-container {
+    min-height: 100px;
+}
+
+.donut-chart-card {
+    @include e('list') {
+        margin-top: -85px;
+    }
+}

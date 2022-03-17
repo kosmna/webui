@@ -1,0 +1,15 @@
+.section-block {
+  margin: 8px;
+
+  &__heading {
+    padding: 8px;
+  }
+
+  &__card>mat-card-content {
+    padding: 0;
+  }
+}
+
+.connections__menu {
+  padding-right: 24px;
+}

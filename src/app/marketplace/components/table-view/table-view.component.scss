@@ -1,0 +1,17 @@
+@import 'variables';
+@import 'mixins';
+
+.app-table {
+  @include e('header') {
+    // background-color: red;
+  }
+  @include e('cell') {
+    // background-color: green;
+  }
+}
+
+.status-cell {
+  padding: 8px;
+  border-radius: 16px;
+  color: #ffffff;
+}

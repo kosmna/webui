@@ -1,0 +1,7 @@
+<loop-loader></loop-loader>
+<loop-container [class]="theme" [menuItems]="menuItems$ | async" [mobile]="isMobileObservable" [disableAll]="disableSideNav"
+  [notificationCount]="notificationCount" [logoSrc]="logoUrl">
+  <loop-notifications errorMsg="Something went wrong" i18n-errorMsg closeSnackBtn="Dismiss" i18n-closeSnackBtn>
+  </loop-notifications>
+  <router-outlet></router-outlet>
+</loop-container>

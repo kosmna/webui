@@ -1,0 +1,61 @@
+@import 'mixins';
+@import 'variables';
+@import 'include-media';
+
+
+.action-buttons {
+    padding-top: 5px;
+
+    @include e('next') {
+        margin-right: 5px;
+        margin-bottom: 3px;
+    }
+    
+    @include e('back') {
+        margin-left: 5px;
+        margin-bottom: 3px;
+    }
+}
+
+.oma-binding {
+
+    @include e('title') {
+        padding-right: 25px;
+
+        @include e('text') {
+            margin-bottom: 0px;
+            
+        }
+    }
+
+    @include e('tag') {
+        padding: 0.1em 0.5em;
+        margin-left: 37px;
+        margin-bottom: 0px;
+    }
+
+    
+    @include e('description') {
+
+        @include m('no-margin-top') {
+            margin-top: 0px;
+        }
+        
+    }
+
+    @include e('content') {
+    }
+
+    @include e('text-container') {
+        margin-bottom: 15px;
+    }
+}
+
+
+.output-item {
+
+    @include e('description') {
+        margin-left: 15px;
+        font-style: italic;
+    }
+}

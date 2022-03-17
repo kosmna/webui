@@ -1,0 +1,24 @@
+<mat-dialog-content fxLayout="column" class="dialog-body">
+  <p class="mat-body-1" i18n>
+    {{text}}
+    
+    Please type the  {{placeholder}}  
+    <span loopInlineCode>{{id}}</span>  
+    <loop-copy-button class="copy-button" [content]="id"></loop-copy-button>
+    to proceed with this action.
+  </p>
+  <form  [formGroup]="confirmationForm">
+      <mat-form-field  fxFlex="0 0 50" fxFlex.lt-md="1 1 100" >
+        <input matInput  formControlName="linkId" [placeholder]="placeholder" type="text">
+        <mat-error *ngIf="confirmationForm.controls['linkId'].hasError('confirmation')" i18n>
+          Input does not match the {{placeholder}}
+        </mat-error>
+      </mat-form-field>
+  </form>
+  <!--end of add account form-->
+</mat-dialog-content>
+<mat-dialog-actions  fxLayout="row" fxLayout.xs="column"
+fxLayoutAlign.xs="space-between stretch" fxLayoutAlign="start center" fxLayoutGap="5px">
+  <button loopButton loopClearButton mat-button [disabled]="!confirmationForm.valid" [matDialogClose]="true">Submit</button>
+  <button  mat-button loopButton color="warn" [matDialogClose]="false" i18n>Cancel</button>
+</mat-dialog-actions>

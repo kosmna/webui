@@ -1,0 +1,39 @@
+@import 'variables';
+
+$danger-color: $warn-color;
+$warn-color: $enabled-color;
+
+.banner-warning {
+
+    color: white;
+
+    &__button {
+        
+        outline-color: white !important;
+        height: 22px;
+        line-height: 23px !important;
+        font-size: 11px;
+    }
+
+
+
+    &__container {
+        height: 40px;
+        border: 1px solid;
+        font-size: .80rem;
+        border-radius: 35px;
+        padding: 0 20px;
+    }
+
+    &__container--warning {
+        border-color: $warn-color;
+    }
+
+    &__container--danger {
+        border-color: $danger-color;
+    }
+
+}
+
+
+

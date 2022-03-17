@@ -1,0 +1,35 @@
+@import 'variables';
+
+.apps-card {
+  cursor: pointer;
+  min-width: 250px;
+  transition: all 150ms ease-in-out;
+
+  .app-title {
+    font-size: 20px;
+    // font-weight: 900;
+
+  }
+
+  .running-status {
+    border-top: solid 5px $accent-color;
+  }
+
+  .dead-status {
+    border-top: solid 5px $warn-color;
+  }
+
+  .tag-container {
+    margin-top: -3px;
+  }
+
+  mat-card-content {
+    margin-bottom: 0px;
+  }
+
+}
+
+.apps-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 8px 3px -5px rgba(0, 0, 0, 0.3), 0px 5px 20px 4px rgba(0, 0, 0, 0.12);
+}

@@ -1,0 +1,69 @@
+<div class="content" fxLayout="row" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile">
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header fxLayoutAlign="start center">
+        <mat-card-title>
+          <h2 class="mat-title" i18n="card title">Device Certificates </h2>
+        </mat-card-title>
+
+        <span fxFlex></span>
+        <button *ngIf="restrictedView" mat-icon-button (click)="addCert()" matTooltip="Add Certificates"
+          i18n-matTooltip>
+          <mat-icon class="mat-18">add_circle</mat-icon>
+        </button>
+        <span fxFlex="5px"></span>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <span fxFlex="15" i18n>
+              Issuer
+            </span>
+            <span class="output">
+              {{certInfo.issuer}}
+            </span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+
+          <mat-list-item>
+            <span fxFlex="15" i18n>
+              Subject
+            </span>
+            <span class="output">
+              {{certInfo.subject}}
+            </span>
+
+          </mat-list-item>
+          <mat-divider></mat-divider>
+
+          <mat-list-item fxLayoutGap="10px">
+            <span fxFlex="15" i18n>
+              Not Before
+            </span>
+            <span class="output">
+              {{certInfo.notBefore}}
+            </span>
+            <p *ngIf="notBeforeValid" class="loop-tag--margin" loopTag tagColor="warn" i18n>
+              Not yet valid!
+            </p>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+
+          <mat-list-item>
+            <span fxFlex="15" i18n>
+              Not After
+            </span>
+            <span class="output">
+              {{certInfo.notAfter}}
+            </span>
+            <span *ngIf="notAfterValid" class="loop-tag--margin" loopTag tagColor="warn" i18n>
+              Not valid!
+            </span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

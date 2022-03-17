@@ -1,0 +1,193 @@
+<!-- <h1 class="mat-display-1"  i18n="card title" i18n> Network</h1>  -->
+<div class="host-panel-container">
+  <form [formGroup]="hostForm">
+    
+    <button type="submit" hidden></button>
+
+
+    <h3 class="mat-subheading-2  network__sub-title" i18n>Host Information</h3>
+    <mat-card loopCard>
+      <mat-progress-bar class="network__card" *ngIf="isLoading | async" mode="indeterminate"></mat-progress-bar>
+      <mat-card-content fxLayout="column">
+        <mat-list>
+          <mat-list-item class="list-item">
+            <span class="list-item__label" fxFlex="32.71" i18n matLine>
+              HostName
+            </span>
+            <span fxFlex matLine class="output">
+              {{hostInfo?.hostname}}
+            </span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+
+          <mat-list-item class="list-item list-item--edit-mode">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100%" fxLayoutGap="20px">
+              <span class="list-item__label" i18n="friendly name for host panel" i18n>
+                Friendly Name
+              </span>
+              <div fxLayout="row" fxFlex>
+                <mat-form-field fxFlex="100">
+                  <input matInput type="text" maxlength="64" formControlName="description" placeholder="">
+                </mat-form-field>
+
+                <span fxLayout="row" fxLayoutAlign="center center">
+                  <button class="network__button network__button--margin-left" mat-button (click)="setDescription()"
+                    [disabled]="isControlInvalid('description') || (isLoading | async)" i18n>
+                    Change
+                  </button>
+                </span>
+              </div>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item class="list-item list-item--edit-mode">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100%" fxLayoutGap="20px">
+              <span class="list-item__label" i18n>
+                Country
+              </span>
+              <div fxLayout="row" fxLayoutAlign="end center" fxFlex>
+                <mat-form-field fxFlex="100%">
+                  <input matInput type="text" formControlName="country" placeholder="">
+                </mat-form-field>
+
+                <span fxLayout="row" fxLayoutAlign="center center">
+                  <button class="network__button network__button--margin-left" mat-button (click)="setCountry()"
+                    [disabled]="isControlInvalid('country') || (isLoading | async)" i18n>
+                    Change
+                  </button>
+                </span>
+              </div>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+
+          <mat-list-item class="list-item list-item--edit-mode">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100%" fxLayoutGap="20px">
+              <span class="list-item__label" i18n>
+                Timezone
+              </span>
+
+              <div fxLayout="row" fxFlex class="list-item__input list-item__input--margin-right">
+                <mat-form-field matLine fxFlex="100">
+                  <mat-select formControlName="timezone" placeholder="" (selectionChange)="setTimezone()">
+                    <mat-option *ngFor="let timezone of timezones.timezones" [value]="timezone"> {{timezone}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+            </div>
+          </mat-list-item>
+
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+    <!--end of Host-->
+
+    <h3 i18n class="mat-subheading-2  network__sub-title">
+      Gateways
+    </h3>
+    <mat-card>
+      <mat-card-content class="network__card">
+        <mat-list>
+          <mat-list-item>
+            <div fxLayout="row" matLine>
+              <span fxFlex="32.71" class="network__label" i18n>
+                IPV4
+              </span>
+              <span class="output">
+                {{hostInfo?.gateway.ipv4}}
+              </span>
+            </div>
+          </mat-list-item>
+
+          <mat-divider></mat-divider>
+
+          <mat-list-item>
+            <div fxLayout="row" matLine>
+              <span fxFlex="32.71" class="network__label" i18n>
+                IPV6
+              </span>
+              <span class="output">
+                {{hostInfo?.gateway.ipv6}}
+              </span>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+    <!--end of Gateway-->
+
+    <h3 class="mat-subheading-1 network__sub-title" i18n>
+      DNS / NTP
+    </h3>
+    <mat-card>
+      <mat-card-content class="network__card">
+        <mat-accordion [multi]="true">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <span class="network__label" i18n>
+                Fallback DNS Resolvers
+              </span>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <mat-list-item>
+                <mat-form-field flex matLine>
+                  <input formControlName="dnsInput" matInput type="text" placeholder="Add DNS Resolvers"
+                    i18n-placeholder>
+                </mat-form-field>
+
+                <button class="network__button network__button--margin-left" mat-button (click)="addDns()" [disabled]="isControlInvalid('dnsInput') || (isLoading | async)"
+                  i18n>
+                  Add
+                </button>
+              </mat-list-item>
+
+              <mat-list-item *ngFor="let dns of hostInfo.dns; let i = index;">
+                <span class="output" matLine>
+                  {{dns}}
+                </span>
+                <button class="network__button network__button--margin-right" mat-icon-button (click)="deleteDns(i)">
+                  <mat-icon>
+                    delete
+                  </mat-icon>
+                </button>
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <span class="network__label" i18n>
+                NTP servers
+              </span>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <mat-list-item>
+                <mat-form-field flex matLine>
+                  <input matInput formControlName="ntpInput" type="text" placeholder="Add NTP Server" i18n-placeholder
+                    #ntpInput>
+                </mat-form-field>
+                <button mat-button class="network__button network__button--margin-left" (click)="addNtp()" [disabled]="isControlInvalid('ntpInput') || (isLoading | async)"
+                  i18n>
+                  Add
+                </button>
+              </mat-list-item>
+              <mat-list-item *ngFor="let ntp of hostInfo.ntp; let i = index;">
+                <span class="output" matLine>
+                  {{ntp}}
+                </span>
+                <button class="network__button network__button--margin-right" mat-icon-button (click)="deleteNtp(i)">
+                  <mat-icon>
+                    delete
+                  </mat-icon>
+                </button>
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-card-content>
+    </mat-card>
+    <!--End of ntp/DNS-->
+
+  </form>
+</div>

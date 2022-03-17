@@ -1,0 +1,33 @@
+@import 'variables';
+@import 'mixins';
+
+.login-card {
+
+  @include e('logo') {
+    // margin: auto;
+    height: 100px;
+    
+  }
+
+  @include e('toolbar'){
+    min-height: 100px;
+
+  }
+
+  @include e('login-title') {
+    color: $login-title-color;
+  }
+
+  @include e('message') {
+    @include m('error') {
+      color: $warn-color;
+    }
+  }
+
+}
+
+.check-login-spinner {
+  margin-top: 20%;
+  width: auto;
+  height: 155px;
+}

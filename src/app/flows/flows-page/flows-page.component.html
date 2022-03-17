@@ -1,0 +1,49 @@
+<section class="content" fxLayout="row" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile">
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header>
+        <mat-card-title>
+          <h2 class="mat-title" i18n> Flows</h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <a class="flows-button" mat-button loopButton loopClearButton href="/flows" target="_blank">
+          <mat-icon *ngIf="!whiteLabeled">
+            device_hub
+          </mat-icon>
+          <span *ngIf="whiteLabeled" i18n>
+            Go to Flows
+          </span>
+          <span *ngIf="!whiteLabeled" i18n>
+            Go to LoopFlows
+          </span>
+        </a>
+
+        <mat-table [dataSource]="dataSource" [trackBy]="trackBy">
+          <ng-container cdkColumnDef="name">
+            <mat-header-cell *cdkHeaderCellDef i18n="Name for flow"> Flow Name </mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> <a [href]="row.link" target="_blank">{{row.label}}</a> </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="nodes">
+            <mat-header-cell *cdkHeaderCellDef i18n="number of nodes"> Connected Nodes</mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> {{row.nodes}} </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="actions">
+            <mat-header-cell *cdkHeaderCellDef i18n> Actions </mat-header-cell>
+            <mat-cell *cdkCellDef="let row">
+              <button mat-icon-button (click)="deleteFlow(row.id)" matToast="Delete Flow">
+                <mat-icon>
+                  delete
+                </mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *cdkHeaderRowDef="columnsDef"></mat-header-row>
+          <mat-row *cdkRowDef="let row; columns: columnsDef;" [@flowsListAnimation]></mat-row>
+        </mat-table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

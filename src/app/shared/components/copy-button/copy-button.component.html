@@ -1,0 +1,11 @@
+<button
+  class="copy__button"  
+  mat-icon-button
+  ngxClipboard                
+  [cbContent]="content"
+  (cbOnSuccess)="copied()"     
+  matTooltip="Copy"  
+  i18n-matTooltip              
+>
+<mat-icon class="copy__icon">content_copy</mat-icon>
+</button>     

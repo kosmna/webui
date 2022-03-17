@@ -1,0 +1,7 @@
+.storage-row {
+  &__text-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

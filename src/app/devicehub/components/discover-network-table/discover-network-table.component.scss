@@ -1,0 +1,83 @@
+@import 'mixins';
+@import 'variables';
+
+.table {
+    min-width: 900px;
+
+    @include e('cell') {
+
+        @include m('no-wrap') {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @include e('copy-button') {
+            display: none;
+            margin-left: -10px;
+            // @include md-icon-size(8px);
+        }
+    }
+}
+
+.table__cell:hover {
+    loop-copy-button {
+        display: initial;
+    }
+}
+
+
+
+.mat-column-ipv4 {
+    flex: 0 0 100px;
+}
+
+.mat-column-lastSeen {
+    flex: 0 0 75px;
+}
+
+.mat-column-ports, .mat-column-mac, .mat-column-macVendor, .mat-column-plcVendor, .mat-column-hostname {
+    flex: 1 0 15%;
+}
+
+
+
+  .dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+
+    @include m('online') {
+        background-color:  $enabled-color;
+
+    }
+
+    @include m('offline') {
+        background-color: $disabled-color;
+
+    }
+  }
+
+    @include shadow('loop-copy-button') {
+        // @include md-icon-size(20px);
+
+        mat-icon {
+            line-height: 15px;
+            width: 15px;
+            height: 15px;
+            font-size: 15px;
+        }
+        
+        .mat-icon-button {
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+        }
+    
+    }
+
+//   .table__cell__copy-button :host ::ng-deep .copy__icon  {
+//     @include md-icon-size(10px);
+//   }

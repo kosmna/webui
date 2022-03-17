@@ -1,0 +1,11 @@
+// export * from './time.service';
+export * from '@app/core/services/loop-edge-auth.service';
+export * from '@app/core/services/utility.service';
+export * from '@app/core/services/intercom.service';
+export * from '@app/core/services/favicon.service';
+export * from '@app/core/services/rollbar.service';
+export * from '@app/core/services/time.service';
+export * from '@app/core/services/locale.service';
+export * from '@app/core/services/favicon.config';
+export * from '@app/core/services/cache.service';
+export * from './info.service';

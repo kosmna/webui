@@ -1,0 +1,91 @@
+
+
+<mat-card  fxLayout="column" fxLayoutAlign="start" class="network-card" >
+  <mat-card-header fxLayout="column" class="network-card__header" [class]="headerClass(network.status)">
+    <div fxLayout="row"  fxLayoutAlign="space-between start" class="tag-container" >
+
+      <span  class="loop-tag--side-card" loopTag  [tagColor]="getTagColor(network.status)"  i18n>
+        {{status}}
+      </span>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>
+          more_vert
+        </mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" style="display:none">
+        <button mat-menu-item (click)="clickLeaveNetwork()" i18n>
+          <mat-icon>
+            delete
+          </mat-icon>
+          Leave Network
+        </button>
+      </mat-menu>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="network-card-content network-card__content" fxLayout="column">
+
+    <div class="app-header" fxLayout="column" fxLayoutAlign="start center"  fxFlexOffset="-30px">
+      <mat-icon>
+        network_wifi
+      </mat-icon>
+      <span class="app-header__title app-header__title--large-width-mobile">
+        <span class="app-header__text" fxFlex>
+          {{network.name}}
+        </span>
+      </span>  
+      <span  class="app-header__subtitle app-header__subtitle--large-width-mobile">
+        <span i18n class="app-header__text" fxFlex>
+          {{typeIsPublic(network.type) ? 'Public' : 'Private'}}
+        </span>
+      </span>      
+    </div>  
+
+    <div fxLayout="row" fxLayoutAlign="center stretch">
+
+      <mat-list fxFlex="0 1 100%">
+
+        <mat-list-item  class="stats">
+          <span i18n matLine> Remote Access IP  Address</span>
+
+          <ul class="stats__addr-list" matLine>
+            <li class="stats__output" *ngFor="let addr of network.addrs">
+              <span class="mat-body-2 stats__output__text">
+                {{addr}}
+              </span>  
+              <loop-copy-button [content]="addr"></loop-copy-button>
+              
+            </li>
+          </ul>
+
+        </mat-list-item>        
+
+        <mat-list-item class="stats">
+          <span i18n matLine>Device</span>
+
+          <div >
+            <span class="stats__output">{{network.device}}</span>
+          </div>
+        </mat-list-item>        
+
+        <mat-list-item  class="stats">
+          <span i18n matLine>MAC Address</span>
+
+          <div >
+            <span class="stats__output">{{network.mac}}</span>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item   class="stats">
+          <span i18n matLine>Network ID</span>
+
+          <div >
+            <span class="stats__output">{{network.id}}</span>
+          </div>
+        </mat-list-item>
+
+      </mat-list>
+
+    </div>
+  </mat-card-content>
+
+</mat-card>

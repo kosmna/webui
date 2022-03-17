@@ -1,0 +1,11 @@
+@import 'mixins';
+
+.mat-icon {
+    @include md-icon-size(20px);
+  }
+
+  .help {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+  }

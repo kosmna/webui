@@ -1,0 +1,47 @@
+.bar {
+  color: #ffffff;
+  height: 40px;
+
+  &__background {
+    &--status-ok {
+      background-color: #79B473;
+    }
+
+    &--status-warning {
+      background-color: #F57823;
+    }
+
+    &--status-fail {
+      background-color: rgb(218, 68, 68);
+    }
+
+    &--status-unknown {
+      background-color: #aaaaaa;
+    }
+  }
+
+  &__heading {
+    margin: 0 8px;
+
+    .title {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
+  &__progress {
+    height: 10px;
+    margin: 0 8px;
+
+    .progress {
+      &__background {
+        background-color: rgba(255, 255, 255, .25);
+      }
+
+      &__value {
+        background-color: #ffffff;
+      }
+    }
+  }
+}

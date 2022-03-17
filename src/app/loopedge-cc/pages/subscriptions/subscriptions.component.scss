@@ -1,0 +1,46 @@
+@import 'variables';
+
+.mat-column-actions {
+  flex: none;
+  width: 40px;
+}
+
+.mat-column-enabled {
+  flex: none;
+  width: 80px;
+  text-align: center;
+}
+
+.table-container {
+  margin: 0 8px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.subscriptions {
+  &__navigation {
+    height: 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 0 5px;
+  }
+
+  &__left-menu {
+    width: 200px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.12);
+    background-color: #1c232f;
+    overflow-y: auto;
+
+    & * {
+      color: white;
+    }
+
+    & mat-divider {
+      background-color: rgba(255, 255, 255, .2);
+    }
+
+    &__item-text {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}

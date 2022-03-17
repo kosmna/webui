@@ -1,0 +1,68 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center">
+
+  <div class="inner-container" fxFlex="95" fxLayout="column">
+    <h1 i18n>
+      Template
+    </h1>
+    <ng-container [ngSwitch]="view">
+
+      <ng-container *ngSwitchCase="'init'">
+        <section class="selection">
+    
+          <table class="selection__input-container">
+            <tr fxLayout="row" fxLayoutAlign="space-between center">
+              <td class="selection__input vertical-border" fxLayout="column" fxLayoutAlign="center center">
+                <h3 i18n>
+                  Create Template
+                </h3>
+                <button mat-raised-button color="primary" (click)="view = 'template'" i18n>
+                  Create
+                </button>
+              </td>
+              <td class="selection__input" fxLayout="column" fxLayoutAlign="center center">
+                <h3 i18n>
+                  Upload Template
+                </h3>
+                <loop-file-input #fileUpload (onUpload)="onUpload($event)" (onCancel)="onCancel()" accept=".json" [simpleButton]="true">
+                </loop-file-input>
+              </td>
+            </tr>
+          </table>
+
+        </section>
+      </ng-container>
+      <ng-container *ngSwitchCase="'template'">
+        <loop-file-input  #fileUpload  (onUpload)="onUpload($event)" (onCancel)="onCancel()" [fileMsg]="'Upload Template'" accept=".json" [simpleButton]="true">
+        </loop-file-input>
+
+        <div *ngIf="template; else templateErr" class="template-content" fxLayout="column" fxLayoutAlign="space-between start">
+          <div style="width: 100%">
+            <div class="margin-bottom" *ngIf="template['devices']">
+              <loop-template-panel [type]="'device'" title="Devices" [data]="template['devices']" (outputChange)="output['devices'] = $event"></loop-template-panel>
+            </div>
+
+            <span class="divider"></span>
+            <div class="margin-bottom" *ngIf="template['flows']">
+              <loop-template-panel [type]="'flow'" title="Flows" [data]="template['flows']" (outputChange)="output['flows'] = $event"></loop-template-panel>
+            </div>
+          </div>
+
+          <div class="input-container">
+            <button mat-button loopButton loopClearButton type="submit" (click)="createTemplate(output)" i18n>
+              Create Template
+            </button>
+          </div>
+        </div>
+        <ng-template #templateErr>
+          <div>
+            <h3 i18n>
+              Failed to Load Resources
+            </h3>
+          </div>
+        </ng-template>
+      </ng-container>
+
+
+    </ng-container>
+  </div>
+</div>

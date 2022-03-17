@@ -1,0 +1,28 @@
+.heartbeat {
+  color: rgba(0, 0, 0, .5);
+
+  &__charts {
+    padding: 16px 0;
+  }
+
+}
+
+.cloud-counters {
+  &__item {
+    font: 18px/28px 'Proxima Nova';
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__item-name {
+    color: rgba(0, 0, 0, .5);
+    font-size: 14px;
+  }
+}
+
+.status-bar {
+  margin: 8px;
+}

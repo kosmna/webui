@@ -1,0 +1,12 @@
+.counter {
+  color: rgba(0, 0, 0, .5);
+
+  &__count {
+    font-size: 32px;
+    line-height: 70px;
+  }
+
+  &__title {
+    font-size: 0.8em;
+  }
+}

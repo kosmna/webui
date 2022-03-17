@@ -1,0 +1,30 @@
+<ng-container *ngIf="bars.length > 0; else noService">
+ <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px"
+    height="25px" viewBox="0 0 80 80" enable-background="new 0 0 80 80" xml:space="preserve">
+    <svg:defs>
+        <svg:rect id="1" x="1.75" y="61.749" width="16.5" height="17.5"/>
+        <svg:rect id="2" x="21.751" y="44.748" width="16.499" height="34.501"/>
+        <svg:rect id="3" x="41.75" y="27.749" width="16.5" height="51.5"/>
+        <svg:rect id="4" x="61.75" y="10.749" width="16.5" height="68.5"/>
+    </svg:defs>
+  <svg:g id="Layer_1">
+ </svg:g>
+ <svg:g id="Layer_2">
+ </svg:g>
+ <svg:g id="Layer_3">
+ </svg:g>
+ <svg:g id="Layer_4">
+   <svg:g>
+     <ng-container *ngFor="let bar of bars" >
+       <svg:use [attr.xlink:href]="absUrl + '#' + bar"></svg:use>
+
+     </ng-container>
+   </svg:g>
+ </svg:g>
+ </svg>
+</ng-container>
+ <ng-template #noService>
+   <span class="mat-caption" i18n="Modem service">
+      No Service
+   </span>
+ </ng-template>

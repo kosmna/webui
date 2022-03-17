@@ -1,0 +1,67 @@
+<div fxLayout.gt-sm="row" fxLayout.lt-sm="column" class="mat-dialog-header">
+  <div class="small-icon-container" fxLayout="row" fxLayoutAlign="center center">
+    <img class="small-icon" src="{{app.image}}" alt="" fxHide.lt-sm>
+  </div>
+  <div>
+    <ul class="app-description">
+      <li>
+        <h2 matDialogTitle>{{app.name}}</h2>
+      </li>
+      <li>
+        <p class="mat-body-1">{{app.description}}</p>
+      </li>
+    </ul>
+  </div>
+</div>
+<mat-dialog-content *ngIf="!messageTitle">
+  <form [formGroup]="versionForm">
+    <mat-form-field *ngIf="!(isLoading | async)" class="full-width">
+      <mat-select class="full-width" placeholder="Choose an installation script version"  formControlName="version" i18n-placeholder>
+        <mat-option *ngFor="let option of version.options" [value]="option">{{option}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  <div *ngIf="isLoadingParams" fxLayout="row" fxLayoutAlign="center center">
+    <mat-progress-spinner mode="indeterminate"> </mat-progress-spinner>
+  </div>
+  <div *ngIf="!isLoadingParams && versionForm.valid">
+    <form [formGroup]="paramsForm" fxLayout="column">
+      <ng-container *ngFor="let input of inputs">
+        <p class="mat-caption"><strong>{{input.description}}</strong></p>
+        <mat-form-field *ngIf="!input.options;else selectOption" class="full-width">
+          <input matInput type="{{input.type==='int'? 'number': input.type==='string' ? 'text' : input.type}}"
+            [placeholder]="input.label" [formControlName]="input.variable">
+          <mat-error i18n>Input is not valid</mat-error>
+        </mat-form-field>
+        <ng-template #selectOption>
+
+          <mat-form-field class="full-width">
+            <mat-select [placeholder]="input.label" [formControlName]="input.variable" class="full-width">
+              <mat-option i18n>None</mat-option>
+              <mat-option *ngFor="let option of input.options;" [value]="option">{{option}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </ng-template>
+      </ng-container>
+    </form>
+    <mat-tab-group>
+      <mat-tab label="README">
+        <ngx-md [data]="readme"></ngx-md>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</mat-dialog-content>
+<mat-dialog-content  *ngIf="messageTitle">
+  <div  class="mat-typography fail-message" fxLayout="column" fxLayoutAlign="center center">
+    <h3 i18n>
+        App Has Successfully Launched.
+    </h3>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions *ngIf="!isLoadingParams" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+  <button *ngIf="!messageTitle" type="submit" loopSubmitOnEnter loopButton loopClearButton mat-button (click)="onSubmit()"
+    [disabled]="!versionForm.valid || !paramsForm.valid" i18n> Launch </button>
+  <button mat-button loopButton color="warn" matDialogClose i18n>Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,40 @@
+<div fxLayoutAlign="start start" fxLayout="row wrap" fxFlex>
+
+  <mat-card class="apps-card"  *ngFor="let app of applications" fxFlex="22" fxFlex.md="30" fxFlex.sm="45" fxFlex.xs="100">
+    <mat-card-header fxLayout="column"  [class]="(app.status === 'Running' ? 'running-status' : 'dead-status')" (click)="showDetails(app)">
+      <div fxLayout="row"  fxLayoutAlign="start start" class="tag-container" >
+        <span  loopTag class="loop-tag--side-card" [tagColor]="(app.status === 'Running' ? 'enabled' : 'warn')" >
+          {{app.status}}
+        </span>
+      </div>
+      <div class="app-title-container" fxLayout="column" fxLayoutAlign="start center" fxFlexOffset="5px">
+        <mat-icon>
+          apps
+        </mat-icon>
+        <span class="app-title">
+          {{app.name}}
+        </span>
+      </div>
+    </mat-card-header>
+    <mat-card-content fxLayout="column" fxLayoutAlign="center center" (click)="showDetails(app)">
+      <span i18n class="output">
+        Status updated at: {{ app.statusChangedAt | date: 'MM-dd hh:mm a' }}
+      </span>
+    </mat-card-content>
+    <mat-card-actions *ngIf="allowedRole" [ngSwitch]="isApplicationRunning(app)" fxLayout="row" fxLayoutAlign="space-between">
+        <button mat-button mat-icon-button *ngSwitchCase="false" (click)="startApplication(app)" matTooltip="Start application" i18n-matTooltip [disabled]="isLoading | async ">
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button mat-button mat-icon-button *ngSwitchCase="true" (click)="stopApplication(app)" matTooltip="Stop application" i18n-matTooltip [disabled]="isLoading | async">
+          <mat-icon>stop</mat-icon>
+        </button>
+        <button mat-button mat-icon-button (click)="refreshApplication(app)" matTooltip="Refresh application" i18n-matTooltip [disabled]="isLoading | async">
+          <mat-icon>refresh</mat-icon>
+        </button>
+        <button mat-button mat-icon-button (click)="uninstallApplication(app)" matTooltip="Uninstall application" i18n-matTooltip [disabled]="isLoading | async" >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+  </mat-card>
+
+</div>

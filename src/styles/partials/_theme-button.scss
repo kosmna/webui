@@ -1,0 +1,70 @@
+@import 'variables';
+
+/* Directive styles*/
+.mat-button.loop-button {
+    border-radius: 0;
+ }
+ 
+ .mat-button.loop-button[disabled]{
+     cursor:not-allowed;
+ }
+ 
+
+ .mat-button.loop-clear-button[disabled]{
+   outline: none !important;
+   background-color: $clear-button-disabled !important;
+ 
+ }
+ 
+ .mat-button.loop-clear-button[disabled]:hover{
+   background-color:$clear-button-disabled;
+ 
+ }
+ 
+ .mat-button.loop-clear-button:hover {
+   background-color:$clear-button-color;
+ }
+ 
+ .mat-button.loop-clear-button:hover span {
+   color: $clear-button-text-hover;
+ }
+
+ 
+@mixin set-button-theme($theme, $themeName) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $accent-color:  mat-color($accent, 500);
+    $primary-color: mat-color($primary, 500);
+    @include set-sensonode-color($accent-color, $themeName);
+
+    @if map-get($theme, is-dark ) {
+      @include set-button-color($accent-color, $themeName);
+    }
+
+    @else {
+      @include set-button-color($primary-color, $themeName);
+    }
+    
+}
+
+@mixin set-button-color($color, $themeName) {
+  .#{$themeName}{
+    .mat-button.loop-clear-button {
+      background-color:transparent;
+      outline: 1px solid $color;
+    }
+
+    .mat-button.loop-clear-button:hover {
+        background-color: $color;
+      }
+
+  }  
+}
+
+@mixin set-sensonode-color($color, $themeName) {
+  .#{$themeName} {
+    .accent-color_icon-button {
+      color: $color;
+    }
+  }
+}

@@ -1,0 +1,48 @@
+<pagination-template 
+  #p="paginationApi" 
+  [id]="id"
+  (pageChange)="pageChange.emit($event)"
+  fxLayout="row"
+  fxLayoutAlign="center center"
+  class="loop-pagination--shadow-style">
+  <span   *ngIf="p.pages.length > 1">
+    <button 
+      mat-fab class="loop-pagination__button"
+      (click)="p.setCurrent(0)" 
+      [color]="'primary'" 
+      [disabled]="p.isFirstPage()" > 
+      <mat-icon>
+        keyboard_arrow_left          
+      </mat-icon>
+    </button>
+
+    <ng-container *ngFor="let page of p.pages">
+      <button  
+        mat-fab class="loop-pagination__button"
+        *ngIf="p.getCurrent() !== page.value"
+        (click)="p.setCurrent(page.value)" 
+        [color]="'primary'">
+          {{ page.label }}
+        </button>
+
+      <button 
+        mat-fab class="loop-pagination__button"
+        *ngIf="p.getCurrent() === page.value"  
+        (click)="p.setCurrent(page.value)" 
+        [color]="'accent'">
+          {{ page.label }}
+        </button>
+      
+    </ng-container>
+
+    <button  
+      mat-fab class="loop-pagination__button"
+      (click)="p.setCurrent(p.getLastPage())" 
+      [color]="'primary'" 
+      [disabled]="p.isLastPage()"> 
+      <mat-icon>
+        keyboard_arrow_right
+      </mat-icon>
+    </button>
+  </span>
+</pagination-template>

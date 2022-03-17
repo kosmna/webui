@@ -1,0 +1,15 @@
+.mat-column-tls, .mat-column-port, .mat-column-actions {
+  flex: none;
+}
+
+.mat-column-tls {
+  width: 40px;
+}
+
+.mat-column-port {
+  width: 80px;
+}
+
+.mat-column-actions {
+  width: 40px;
+}

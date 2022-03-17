@@ -1,0 +1,24 @@
+@import 'mixins';
+@import 'include-media';
+@import 'variables';
+
+.mat-button.loop-clear-button.loop-button {
+    margin-right: 1px;
+}
+
+.reboot-ftp {
+    @include e('text') {
+        @include m('mobile') {
+            @include media('<=phone') {
+                font-size: 14px;
+                margin-top: 20px;
+            }
+        }
+
+    }
+}
+
+.mat-column-actions {
+  flex: none;
+  width: 50px;
+}

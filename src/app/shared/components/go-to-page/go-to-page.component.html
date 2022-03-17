@@ -1,0 +1,12 @@
+<div fxLayout="row nowrap" fxLayoutAlign="start baseline" fxLayoutGap="10px" class="selectable-paginator">
+  <span class="mat-caption selectable-paginator__label" i18n>Go to page:</span>
+
+  <mat-form-field floatPlaceholder="none" dividerColor="primary" class="selectable-paginator__input">
+    <input matInput #manualPage [ngModel]="selectedPage" type="number" (ngModelChange)="updatePaginator($event)" min="1"
+      [max]="paginator.getNumberOfPages()">
+  </mat-form-field>
+
+  <span class="mat-caption selectable-paginator__label" i18n="got to page from">from {{ paginator.getNumberOfPages() }}</span>
+  <span fxFlex></span>
+
+</div>

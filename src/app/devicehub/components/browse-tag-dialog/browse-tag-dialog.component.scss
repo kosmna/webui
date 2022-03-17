@@ -1,0 +1,28 @@
+@import 'variables';
+
+.tree-node {
+  &__type {
+    font-size: 11px;
+    background: $positive-color;
+    border-radius: 4px;
+    color: white !important;
+    padding: 4px;
+  }
+
+  &__tag {
+    font-size: 11px;
+    background: $neutral-color;
+    border-radius: 4px;
+    color: white !important;
+    padding: 4px;
+  }
+
+}
+
+.browse-tags {
+
+  &__no-device,
+  &__count {
+    text-align: center;
+  }
+}

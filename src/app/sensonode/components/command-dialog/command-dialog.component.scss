@@ -1,0 +1,7 @@
+@import 'mixins';
+
+.warning-banner {
+    @include e('icon') {
+        margin-bottom: 1vh;
+    }
+}

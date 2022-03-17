@@ -1,0 +1,71 @@
+<!-- Storage Info -->
+<mat-card *ngIf="type === 'storage'" loopCard loopMaterialCard class="donut-chart-card info-card" fxFlex>
+  <mat-card-header>
+    <mat-icon mat-card-avatar>data_usage</mat-icon>
+    <mat-card-title>
+      <h2 class="mat-title" i18n="title" i18n> Disk </h2>
+    </mat-card-title>
+
+  </mat-card-header>
+
+  <loop-d3-chart [chartType]="'donutChart'" [valueStream]="chartSource$"></loop-d3-chart>
+  <mat-list class="donut-chart-card__list">
+    <mat-list-item matLine>
+      <span i18n fxFlex="35">Total Storage</span>
+      <span class="output">
+        {{toGiBString(data.totalSize)}}
+      </span>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item matLine>
+      <span i18n fxFlex="35">Storage Used</span>
+      <span class="output">
+        {{toGiBString(data.dataSize)}}
+      </span>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item matLine>
+      <span i18n fxFlex="35">Storage Available</span>
+      <span class="output">
+        {{toGiBString(data.dataFree)}}
+      </span>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+
+
+<mat-card *ngIf="type === 'memory'" loopCard loopMaterialCard class="donut-chart-card info-card" fxFlex>
+  <mat-card-header>
+    <mat-icon mat-card-avatar>memory</mat-icon>
+
+    <mat-card-title>
+      <h2 class="mat-title" i18n="title" i18n> Memory </h2>
+    </mat-card-title>
+
+    <span fxFlex></span>
+  </mat-card-header>
+
+  <loop-d3-chart [chartType]="'donutChart'" [valueStream]="chartSource$"></loop-d3-chart>
+  <mat-list class="donut-chart-card__list">
+    <mat-list-item matLine>
+      <span i18n fxFlex="35">Total Memory</span>
+      <span class="output">
+        {{toMiBString(data.memTotal)}}
+      </span>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item matLine>
+      <span i18n fxFlex="35">Memory Used</span>
+      <span class="output">
+        {{toMiBString(data.memUsed)}}
+      </span>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <span i18n fxFlex="35">Memory Available</span>
+      <span class="output">
+        {{toMiBString(data.memAvailable)}}
+      </span>
+    </mat-list-item>
+  </mat-list>
+</mat-card>

@@ -1,0 +1,111 @@
+<form [formGroup]="connectorForm" (submit)="submitConnector()" loopDropFile>
+  <h2 matDialogTitle class="theme-bottom-border" i18n>{{ isNewConnector ? 'Add' : 'Update' }} Connector</h2>
+  <mat-dialog-content *ngIf="!isLoading">
+
+    <!--Protocol Scheme-->
+    <div *ngIf="!isReadOnly">
+      <mat-form-field class="full-width">
+        <mat-select formControlName="scheme" placeholder="Network Protocol scheme" (selectionChange)="schemeChange()">
+          <mat-option value="tcp" i18n>LoopCloud - MQTT - TCP</mat-option>
+          <mat-option value="ssl" i18n>LoopCloud - SSL </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <mat-toolbar *ngIf="isReadOnly" fxLayout="row" fxLayoutGap="15px">
+      <mat-icon>warning</mat-icon>
+      <span class="mat-body-2" i18n>
+        This cloud connector can not be edited.
+      </span>
+    </mat-toolbar>
+
+    <div *ngIf="connectorForm.get('scheme').value" fxLayout="column" fxLayoutAlign="space-between stretch">
+      <!--Name-->
+      <mat-form-field class="full-width">
+        <input matInput formControlName="name" type="text" placeholder="Name" required [readonly]="isReadOnly">
+      </mat-form-field>
+
+      <!--Hostname-->
+      <mat-form-field class="full-width">
+        <input matInput formControlName="address" type="text" placeholder="Hostname" [readonly]="isReadOnly">
+      </mat-form-field>
+
+      <!--Port-->
+      <mat-form-field class="full-width">
+        <input matInput formControlName="port" type="number" placeholder="Port" [readonly]="isReadOnly">
+      </mat-form-field>
+
+      <mat-form-field class="full-width" *ngIf="isReadOnly">
+        <input matInput formControlName="scheme" type="text" placeholder="Network Protocol Scheme" [readonly]="isReadOnly">
+      </mat-form-field>
+
+      <!--SSL Root CA-->
+      <mat-form-field class="full-width" [hidden]="connectorForm.get('scheme').value == 'ssl' ? false : true">
+        <textarea matInput formControlName="sslRootCA" rows="4" placeholder="SSL Root CA" [readonly]="isReadOnly"></textarea>
+      </mat-form-field>
+
+      <!--ID-->
+      <mat-form-field class="full-width">
+        <input matInput formControlName="clientID" type="text" placeholder="ClientID" [readonly]="isReadOnly">
+      </mat-form-field>
+
+      <!--Username-->
+      <mat-form-field class="full-width">
+        <input matInput formControlName="username" type="text" placeholder="Username">
+      </mat-form-field>
+
+      <!--Password-->
+      <mat-form-field class="full-width">
+        <div fxLayout="row">
+          <input fxFlex matInput formControlName="password" placeholder="Password" [type]="showPassword.checked ? 'text' : 'password'"
+            [readonly]="isReadOnly">
+          <mat-checkbox #showPassword color="primary" i18n>Show password</mat-checkbox>
+        </div>
+      </mat-form-field>
+
+      <!--Topic-->
+      <mat-form-field class="full-width">
+        <input matInput formControlName="topic" type="text" required placeholder="Topic" [readonly]="isReadOnly">
+      </mat-form-field>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-content *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center">
+    <mat-spinner mode="indeterminate" strokeWidth="10"></mat-spinner>
+  </mat-dialog-content>
+  <div [ngSwitch]="isReadOnly">
+    <div *ngSwitchCase="false">
+      <mat-dialog-actions *ngIf="!isLoading" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start start"
+        fxLayoutAlign="space-between center" fxLayoutGap.lt-sm="5px">
+
+        <div fxLayoutGap="5px" class="submit-actions">
+          <button *ngIf="connectorForm.get('scheme').value" mat-stroked-button [disabled]="connectorForm.invalid" type="submit" color="primary"  >
+
+          <span [ngSwitch]="isNewConnector">
+            <span *ngSwitchCase="true" i18n>
+              Create
+            </span>
+            <span *ngSwitchCase="false" i18n>
+              Update
+            </span>
+
+          </span>
+        
+        </button>
+          <!-- Can optionally provide a result for the closing dialog. -->
+          <button mat-button  color="warn" [matDialogClose]="false" i18n>Cancel</button>
+        </div>
+        <!-- file upload -->
+
+        <loop-file-input fxHide.lt-sm #uploadCmp (onUpload)="uploadEvent($event)" fileMsg="Upload JSON" [uploadMessage]="fileSelectMsg"
+          (onCancel)="schemeChange()" accept=".json">
+        </loop-file-input>
+
+      </mat-dialog-actions>
+    </div>
+    <div *ngSwitchCase="true">
+      <mat-dialog-actions>
+        <button mat-button  color="warn" [matDialogClose]="false" i18n>Close</button>
+      </mat-dialog-actions>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,69 @@
+<section fxLayout="column nowrap" fxFlexFill class="subscriptions">
+  <section class="subscriptions__navigation" fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="5px">
+    <a mat-icon-button [routerLink]="['/kosmyna-cc']" matTooltip="Return to connectors" matTooltipShowDelay="400"
+      matTooltipPosition="right">
+      <mat-icon class="mat-18">arrow_back</mat-icon>
+    </a>
+    <span>
+      {{ instanceConfigAsJson.name }}
+    </span>
+    <span fxFlex></span>
+    <ng-container *ngFor="let item of instanceConfigKeys">
+      <span class="mat-caption" [fxHide.lt-sm]="true">
+        <strong>{{ item[0].toUpperCase() + item.substring(1) }}</strong> :
+        {{ instanceConfigAsJson[item] === '' ? 'Not Specified' : instanceConfigAsJson[item] }}
+      </span>
+    </ng-container>
+  </section>
+  <section fxFlex>
+    <loop-list-filter (applyFilter)="filter($event)" [actions]="filterActions"></loop-list-filter>
+    <section class="table-container">
+      <mat-table #table [dataSource]="dataSource" [fxHide]="dataSource.data.length === 0">
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef i18n> Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef i18n> Description </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="enabled">
+          <mat-header-cell *matHeaderCellDef i18n> Enabled </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <loop-status-display [positive]="element.enabled"></loop-status-display>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef i18n> Actions </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item *ngFor="let action of allowedActions(element)" (click)="action.action(element)">
+                <mat-icon>{{ action.icon }}</mat-icon>
+                <span>{{ action.name }}</span>
+              </button>
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [fxHide]="dataSource.data.length === 0">
+      </mat-paginator>
+    </section>
+
+    <div [fxShow]="dataSource.data.length === 0" fxLayout="row" fxLayoutAlign="center center" class="mat-headline" i18n>
+
+      No Local Data to Integration Defined
+
+    </div>
+  </section>
+</section>

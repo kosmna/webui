@@ -1,0 +1,19 @@
+<section fxLayout="row nowrap" class="filter" fxLayoutAlign="start center">
+  <div class="filter__buttons" fxLayout="row nowrap" fxLayoutAlign="end center" fxFlex *ngIf="!filterVisible">
+    <button mat-icon-button (click)="toggleFilter()" matTooltip="Show filter" i18n-matTooltip matTooltipShowDelay="400">
+      <mat-icon class="mat-18">filter_list</mat-icon>
+    </button>
+    <button *ngFor="let action of actions" mat-icon-button (click)="action.action()" [matTooltip]="action.tooltip" matTooltipShowDelay="400">
+      <mat-icon class="mat-18">{{ action.icon }}</mat-icon>
+    </button>
+  </div>
+
+  <mat-form-field *ngIf="filterVisible" fxFlex>
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput (keyup)="filterData($event.target.value)" #filter type="text" placeholder="Search" i18n-placeholder>
+    <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="filter.value=''; toggleFilter();">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+</section>

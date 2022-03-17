@@ -1,0 +1,55 @@
+<mat-table #table [dataSource]="dataSource" *ngIf="dataSource.data.length > 0;else noRecords">
+  <ng-container matColumnDef="info">
+    <mat-header-cell *matHeaderCellDef i18n> Info </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <div fxLayout="column" fxLayoutAlign="start stretch">
+        <span class="info-line__text">
+          <strong i18n>Name: </strong>
+          {{ row.name }}
+        </span>
+        <span class="mat-caption info-line__text">
+          <strong i18n>Mount Point: </strong>
+          {{ row.mountpoint }}
+        </span>
+      </div>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="driver">
+    <mat-header-cell fxFlex="0 0 100px" *matHeaderCellDef i18n> Driver </mat-header-cell>
+    <mat-cell fxFlex="0 0 100px" *matCellDef="let row">
+      {{ row.driver }}
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="size">
+    <mat-header-cell fxFlex="0 0 100px" *matHeaderCellDef i18n> Size </mat-header-cell>
+    <mat-cell fxFlex="0 0 100px" *matCellDef="let row">
+      {{ row.size }}
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <mat-header-cell fxFlex="0 0 50px" *matHeaderCellDef i18n> Actions </mat-header-cell>
+    <mat-cell fxFlex="0 0 50px" *matCellDef="let row">
+      <button mat-icon-button [matMenuTriggerFor]="actionsMenu">
+        <mat-icon class="mat-18">more_vert</mat-icon>
+      </button>
+      <mat-menu #actionsMenu="matMenu">
+        <button mat-menu-item (click)="deleteVolume.emit(row)">
+          <mat-icon class="mat-18">delete</mat-icon>
+          <span i18n>
+            Delete
+          </span>
+        </button>
+      </mat-menu>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+</mat-table>
+
+<mat-paginator [fxHide]="dataSource.data.length === 0" #paginator [pageSize]="15" [pageSizeOptions]="[5, 10, 15, 20]">
+</mat-paginator>
+<ng-template #noRecords>
+  <section fxLayout="row nowrap" fxLayoutAlign="center center">
+    <p class="mat-body-1" i18n>No volumes mounted.</p>
+  </section>
+</ng-template>

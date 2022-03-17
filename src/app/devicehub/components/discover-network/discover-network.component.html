@@ -1,0 +1,53 @@
+<div class="header" fxLayout="row" fxLayoutAlign="space-between end">
+
+  <h2 *ngIf="iFaceList" class="mat-h2 sub-title" i18n>Enable discovery mode to view devices connected to network interfaces.</h2>
+  <mat-slide-toggle matTooltip="Disabled" [labelPosition]="'before'" [disabled]="true" i18n-placeholder> 
+    <span class="mat-body-2" i18n>
+      Auto Connect
+    </span>
+  </mat-slide-toggle>
+
+</div>
+<h2 *ngIf="iFaceList === null" class="mat-h2 sub-title" i18n>No Network interfaces detected</h2>
+<mat-accordion #accordion [multi]="true">
+  <mat-card *ngFor="let iface of iFaceList; let i = index;">
+    <mat-card-content>
+      <mat-expansion-panel class="expansion-panel" [disabled]="!iface.enabled || iface.panelDisabled" [expanded]="iface.enabled">
+        <mat-expansion-panel-header>
+          <div class="header" fxLayoutAlign="space-between center" style="min-width: 95%">
+            <mat-panel-title>
+              <span class="header__title__text">
+                {{iface.name}}
+              </span>
+              <loop-wifi-icon class="header__title__icon" *ngIf="iface.enabled"></loop-wifi-icon>
+            </mat-panel-title>
+            <mat-panel-description class="panel-description" *ngIf="iface.enabled">
+              <mat-icon class="panel-description__icon" matTooltip="Discovered Devices">
+                devices
+              </mat-icon>
+              <span class="panel-description__text">
+                {{iface.data.length}}
+              </span>
+              <mat-icon class="panel-description__icon" matTooltip="Last Updated">
+                access_time
+              </mat-icon>
+              <span class="panel-description__text">
+                {{iface.lastUpdated | timeAgo }}
+              </span>
+            </mat-panel-description>
+            <mat-slide-toggle #toggle [disabled]="iface.panelDisabled" (click)="$event.stopPropagation()" (change)="toggleDiscovery(iface)"
+              [checked]="iface.enabled">
+              <span *ngIf="toggle.checked" i18n>ON</span>
+              <span *ngIf="!toggle.checked" i18n>OFF</span>
+            </mat-slide-toggle>
+          </div>
+        </mat-expansion-panel-header>
+        <div class="table-container">
+    
+          <loop-discover-network-table [data]="iface.data"></loop-discover-network-table>
+          <!-- Network tables -->
+        </div>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+</mat-accordion>

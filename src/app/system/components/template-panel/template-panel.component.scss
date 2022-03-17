@@ -1,0 +1,11 @@
+@import 'mixins';
+
+.list {
+    @include e('children'){
+        padding: 1% 0 0 2%;
+    }
+}
+
+.child-item {
+    margin-top: 3px;
+}

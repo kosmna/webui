@@ -1,0 +1,9 @@
+<section fxFlexFill class="opcua-container" fxLayout="row nowrap" fxLayoutGap="10px">
+  <div fxFlex="25" fxLayout="column nowrap" class="opcua-container__tree">
+    <loop-list-filter [actions]="treeActions"></loop-list-filter>
+    <loop-opcua-tree fxFlex [nodeList]="nodes" (selectNode)="selectNode($event)"></loop-opcua-tree>
+  </div>
+  <div fxFlex>
+    <loop-node-details (updateNode)="updateNode($event)" [node]="selectedNode"></loop-node-details>
+  </div>
+</section>

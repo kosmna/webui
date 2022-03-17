@@ -1,0 +1,21 @@
+<h2 matDialogTitle class="theme-bottom-border" *ngIf="data?.title">{{data?.title}}</h2>
+<mat-dialog-content #dialogContent>
+  <span class="mat-body-2">
+    {{data?.content}}
+  </span>
+  <span [innerHTML]="data?.htmlContent" class="mat-body-2"></span>
+  <div *ngIf="data?.isLoading" fxLayout="row" fxLayoutAlign="center center" class="isLoading">
+    <mat-progress-spinner mode="indeterminate" [strokeWidth]="5"></mat-progress-spinner>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions *ngIf="!data?.isLoading" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+  <button mat-stroked-button loopButton *ngIf="data?.submit !=='none'" [fxFlexOrder]="data?.reverseButtons ? 2 : 1"
+    [disabled]="!enableSubmitBtn" [matDialogClose]="true">
+    {{data.submit ? data.submit : 'OK'}}
+  </button>
+
+  <button mat-stroked-button loopButton color="warn" *ngIf="data?.cancel !=='none'" [fxFlexOrder]="data?.reverseButtons ? 1 : 2"
+    [matDialogClose]="false">
+    {{data.cancel ? data.cancel : 'Cancel'}}
+  </button>
+</mat-dialog-actions>

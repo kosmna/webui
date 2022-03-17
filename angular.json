@@ -1,0 +1,512 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "@cosmyna/kosmyna-webui": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles/partials"
+              ]
+            },
+            "assets": [
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles/loop-font.scss",
+              "src/styles/themes/parker-theme.scss",
+              "src/styles/themes/edgeline-theme.scss",
+              "src/styles/themes/loop-theme.scss",
+              "src/styles/styles.scss",
+              "src/styles/card.scss",
+              "node_modules/dygraphs/dist/dygraph.css",
+              "node_modules/prismjs/themes/prism-okaidia.css",
+              "node_modules/angular-tree-component/dist/angular-tree-component.css"
+            ],
+            "scripts": [
+              "node_modules/marked/lib/marked.js"
+            ]
+          },
+          "configurations": {
+            "dev": {
+              "i18nLocale": "en",
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.dev.ts"
+              }]
+            },
+            "dev-ja": {
+              "i18nLocale": "ja",
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.dev-ja.ts"
+              }]
+            },
+            "dev-parker": {
+              "i18nLocale": "ja",
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.dev-parker.ts"
+              }]
+            },
+            "development": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/en",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en-US",
+              "baseHref": "/en/",
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.dev.ts"
+              }]
+            },
+            "development-ja": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/ja",
+              "i18nFile": "src/locale/messages.ja.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "ja",
+              "baseHref": "/ja/",
+              "i18nMissingTranslation": "warning",
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.dev-ja.ts"
+              }]
+            },
+            "white": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/en",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en-US",
+              "baseHref": "/en/",
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.white.ts"
+              }]
+            },
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/en",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en-US",
+              "baseHref": "/en/",
+              "assets": [
+                { "glob": "**/*", "input": "src/assets/", "ignore": ["**/hpe*.svg", "**/Litmus*.svg", "**/VOM*.**", "**/edgelineFavicon.ico", "**/parkerFavicon.ico", "**/ScoutEdge*.**", "**/Parker.svg" ], "output": "/assets/" },
+                { "glob": "LitmusDemoLogo.svg", "input": "src/assets/",  "output": "/assets/" },
+                { "glob": "LitmusLogoSmall.svg", "input": "src/assets/",  "output": "/assets/" }
+              ],
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ts"
+              }]
+            },
+            "production-ja": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/ja",
+              "i18nFile": "src/locale/messages.ja.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "ja",
+              "baseHref": "/ja/",
+              "i18nMissingTranslation": "warning",
+              "assets": [
+                { "glob": "**/*", "input": "src/assets/", "ignore": ["**/hpe*.svg", "**/Litmus*.svg", "**/VOM*.**", "**/edgelineFavicon.ico", "**/parkerFavicon.ico", "**/ScoutEdge*.**", "**/Parker.svg" ], "output": "/assets/" },
+                { "glob": "LitmusDemoLogo.svg", "input": "src/assets/",  "output": "/assets/" },
+                { "glob": "LitmusLogoSmall.svg", "input": "src/assets/",  "output": "/assets/" }
+              ],
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ja.ts"
+              }]
+            },
+            "lite": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/en",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en-US",
+              "baseHref": "/en/",
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.lite.ts"
+              }]
+            },
+            "lite-ja": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/ja",
+              "i18nFile": "src/locale/messages.ja.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "ja",
+              "baseHref": "/ja/",
+              "i18nMissingTranslation": "warning",
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.lite.ja.ts"
+              }]
+            },
+            "parker": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/en",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en-US",
+              "baseHref": "/en/",
+              "assets": [
+                { "glob": "**/*", "input": "src/assets/", "ignore": ["**/hpe*.svg", "**/Litmus*.svg", "**/BackgroundPattern.svg", "**/VOM*.**", "**/litmusFavicon.ico", "**/edgelineFavicon.ico", "**/ScoutEdge*.**", "**/Parker.svg" ], "output": "/assets/" },
+                { "glob": "VOMTaglin.svg", "input": "src/assets/",  "output": "/assets/" },
+                { "glob": "VOMLogoEdge.svg", "input": "src/assets/",  "output": "/assets/" },
+                { "glob": "VOMBlackWhite.svg", "input": "src/assets/",  "output": "/assets/" }
+
+              ],
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.parker.ts"
+              }]
+            },
+            "parker-ja": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/ja",
+              "i18nFile": "src/locale/messages.ja.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "ja",
+              "baseHref": "/ja/",
+              "i18nMissingTranslation": "warning",
+              "assets": [
+                { "glob": "**/*", "input": "src/assets/", "ignore": ["**/hpe*.svg", "**/Litmus*.svg", "**/BackgroundPattern.svg", "**/VOM*.**", "**/litmusFavicon.ico", "**/edgelineFavicon.ico", "**/ScoutEdge*.**", "**/Parker.svg" ], "output": "/assets/" },
+                { "glob": "VOMTaglin.svg", "input": "src/assets/",  "output": "/assets/" },
+                { "glob": "VOMLogoEdge.svg", "input": "src/assets/",  "output": "/assets/" },
+                { "glob": "VOMBlackWhite.svg", "input": "src/assets/",  "output": "/assets/" }
+              ],
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.parker.ja.ts"
+              }]
+            },            
+            "parker-lite": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/en",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en-US",
+              "baseHref": "/en/",
+              "assets": [
+                { "glob": "**/*", "input": "src/assets/", "ignore": ["**/hpe*.svg", "**/Litmus*.svg", "**/BackgroundPattern.svg", "**/VOM*.**", "**/litmusFavicon.ico", "**/edgelineFavicon.ico", "**/ScoutEdge*.**", "**/Parker.svg" ], "output": "/assets/" },
+                { "glob": "VOMTaglin.svg", "input": "src/assets/",  "output": "/assets/" },
+                { "glob": "VOMLogoEdge.svg", "input": "src/assets/",  "output": "/assets/" },
+                { "glob": "VOMBlackWhite.svg", "input": "src/assets/",  "output": "/assets/" }
+
+              ],
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.parker.lite.ts"
+              }]
+            },
+            "parker-lite-ja": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/ja",
+              "i18nFile": "src/locale/messages.ja.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "ja",
+              "baseHref": "/ja/",
+              "i18nMissingTranslation": "warning",
+              "assets": [
+                { "glob": "**/*", "input": "src/assets/", "ignore": ["**/hpe*.svg", "**/Litmus*.svg", "**/BackgroundPattern.svg", "**/VOM*.**", "**/litmusFavicon.ico", "**/edgelineFavicon.ico", "**/ScoutEdge*.**", "**/Parker.svg" ], "output": "/assets/" },
+                { "glob": "VOMTaglin.svg", "input": "src/assets/",  "output": "/assets/" },
+                { "glob": "VOMLogoEdge.svg", "input": "src/assets/",  "output": "/assets/" },
+                { "glob": "VOMBlackWhite.svg", "input": "src/assets/",  "output": "/assets/" }
+
+              ],
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.parker.lite.ja.ts"
+              }]
+            },               
+            "functions": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/en",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en-US",
+              "baseHref": "/en/",
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.functions.ts"
+              }]
+            },
+            "edgeline": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/en",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en-US",
+              "baseHref": "/en/",
+              "assets": [
+                { "glob": "**/*", "input": "src/assets/", "ignore": ["**/hpe*.svg", "**/Litmus*.svg", "**/BackgroundPattern.svg", "**/VOM*.**", "**/litmusFavicon.ico", "**/parkerFavicon.ico", "**/ScoutEdge*.**", "**/Parker.svg" ], "output": "/assets/" },
+                { "glob": "hpe_element_logo.svg", "input": "src/assets/",  "output": "/assets/" },
+                { "glob": "hpe_otlink_logo.svg", "input": "src/assets/",  "output": "/assets/" }
+              ],
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.edgeline.ts"
+              }]
+            },
+            "edgeline.dev": {
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.edgeline.dev.ts"
+              }]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "@cosmyna/kosmyna-webui:build"
+          },
+          "configurations": {
+            "ja": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:ja"
+            },
+            "dev-ja": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:dev-ja"
+            },
+            "dev": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:dev"
+            },
+            "dev-parker": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:dev-parker"
+
+            },
+            "production": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:production"
+            },
+            "white": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:white"
+            },
+            "special": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:special"
+            },
+            "lite": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:special-lite"
+            },
+            "lite-ja": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:special-lite-ja"
+            },
+            "parker": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:parker"
+            },
+            "parker-ja": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:parker-ja"
+            },
+            "parker-lite": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:parker-lite"
+            },
+            "functions": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:functions"
+            },
+            "edgeline": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:edgeline"
+            },
+            "edgeline.dev": {
+              "browserTarget": "@cosmyna/kosmyna-webui:build:edgeline.dev"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "@cosmyna/kosmyna-webui:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles/partials"
+              ]
+            },
+            "tsConfig": "src/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/marked/lib/marked.js"
+            ],
+            "styles": [
+              "src/styles/loop-font.scss",
+              "src/styles/themes/parker-theme.scss",
+              "src/styles/themes/edgeline-theme.scss",
+              "src/styles/themes/loop-theme.scss",
+              "src/styles/styles.scss",
+              "src/styles/card.scss",
+              "node_modules/dygraphs/dist/dygraph.css",
+              "node_modules/prismjs/themes/prism-okaidia.css",
+              "node_modules/angular-tree-component/dist/angular-tree-component.css"
+            ],
+            "assets": [
+              "src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**/*"
+            ]
+          }
+        }
+      }
+    },
+    "@cosmyna/kosmyna-webui-e2e": {
+      "root": "e2e",
+      "sourceRoot": "e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "@cosmyna/kosmyna-webui:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**/*"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "@cosmyna/kosmyna-webui",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "loop",
+      "styleext": "scss"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "loop"
+    }
+  }
+}

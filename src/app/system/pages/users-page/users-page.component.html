@@ -1,0 +1,106 @@
+<div class="content" fxLayout="row" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile">
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>
+            <h2 class="mat-title"  i18n="card title" i18n> Users</h2> 
+        </mat-card-title>        
+        <span fxFlex></span>
+        <button color="accent" loopMaterialMiniFab mat-mini-fab class="center-block"  matTooltip="Add User" i18n-matTooltip (click)="addUserDialog()">
+          <mat-icon>add</mat-icon>
+        </button>
+        <span fxFlex="5px"></span>
+      </mat-card-header>
+      <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+      <div class="table-container">
+        <mat-table #table [dataSource]="userDatasource" matSort id="user-data-table">
+
+          <ng-container cdkColumnDef="username">
+            <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Username</mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> {{row.username}} </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="firstName">
+            <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>First Name</mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> {{row.firstName}} </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="lastName">
+            <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Last Name</mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> {{row.lastName}} </mat-cell>
+          </ng-container>
+
+
+          <ng-container cdkColumnDef="status">
+            <mat-header-cell *cdkHeaderCellDef mat-sort-header i18n>Status</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">  
+              <ng-container [ngSwitch]="row.disabled">
+                <span *ngSwitchCase="true">
+                    <loop-status-display [positive]="false" statusText="Disabled" i18n-statusText></loop-status-display>
+                </span>
+                <span *ngSwitchCase="false">
+                    <loop-status-display [positive]="true" statusText="Enabled" i18n-statusText></loop-status-display>  
+                </span>                
+              </ng-container>
+
+            </mat-cell>
+          </ng-container>
+
+
+          <ng-container cdkColumnDef="roles">
+            <mat-header-cell *cdkHeaderCellDef i18n>Roles</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">
+              <mat-chip-list>
+                <mat-chip *ngFor="let role of row.roles">
+                  {{role.name | titlecase}}
+                </mat-chip>
+              </mat-chip-list>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="actions">
+            <mat-header-cell *cdkHeaderCellDef i18n>Actions</mat-header-cell>
+            <mat-cell *cdkCellDef="let row">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="editUserDialog(row)">
+                  <mat-icon>edit</mat-icon>
+                  <span i18n>Edit</span>
+                </button>
+                <button *ngIf="allowUserBlock(row.username)" mat-menu-item (click)="deleteUserDialog(row)">
+                  <mat-icon>delete</mat-icon>
+                  <span i18n>Remove</span>
+                </button>
+                <button *ngIf="allowUserBlock(row.username)" mat-menu-item (click)="toggleUser(row)">
+                  <mat-icon>power_settings_new</mat-icon>
+                    <span *ngIf="row.disabled; else disabled" i18n>
+                      Enable
+                    </span>
+                    <ng-template #disabled>
+                      <span i18n>
+                        Disable
+                      </span>
+                    </ng-template>
+
+                </button>
+              </mat-menu>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *cdkRowDef="let row; columns: displayedColumns;" [ngClass]="{'disabled': row.disabled, 'enabled': !row.disabled}"></mat-row>
+
+        </mat-table>
+        <mat-paginator  #paginator
+          [class.hidden]="usersArrayLength < paginator.pageSizeOptions[0]"
+          [length]="usersArrayLength"
+          [pageIndex]="0"
+          [pageSize]="25"
+          [pageSizeOptions]="[10, 15, 20, 25]">
+        </mat-paginator>
+      </div>
+    </mat-card>
+  </div>
+</div>

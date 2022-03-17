@@ -1,0 +1,75 @@
+<mat-card loopCard loopMaterialCard>
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+    <mat-card-title>
+        <h2 class="mat-title"  i18n> Applications</h2> 
+    </mat-card-title>     
+    <span fxFlex></span>
+  </mat-card-header>
+  <mat-card-content fxLayout="column">
+    <mat-table #applicationsTable [dataSource]="dataSource" class="app-table">
+
+      <ng-container cdkColumnDef="name">
+        <mat-header-cell *cdkHeaderCellDef class="app-table__header" i18n> Name </mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="app-table__cell"> {{ row.name }} </mat-cell>
+      </ng-container>
+
+      <ng-container cdkColumnDef="status">
+        <mat-header-cell *cdkHeaderCellDef class="app-table__header" i18n> Status </mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="app-table__cell">
+          <span class="loop-tag--table" loopTag [tagColor]="(row.status === 'Running' ? 'accent' : 'warn')">
+            {{ row.status }}
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container cdkColumnDef="statusChangedAt">
+        <mat-header-cell *cdkHeaderCellDef class="app-table__header" i18n> Status Changed At </mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="app-table__cell"> {{ row.statusChangedAt | date }} </mat-cell>
+      </ng-container>
+
+      <ng-container cdkColumnDef="actions">
+        <mat-header-cell *cdkHeaderCellDef class="app-table__header" fxLayoutAlign="center" i18n> Actions </mat-header-cell>
+        <mat-cell *cdkCellDef="let row" fxLayout="row" fxLayoutAlign="center" >
+          <ng-container [ngSwitch]="isApplicationRunning(row)" >
+          <button fxHide.lt-md mat-button mat-icon-button *ngSwitchCase="false" (click)="startApplication(row)" matTooltip="Start application" i18n-matTooltip [disabled]="isLoading | async">
+            <mat-icon>play_arrow</mat-icon>
+          </button>
+          <button fxHide.lt-md mat-button mat-icon-button *ngSwitchCase="true" (click)="stopApplication(row)" matTooltip="Stop application" i18n-matTooltip [disabled]="isLoading | async">
+            <mat-icon>stop</mat-icon>
+          </button>
+          <button fxHide.lt-md mat-button mat-icon-button (click)="refreshApplication(row)" matTooltip="Refresh application" i18n-matTooltip [disabled]="isLoading | async">
+            <mat-icon>refresh</mat-icon>
+          </button>
+          <button fxHide.lt-md mat-button mat-icon-button (click)="uninstallApplication(row)" matTooltip="Uninstall application" i18n-matTooltip [disabled]="isLoading | async">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </ng-container>
+
+          <button mat-icon-button [matMenuTriggerFor]="menu" fxHide.gt-sm>
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          
+          <mat-menu #menu="matMenu" [ngSwitch]="isApplicationRunning(row)" fxHide.gt-sm>
+            <button mat-button mat-icon-button *ngSwitchCase="false" (click)="startApplication(row)" matTooltip="Start application" [disabled]="isLoading | async" i18n-matTooltip>
+              <mat-icon>play_arrow</mat-icon>
+            </button>
+            <button mat-button mat-icon-button *ngSwitchCase="true" (click)="stopApplication(row)" matTooltip="Stop application" [disabled]="isLoading | async" i18n-matTooltip>
+              <mat-icon>stop</mat-icon>
+            </button>
+            <button mat-button mat-icon-button (click)="refreshApplication(row)" matTooltip="Refresh application" [disabled]="isLoading | async" i18n-matTooltip>
+              <mat-icon>refresh</mat-icon>
+            </button>
+            <button mat-button mat-icon-button (click)="uninstallApplication(row)" matTooltip="Uninstall application" [disabled]="isLoading | async" i18n-matTooltip>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-menu>   
+
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *cdkHeaderRowDef="columnsDefinition"></mat-header-row>
+      <mat-row *cdkRowDef="let application; columns: columnsDefinition;"></mat-row>
+
+    </mat-table>
+  </mat-card-content>
+</mat-card>

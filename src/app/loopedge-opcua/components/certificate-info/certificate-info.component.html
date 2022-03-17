@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Certificate Information</h1>
+<mat-dialog-content>
+  <div fxLayout="column nowrap" *ngFor="let item of transformData(); let i = index; let odd=odd;" class="info"
+    [ngClass]="{'info--odd': !odd}">
+    <span class="mat-body-2"><strong>{{ item.name }}</strong></span>
+    <div class="mat-caption info__value">{{ item.value || '-' }}</div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button loopButton loopClearButton mat-button mat-dialog-close cdkFocusInitial i18n>Close</button>
+</mat-dialog-actions>

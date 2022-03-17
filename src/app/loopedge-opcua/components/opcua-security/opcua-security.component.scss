@@ -1,0 +1,32 @@
+@import 'variables';
+
+.security-container {
+  padding: 16px;
+}
+
+.section-block {
+  margin: 8px;
+
+  &__heading {
+    padding: 8px;
+  }
+
+  &__card>mat-card-content {
+    padding: 0;
+  }
+}
+
+.section-card {
+  &__buttons {
+    padding: 0 8px;
+  }
+}
+
+.info-block {
+  &__value {
+    background: $accent-color;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 16px;
+  }
+}

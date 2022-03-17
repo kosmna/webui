@@ -1,0 +1,13 @@
+<mat-dialog-content>
+  <mat-list fxLayout="column">
+    <mat-list-item *ngFor="let property of properties">
+      <mat-icon class="icon" matListIcon>{{prop[property].icon}}</mat-icon>
+      <span class="label">
+        {{prop[property].name}}
+      </span>
+      <span matListLine class="output">
+        {{data[property]}}
+      </span>
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>

@@ -1,0 +1,21 @@
+<div [ngSwitch]="item.type">
+
+  <div *ngSwitchCase="'readonly' || undefined">
+    <h4 matLine>{{ item.parameterName + ': ' + item.parameterValue }}</h4>
+  </div>
+
+  <div *ngSwitchCase="'buttonToggle'" fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+    <p>{{ item.parameterValue ? item.trueMessage : item.falseMessage }}</p>
+    <button loopButton loopClearButton mat-button (click)="buttonToggle(item)" [color]="item.parameterValue ? 'warn' : ''">
+      {{ item.parameterValue ? item.trueCommandName : item.falseCommandName }}
+    </button>
+  </div>
+
+  <div *ngSwitchCase="'slideToggle'" fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+    <p>{{ item.parameterValue ? item.trueMessage : item.falseMessage }}</p>
+    <mat-slide-toggle (change)="slideToggle(item)" [checked]="item.parameterValue">
+      {{ item.parameterValue ? item.trueCommandName : item.falseCommandName }}
+    </mat-slide-toggle>
+  </div>
+
+</div>

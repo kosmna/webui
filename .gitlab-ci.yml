@@ -1,0 +1,148 @@
+#
+# Copyright (c) 2017 Litmus Automation Inc.
+#
+---
+stages:
+  - test
+  - build
+  - publish
+  - deploy
+
+test:
+  stage: test
+  tags:
+    - docker
+  image: node:8.9
+  script:
+    - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+    - echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list
+    - apt-get update && apt-get install --no-install-recommends -y google-chrome-stable
+    - npm install
+    - npm run errorcheck
+
+.build: &build_template
+  stage: build
+  tags:
+    - docker
+  image: node:8.9
+  script:
+    - >-
+        sed -i -e  "s/\"version\"\(\s*\):\(\s*\)\".*\"/\"version\"\1:\2\"$CI_BUILD_REF_NAME\"/g" src/assets/version.json
+    - >-
+        sed -i -e  "s/\"git\"\(\s*\):\(\s*\)\".*\"/\"git\"\1:\2\"$CI_BUILD_REF\"/g" src/assets/version.json
+    - npm install
+    - npm run build-${Demo_WEBUI_PKG_NAME}
+    - ./pkg-tar.sh
+  artifacts:
+    paths:
+      - ./${Demo_WEBUI_PKG_NAME}_*
+    expire_in: 48 hours
+
+.build: &build_template_int
+  stage: build
+  tags:
+    - docker
+  image: node:8.9
+  script:
+    - >-
+        sed -i -e  "s/\"version\"\(\s*\):\(\s*\)\".*\"/\"version\"\1:\2\"$CI_BUILD_REF_NAME\"/g" src/assets/version.json
+    - >-
+        sed -i -e  "s/\"git\"\(\s*\):\(\s*\)\".*\"/\"git\"\1:\2\"$CI_BUILD_REF\"/g" src/assets/version.json
+    - npm install
+    - npm run build-${Demo_WEBUI_PKG_NAME}
+    - npm run build-${Demo_WEBUI_PKG_NAME}-ja
+    - ./pkg-tar.sh
+  artifacts:
+    paths:
+      - ./${Demo_WEBUI_PKG_NAME}_*
+    expire_in: 48 hours
+
+build-kosmyna-dev:
+  <<: *build_template_int
+  variables:
+    Demo_WEBUI_PKG_VERSION: ${CI_BUILD_REF_NAME}
+    Demo_WEBUI_PKG_NAME: kosmyna-webui-dev
+  only:
+    - develop
+
+build-kosmyna-full:
+  <<: *build_template_int
+  variables:
+    Demo_WEBUI_PKG_VERSION: ${CI_BUILD_REF_NAME}
+    Demo_WEBUI_PKG_NAME: kosmyna-webui-full
+  only:
+    - tags
+
+build-kosmyna-lite:
+  <<: *build_template_int
+  variables:
+    Demo_WEBUI_PKG_VERSION: ${CI_BUILD_REF_NAME}
+    Demo_WEBUI_PKG_NAME: kosmyna-webui-lite
+  only:
+    - tags
+
+build-scoutedge-full:
+  <<: *build_template_int
+  variables:
+    Demo_WEBUI_PKG_VERSION: ${CI_BUILD_REF_NAME}
+    Demo_WEBUI_PKG_NAME: scoutedge-webui-full
+  only:
+    - tags
+
+build-scoutedge-lite:
+  <<: *build_template_int
+  variables:
+    Demo_WEBUI_PKG_VERSION: ${CI_BUILD_REF_NAME}
+    Demo_WEBUI_PKG_NAME: scoutedge-webui-lite
+  only:
+    - tags
+
+build-edgeline-std:
+  <<: *build_template
+  variables:
+    Demo_WEBUI_PKG_VERSION: ${CI_BUILD_REF_NAME}
+    Demo_WEBUI_PKG_NAME: edgeline-webui-std
+  only:
+    - tags
+
+publish-tar:
+  stage: publish
+  tags:
+    - docker
+  image: quay.io/kosmyna/build-tools:latest
+  script:
+    - gsutil -m cp *_${CI_BUILD_REF_NAME}-0_all.tar.gz gs://kosmyna-packages/kosmyna-webui/
+  only:
+    - tags
+
+deploy_edge02:
+  stage: deploy
+  tags:
+    - docker
+  image: quay.io/kosmyna/build-tools:latest
+  script:
+    - eval $(ssh-agent -s)
+    - echo -n "$SSH_PRIVATE_KEY" | ssh-add -
+    - scp -o "StrictHostKeyChecking no" kosmyna-webui-dev_${CI_BUILD_REF_NAME}-0_all.tar.gz "gitlabinternal@edge02-direct.litmusloop.com:"
+    - ssh -o "StrictHostKeyChecking no" gitlabinternal@edge02-direct.litmusloop.com './deploy_web.sh'
+  environment:
+    name: edge02
+    url: https://edge02.litmusloop.com
+  only:
+    - develop
+
+.deploy_edge03:
+  stage: deploy
+  tags:
+    - docker
+  image: quay.io/kosmyna/build-tools:latest
+  script:
+    - eval $(ssh-agent -s)
+    - echo -n "$SSH_PRIVATE_KEY" | ssh-add -
+    - scp -o "StrictHostKeyChecking no" kosmyna-webui_${CI_BUILD_REF_NAME}-0_all.tar.gz "litmus@edge03.litmusloop.com:"
+    - ssh -o "StrictHostKeyChecking no" litmus@edge03.litmusloop.com './deploy_web.sh'
+  environment:
+    name: edge03
+    url: https://edge03.litmusloop.com
+  only:
+    - develop

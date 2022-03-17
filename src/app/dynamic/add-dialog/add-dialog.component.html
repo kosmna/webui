@@ -1,0 +1,22 @@
+<form #form="ngForm" (submit)="onSubmit(form.value)">
+  <h1 matDialogTitle i18n>Add</h1>
+
+  <mat-dialog-content>
+    <mat-list>
+      <mat-list-item *ngFor="let item of fields">
+        <div [ngSwitch]="item.type" fxFlex>
+          <div *ngSwitchCase="'text'">
+            <mat-form-field fxFlex>
+              <input matInput type="text" [name]="item.name" [placeholder]="item.name" ngModel>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button i18n>Add</button>
+    <button mat-button matDialogClose color="warn" i18n>Close</button>
+  </mat-dialog-actions>
+</form>

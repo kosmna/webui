@@ -1,0 +1,86 @@
+{
+  "/apps": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/auth": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/datahub": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/cosmyna": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/dm": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/pmapi": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/flows": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/ftp": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/stats": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/sensonodegold": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/cc": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/lwm2m": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/opcua": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  },
+  "/nd": {
+    "target": "https://edge02-direct.litmusloop.com",
+    "secure": true,
+    "logLevel": "info",
+    "changeOrigin": true
+  }
+}

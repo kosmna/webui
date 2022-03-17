@@ -1,0 +1,38 @@
+@import 'variables';
+@import 'mixins';
+
+@mixin md-icon-size($size) {
+    font-size: $size;
+    height: $size;
+    width: $size;
+}
+
+.total-card {
+    text-align: center;
+    padding: 15px !important;
+    min-width: 230px;
+    border-right: solid 5px $primary-color;
+    
+    @include e('output') {
+        font-size: 30px;
+    }
+
+    @include e('title')  {
+        color: $group-header-text-color;
+    }
+
+    @include e('icon') {
+        margin-right: 10px;
+        font-size: 50px;
+        height: 50px;
+        width: 50px;
+    }
+}
+
+.content {
+
+    @include e('widget-row') {
+        margin-top: 10px;
+        overflow: hidden;
+    }
+}

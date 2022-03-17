@@ -1,0 +1,54 @@
+@import 'variables';
+@import 'mixins';
+
+.error-code-icon {
+    margin-left: -10px;
+}
+
+.notifications-list {
+    padding: 0;
+    
+    @include e('item') {
+        // border-bottom: solid 1px $sub-header-text-color;
+        // outline: solid 1px white;
+        padding: 10px;
+        @include m('server-error'){
+            color: rgb(194, 33, 37);
+            background-color: rgb(254, 240, 240);
+            outline: solid 1px rgb(254, 215, 216)
+        }
+
+        @include m('notification') {
+            background-color: rgb(255, 251, 232);
+            outline: solid 1px rgb(254, 245, 198)
+        }
+        // @include e('item-button') {
+        //     white-space: inherit;
+        //     line-height: unset;
+        //     text-align: left;
+        // }
+
+    }
+
+    
+}
+
+.notification-status {
+    margin-right: 10px;
+}
+
+.notification-text {
+
+    @include e('text') {
+        font-size: 13px;
+        @include m('link') {
+            color: inherit;
+            word-break: break-all;
+        }
+        
+        @include m('word-break') {
+            word-break: break-wood;
+        }
+    }
+}
+

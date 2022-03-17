@@ -1,0 +1,80 @@
+<h2 matDialogTitle class="theme-bottom-border" *ngIf="editMode" i18n>Edit User</h2>
+<h2 matDialogTitle class="theme-bottom-border" *ngIf="!editMode" i18n>Add User</h2>
+
+<form  [formGroup]="userForm">
+  <mat-dialog-content>
+    <div fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutGap="3%" >
+      <mat-form-field  fxFlex="50" fxFlex.lt-sm="100">
+      <input matInput  formControlName="firstName" placeholder="First name" type="text" i18n-placeholder>
+      </mat-form-field>
+
+      <mat-form-field  fxFlex="50" fxFlex.lt-sm="100">
+      <input matInput   formControlName="lastName" placeholder="Last name" type="text" i18n-placeholder>
+      </mat-form-field>
+    </div>
+    <!--end of first row-->
+    <mat-form-field class="full-width">
+      <input matInput   formControlName="username" placeholder="Username" type="text" i18n-placeholder>
+      <mat-error *ngIf="userForm.controls['username'].hasError('required')" i18n>
+        Username is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutAlign="stretch baseline">
+      <mat-form-field class="full-width">
+        <input matInput formControlName="password" placeholder="Enter Password" [type]="showPassword.checked ? 'text' : 'password'" (keyup)="checkConfirmation()" i18n-placeholder>
+          <mat-error *ngIf="userForm.controls['password'].hasError('required')" i18n>
+            Password is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="userForm.controls['password'].hasError('doNotMatch')" i18n>
+          Password <strong>do not match</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-checkbox #showPassword color="primary">
+        <span fxHide.lt-sm i18n>Show password</span>
+        <span fxHide.gt-xs class="mat-caption" i18n>Show pwd</span>
+      </mat-checkbox>
+    </div>
+
+    <div fxLayout="row">
+      <mat-form-field class="full-width">
+        <input matInput formControlName="passwordConfirmation" placeholder="Confirm Password" [type]="showPassword.checked ? 'text' : 'password'" (keyup)="checkConfirmation()" i18n-placeholder>
+        <mat-error *ngIf="userForm.controls['passwordConfirmation'].hasError('doNotMatch')" i18n>
+          Password <strong>do not match</strong>
+        </mat-error>
+        <mat-error *ngIf="userForm.controls['passwordConfirmation'].hasError('weakPassword')" i18n>
+          Password are <strong>weak</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <loop-password-indicator [levels]="2" [medium]="2" [strong]="2" [strength]="strength" [isChecking]="isChecking" [requirements]="requirements"></loop-password-indicator>
+
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px" class="role-container">
+      <mat-form-field fxFlex="30">
+        <mat-select formControlName="roles" placeholder="Add roles"  [multiple]="true" i18n-placeholder>
+          <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name | titlecase}}</mat-option>
+        </mat-select>
+        
+      </mat-form-field>
+        <mat-chip-list fxLayoutWrap>
+          <div *ngFor="let role of userForm.value.roles" >
+          <mat-chip>{{role | titlecase}}</mat-chip>
+        </div>
+      </mat-chip-list>
+    </div>
+
+      <!--end of add account form-->
+    </mat-dialog-content>
+    <mat-dialog-actions  fxLayout="row" fxLayout.xs="column"
+      fxLayoutAlign.xs="space-between stretch" fxLayoutAlign="start center" fxLayoutGap="5px">
+      <button type="submit"  loopSubmitOnEnter loopButton loopClearButton mat-button [disabled]="!userForm.valid" [matDialogClose]="userForm.value" >
+        <ng-container [ngSwitch]="editMode"> 
+          <span *ngSwitchCase="true" i18n>Update User</span>
+          <span *ngSwitchCase="false" i18n>Add User</span>
+        </ng-container>
+      </button>
+      <button  mat-button loopButton color="warn" [matDialogClose]="" i18n>Cancel</button>
+  </mat-dialog-actions>
+</form> 

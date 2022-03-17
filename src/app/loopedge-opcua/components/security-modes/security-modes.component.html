@@ -1,0 +1,19 @@
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="name">
+    <mat-header-cell fxFlex *matHeaderCellDef i18n>
+      Name
+    </mat-header-cell>
+    <mat-cell fxFlex *matCellDef="let element"> {{ element.name }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="enabled">
+    <mat-header-cell fxFlex="0 0 80px" *matHeaderCellDef i18n>
+      Enabled
+    </mat-header-cell>
+    <mat-cell fxFlex="0 0 80px" *matCellDef="let element">
+      <mat-slide-toggle class="enable-toggle" [checked]="element.enabled" (change)="update(element)">
+      </mat-slide-toggle>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayFields"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayFields;"></mat-row>
+</mat-table>

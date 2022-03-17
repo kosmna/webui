@@ -1,0 +1,23 @@
+@import 'mixins';
+@import 'variables';
+
+
+.key-caption {
+    margin: 5px !important;
+}
+
+.key{
+    word-break: break-all;
+}
+
+@include shadow('.key-container') {
+
+    border: solid 2px $accent-color;
+    padding: 8px !important;
+    .key {
+        overflow: auto !important;
+        text-overflow: clip !important;
+        margin: 0px;
+        padding: 15px;
+    }
+}

@@ -1,0 +1,24 @@
+<div fxLayout="row">
+  <div fxLayout="column">
+    <ng-container [ngSwitch]="activation">
+      <ng-container *ngSwitchCase="false">
+        <span class="caption key-caption" i18n>Use this key in LoopCloud for create deactivation key</span>
+      </ng-container>
+      <ng-container *ngSwitchCase="true">
+        <span class="caption key-caption" i18n>Use this key in LoopCloud for create activation key</span>
+      </ng-container>
+    </ng-container>
+
+    <div class="key-container">
+      <span class="key">{{ key }}</span>
+    </div>
+  </div>
+  <div class="actions-container" fxLayout="row" fxLayoutAlign="center center">
+    <loop-copy-button [content]="key"></loop-copy-button>
+
+    <button mat-icon-button (click)=" downloadPressed()">
+      <mat-icon>file_download</mat-icon>
+    </button>
+
+  </div>
+</div>

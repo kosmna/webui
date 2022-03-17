@@ -1,0 +1,193 @@
+// @import 'variables';
+@import 'mixins';
+@import 'variables';
+
+#loop-title-section {
+  height: 48px;
+}
+
+.loop-title {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loop-title-image {
+  width: 100%;
+}
+
+// Parker theme only
+.parker-theme :host ::ng-deep #loop-title-section div.mat-list-item-content {
+  padding: 0 7px !important;
+}
+
+// Edgeline theme only
+.edgeline-theme :host ::ng-deep #loop-title-section div.mat-list-item-content {
+  padding: 0 2px !important;
+}
+
+.loop-sidenav-button {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.loop-sidenav-container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.loop-sidenav.sidenav-expanded {
+  width: 204px;
+}
+
+.loop-sidenav.sidenav-small {
+  width: 48px;
+  min-width: 48px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, .5);
+  border-right: none;
+}
+
+mat-nav-list.loop-nav-list {
+  padding-top: 0;
+}
+
+.copyright-section {
+  text-align: center;
+  line-height: 1.2em;
+  padding-bottom: 5%;
+}
+
+.filler {
+  height: 100%;
+}
+
+.bottom-logo {
+  padding: 0px;
+  list-style-type: none;
+
+  // margin: 0 auto  10% auto !important;
+  @include e('logo') {
+    width: 80%;
+  }
+
+  @include e('copyright-text') {
+    padding: 5px;
+  }
+}
+
+.mat-expansion-panel {
+  background-color: inherit;
+}
+
+.expansion-panel-contents {
+  background-color: $side-nav-expanded-color;
+}
+
+.expansion-panel-contents button {
+  padding: 0;
+}
+
+.mat-expansion-panel-header {
+  padding-left: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+/* Removes padding from sidenav expansion panel items */
+@include shadow('.mat-expansion-panel-body') {
+  padding: 0;
+  margin: 0;
+}
+
+/* Disables shadow on sidenav expansion panels */
+@include shadow('.mat-expansion-panel:not([class*="mat-elevation-z"])') {
+  box-shadow: unset;
+}
+
+/* Proper formatting of sidenav list text so they are left-aligned */
+@include shadow('.loop-nav-list .mat-list-text') {
+  flex-direction: unset !important;
+  padding: 0 !important;
+}
+
+/* Sets padding of list items so they are centered in the small sidenav */
+@include shadow('.mat-list-item-content') {
+  padding: 0 12px !important;
+}
+
+mat-sidenav {
+  overflow-x: hidden;
+}
+
+.side-notifications-side-nav {
+  width: 350px;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  background-color: #fafafa;
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  font-size: 12px;
+  line-height: 13px;
+  border-radius: 50%;
+  width: 13px;
+  height: 13px;
+  background-color: #ff0000;
+  border: 4px solid #ff0000;
+  color: #ffffff;
+  text-align: center;
+}
+
+.content-wrapper {
+  height: calc(100% - 48px);
+
+  &__right-side {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  &__content-area {
+    overflow-y: auto;
+  }
+
+  .secondary-sidenav {
+    width: 135px;
+
+    * {
+      color: $side-nav-color;
+    }
+  }
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row,
+.loop-toolbar {
+  height: 48px;
+
+  &__logo-image {
+    height: 48px;
+  }
+
+  &__friendly-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: right;
+    margin: 0 16px;
+  }
+}
+
+.toolbar {
+  &__product-type {
+    height: 100%;
+    margin-left: -8px;
+  }
+}

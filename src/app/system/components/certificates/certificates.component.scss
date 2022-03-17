@@ -1,0 +1,25 @@
+
+.line-actions {
+    min-height: 50px;
+}
+mat-form-field {
+    padding: 5px;
+}
+mat-list {
+    padding-bottom: 10px
+}
+
+mat-expansion-panel-header, mat-form-field, #expansion-actions {
+    padding-left: 12px;
+}
+
+#expansion-actions {
+    margin-top: 16px;
+    padding: 1px;
+}
+
+.loop-tag {
+    &--margin {
+        margin-left: 8%;        
+    }
+}

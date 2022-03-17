@@ -1,0 +1,8 @@
+<loop-area-chart title="CPU Utilization" yAxisTitle="%" [series]="cpuUtilizationSeries" [seriesData]="cpuUtilization$ | async"
+  [maximumY]="100"></loop-area-chart>
+<loop-area-chart title="Memory Load" yAxisTitle="MiB" [series]="memoryLoadSeries" [seriesData]="memoryLoad$ | async"
+  [seriesColors]="memorySeriesColors"></loop-area-chart>
+<loop-area-chart title="Network In" yAxisTitle="Mbps" [series]="networkInputSeries" [seriesData]="networkInput$ | async"
+  [seriesColors]="networkInputSeriesColor"></loop-area-chart>
+<loop-area-chart title="Network Out" yAxisTitle="Mbps" [series]="networkOutputSeries" [seriesData]="networkOutput$ | async"
+  [seriesColors]="networkOutputSeriesColor"></loop-area-chart>

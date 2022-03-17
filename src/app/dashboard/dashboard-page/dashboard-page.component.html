@@ -1,0 +1,202 @@
+<div class="dashboard-container">
+  <div class="dashboard-container__innner">
+    <div class="dashboard-container__toolbar toolbar mat-typography" fxLayout="row nowrap" fxLayoutAlign="start start">
+      <!-- <span class="toolbar__title" i18n="Dashboard Graphs titles">Dashboard Graphs</span> -->
+      <h1 i18n="Dashboard Graphs titles" i18n>Dashboard</h1>
+      <span fxFlex></span>
+      <button mat-icon-button [matMenuTriggerFor]="dashboardMenu" class="menu__trigger" matTooltip="Show Settings"
+        i18n-matTooltip>
+        <mat-icon>settings</mat-icon>
+      </button>
+      <mat-menu #dashboardMenu="matMenu">
+        <div mat-menu-item (click)="$event.stopPropagation()" class="menu__title" i18n="Chart title for chart toggle buttons">
+          Chart Toggles
+        </div>
+        <div style="padding:8px;">
+          <mat-slide-toggle (click)="$event.stopPropagation()" #cpuToggleSwitch [checked]="true" (change)="cpuToggle = !cpuToggle"
+            loopMaterialToggle i18n="For cpu Graph">CPU Utilization</mat-slide-toggle>
+        </div>
+        <div style="padding:8px;">
+          <mat-slide-toggle (click)="$event.stopPropagation()" #memoryToggleSwitch [checked]="true" (change)="memoryToggle = !memoryToggle"
+            loopMaterialToggle i18n>Memory Usage</mat-slide-toggle>
+        </div>
+        <div style="padding:8px;">
+          <mat-slide-toggle (click)="$event.stopPropagation()" #networkInToggleSwitch [checked]="true" (change)="networkInToggle = !networkInToggle"
+            loopMaterialToggle i18n>Network In</mat-slide-toggle>
+        </div>
+        <div style="padding:8px;" (click)="$event.stopPropagation()">
+          <mat-slide-toggle #networkOutToggleSwitch [checked]="true" (change)="networkOutToggle = !networkOutToggle"
+            loopMaterialToggle i18n>Network Out</mat-slide-toggle>
+        </div>
+      </mat-menu>
+    </div>
+
+    <section>
+      <div class="card-container" fxLayout="column" fxLayoutAlign="center center" *ngIf="cpuToggle">
+        <mat-card #cpuChartCard class="dashboard-card">
+          <mat-card-header fxLayout="row" class="panel-heading">
+            <div fxFlex="grow" class="dashboard-card__title">
+              <mat-card-title class="dashboard-card__title__text" i18n="dashboard title" i18n>
+                CPU Utilization
+              </mat-card-title>
+            </div>
+            <div fxFlex>
+              <button mat-icon-button [matMenuTriggerFor]="cpuChartMenu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #cpuChartMenu="matMenu">
+                <button mat-menu-item (click)="toggleRange(cpuChart)">
+                  <mat-icon>crop</mat-icon>
+                  <ng-container [ngSwitch]="cpuChart.selectRange">
+                    <span *ngSwitchCase="true" i18n>
+                      Hide Select Range
+                    </span>
+                    <span *ngSwitchCase="false" i18n>
+                      Show Select Range
+                    </span>
+                  </ng-container>
+                </button>
+
+                <button *ngIf="cpuChart.zoom" mat-menu-item (click)="resetChart(cpuChart)">
+                  <mat-icon>refresh</mat-icon>
+                  <span i18n="reseting chart">Reset</span>
+                </button>
+
+                <button mat-menu-item (click)="toggleCpu()">
+                  <mat-icon>close</mat-icon>
+                  <span i18n="close button">Close</span>
+                </button>
+
+              </mat-menu>
+            </div>
+          </mat-card-header>
+          <loop-line-chart #cpuChart [data]=cpuResults [valueRange]="[0, 100]" [labels]="cpuLabels" [unit]="cpuUnit"
+            [stacked]="true"></loop-line-chart>
+        </mat-card>
+      </div>
+
+      <div class="card-container" fxLayout="column" fxLayoutAlign="center center" *ngIf="memoryToggle">
+        <mat-card #memoryChartCard class="dashboard-card">
+          <mat-card-header fxLayout="row" class="panel-heading">
+            <div fxFlex="grow" class="dashboard-card__title">
+              <mat-card-title class="dashboard-card__title__text" i18n>Memory Usage</mat-card-title>
+            </div>
+            <div fxFlex>
+              <button mat-icon-button [matMenuTriggerFor]="memoryChartMenu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #memoryChartMenu="matMenu">
+                <button mat-menu-item (click)="toggleRange(memoryChart)">
+                  <mat-icon>crop</mat-icon>
+                  <ng-container [ngSwitch]="memoryChart.selectRange">
+                    <span *ngSwitchCase="true" i18n>
+                      Hide Select Range
+                    </span>
+                    <span *ngSwitchCase="false" i18n>
+                      Show Select Range
+                    </span>
+                  </ng-container>
+                </button>
+
+                <button *ngIf="memoryChart.zoom" mat-menu-item (click)="resetChart(memoryChart)">
+                  <mat-icon>refresh</mat-icon>
+                  <span i18n>Reset</span>
+                </button>
+
+                <button mat-menu-item (click)="toggleMemory()">
+                  <mat-icon>close</mat-icon>
+                  <span i18n>Close</span>
+                </button>
+
+              </mat-menu>
+            </div>
+          </mat-card-header>
+          <loop-line-chart #memoryChart [data]=memoryResults [stacked]="true" [valueRange]="memoryRange" [labels]="memoryLabels"
+            [unit]="memoryUnit" [showPercent]="false"></loop-line-chart>
+        </mat-card>
+      </div>
+
+      <div class="card-container" fxLayout="column" fxLayoutAlign="center center" *ngIf="networkInToggle">
+        <mat-card #networkInChartCard class="dashboard-card">
+          <mat-card-header fxLayout="row" class="panel-heading">
+            <div fxFlex="grow" class="dashboard-card__title">
+              <mat-card-title class="dashboard-card__title__text" i18n>Network In</mat-card-title>
+            </div>
+            <div fxFlex>
+              <button mat-icon-button [matMenuTriggerFor]="networkInChartMenu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #networkInChartMenu="matMenu">
+                <button mat-menu-item (click)="toggleRange(networkInChart)">
+                  <mat-icon>crop</mat-icon>
+                   <ng-container [ngSwitch]="networkInChart.selectRange">
+                    <span *ngSwitchCase="true" i18n>
+                      Hide Select Range
+                    </span>
+                    <span *ngSwitchCase="false" i18n>
+                      Show Select Range
+                    </span>
+                  </ng-container>
+                </button>
+
+                <button *ngIf="networkInChart.zoom" mat-menu-item (click)="resetChart(networkInChart)">
+                  <mat-icon>refresh</mat-icon>
+                  <span i18n>Reset</span>
+                </button>
+
+                <button mat-menu-item (click)="toggleNetworkIn()">
+                  <mat-icon>close</mat-icon>
+                  <span i18n>Close</span>
+                </button>
+
+              </mat-menu>
+            </div>
+          </mat-card-header>
+          <loop-line-chart #networkInChart [data]=networkInResults [labels]="networkLabels" [unit]="networkUnit"></loop-line-chart>
+        </mat-card>
+      </div>
+
+      <div class="card-container" fxLayout="column" fxLayoutAlign="center center" *ngIf="networkOutToggle">
+        <mat-card #networkOutChartCard class="dashboard-card">
+          <mat-card-header fxLayout="row" class="panel-heading">
+            <div fxFlex="grow" class="dashboard-card__title">
+              <mat-card-title class="dashboard-card__title__text" i18n>Network Out</mat-card-title>
+            </div>
+            <div fxFlex>
+              <button mat-icon-button [matMenuTriggerFor]="networkOutChartMenu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #networkOutChartMenu="matMenu">
+                <button mat-menu-item (click)="toggleRange(networkOutChart)">
+                  <mat-icon>crop</mat-icon>
+                  <ng-container [ngSwitch]="networkOutChart.selectRange">
+                    <span *ngSwitchCase="true" i18n>
+                      Hide Select Range
+                    </span>
+                    <span *ngSwitchCase="false" i18n>
+                      Show Select Range
+                    </span>
+                  </ng-container>
+                </button>
+
+                <button *ngIf="networkOutChart.zoom" mat-menu-item (click)="resetChart(networkOutChart)">
+                  <mat-icon>refresh</mat-icon>
+                  <span i18n>Reset</span>
+                </button>
+
+                <button mat-menu-item (click)="toggleNetworkOut()">
+                  <mat-icon>close</mat-icon>
+                  <span i18n>Close</span>
+                </button>
+
+              </mat-menu>
+            </div>
+          </mat-card-header>
+          <loop-line-chart #networkOutChart [data]=networkOutResults [labels]="networkLabels" [unit]="networkUnit"></loop-line-chart>
+        </mat-card>
+      </div>
+    </section>
+
+
+  </div>
+</div>

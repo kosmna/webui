@@ -1,0 +1,51 @@
+<mat-card loopCard loopMaterialCard *ngIf="dataSource.data.length > 0">
+  <mat-card-header>
+    <mat-icon mat-card-avatar>
+      network_cell
+    </mat-icon>
+    <mat-card-title>
+      <h2 class="mat-title" i18n>Modem Configuration</h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-table [dataSource]="dataSource">
+        <ng-container cdkColumnDef="manufacturer">
+            <mat-header-cell *cdkHeaderCellDef i18n="uri header cloud rows" i18n>Manufacturer</mat-header-cell>
+            <mat-cell *cdkCellDef="let row" class="wrap-cells"> {{ row.manufacturer }} </mat-cell>
+          </ng-container>
+      
+      <ng-container cdkColumnDef="model">
+        <mat-header-cell *cdkHeaderCellDef i18n="uri header cloud rows" i18n>Model</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="wrap-cells"> {{ row.model }} </mat-cell>
+      </ng-container>
+      
+      <ng-container cdkColumnDef="apnAssigned">
+          <mat-header-cell *cdkHeaderCellDef i18n="uri header cloud rows" i18n>Assigned APN</mat-header-cell>
+          <mat-cell *cdkCellDef="let row" class="wrap-cells"> {{ row.apnAssigned }} </mat-cell>
+        </ng-container>
+
+      <ng-container cdkColumnDef="apn">
+        <mat-header-cell *cdkHeaderCellDef i18n="uri header cloud rows" i18n>Requested APN</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="wrap-cells"> {{ row.apn }} </mat-cell>
+      </ng-container>
+
+      <ng-container cdkColumnDef="name">
+        <mat-header-cell *cdkHeaderCellDef i18n="uri header cloud rows" i18n> name</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="wrap-cells"> {{ row.name }} </mat-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="actions">
+        <mat-header-cell *cdkHeaderCellDef i18n="uri header cloud rows"></mat-header-cell>
+        <mat-cell *cdkCellDef="let row" class="wrap-cells">
+          <button mat-icon-button (click)="updateConfig.emit(row)">
+            <mat-icon>
+              edit
+            </mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *cdkHeaderRowDef="columnsDef"></mat-header-row>
+      <mat-row *cdkRowDef="let row; columns: columnsDef"></mat-row>
+    </mat-table>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,115 @@
+<mat-sidenav-container *ngIf="auth" class="loop-sidenav-container">
+  <mat-sidenav #sideNav fxLayout="column" *ngIf="
+      menuItems.length > 0 && auth.loggedIn && !auth.needEula && !notifications
+    "
+    [disableClose]="sideDisableClose" [mode]="sideMode" [opened]="sideOpen" class="loop-sidenav sidenav-small"
+    loopSidenavBackground>
+    <mat-nav-list class="loop-nav-list" dense>
+      <mat-list-item id="loop-title-section">
+        <img class="loop-title-image" loopTinyLogo />
+      </mat-list-item>
+      <ng-container *ngFor="let item of menuItems">
+        <a mat-list-item *ngIf="
+            !!item?.expectedRoles ? auth.canAccess(item?.expectedRoles) : true
+          "
+          class="loop-sidenav-button" [routerLink]="item.route" routerLinkActive="active">
+          <mat-icon *ngIf="item.icon.startsWith('loop')" [svgIcon]="item.icon" style="height: 32px" [tooltip]="item.name"
+            [options]="toolTipOptions" [hide-delay]="0" [show-delay]="0"></mat-icon>
+          <mat-icon *ngIf="!item.icon.startsWith('loop')" [tooltip]="item.name" [options]="toolTipOptions" [hide-delay]="0"
+            [show-delay]="0">{{ item.icon }}</mat-icon>
+        </a>
+      </ng-container>
+    </mat-nav-list>
+    <span class="filler"></span>
+  </mat-sidenav>
+  <mat-sidenav #sideNotify class="side-notifications-side-nav" fxLayout="column" [disableClose]="false" [mode]="notificationMode"
+    [opened]="false" [position]="sidenavNotifyPos">
+    <loop-notifications-list></loop-notifications-list>
+
+  </mat-sidenav>
+  <div fxLayout="row" *ngIf="auth.loggedIn && !auth.needEula">
+    <mat-toolbar *ngIf="auth.loggedIn && !auth.needEula" loopToolbar loopToolbarBackground>
+      <div [fxHide.lt-sm]="true" fxLayoutAlign="start center">
+        <img *ngIf="!whiteLabel && !isParker" class="loop-toolbar__logo-image" [src]="logoSrc" />
+      </div>
+      <div fxLayout="column" fxLayoutAlign="center start" class="toolbar__product-type" [fxHide.lt-sm]="true">
+        <h2 *ngIf="isParker" class="mat-display-2 user-name">
+          Voice of the Machine Edge
+        </h2>
+        <!-- <span class="mat-body-1" *ngIf="showProductType && !isParker">
+          {{ isLite ? 'Lite' : 'Standard' }}
+
+        </span> -->
+      </div>
+
+      <div [fxHide.lt-sm]="true" fxFlex="1 1 100%" class="user-name loop-toolbar__friendly-name">{{ friendlyName$ |
+        async }}</div>
+
+      <div fxLayoutAlign="end stretch" class="loop-dark-theme">
+
+        <loop-toolbar-warning [showOnDays]="16" [licenseObs]="license$"></loop-toolbar-warning>
+
+      </div>
+
+      <div fxFlex class="locale-selector" *ngIf="currentLocale && localeList">
+        <mat-menu #localeMenu="matMenu">
+          <button mat-menu-item *ngFor="let locale of localeList" (click)="setLocale(locale.link)">
+            {{ locale.fullName }}
+          </button>
+        </mat-menu>
+        <button mat-button looplearButton mat-icon-button (click)="sideNotify.toggle()">
+          <mat-icon>notifications</mat-icon>
+          <span class="badge" *ngIf="(notificationCount | async) > 0">{{ notificationCount | async }}</span>
+        </button>
+
+        <loop-intercom-icon> </loop-intercom-icon>
+
+        <button *ngIf="!whiteLabel" mat-button looplearButton [matMenuTriggerFor]="localeMenu" class="language-button loop-dark-theme">
+          <mat-icon>language</mat-icon>
+          <span fxHide.lt-sm>{{ currentLocale.fullName }}</span>
+        </button>
+      </div>
+      <div loopAccent *ngIf="auth.loggedIn && !auth.needEula" fxFlex class="user-name" fxHide.xs>
+        {{ auth.getUserFullName() }}
+      </div>
+      <div fxFlex>
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item (click)="changePassword()">
+            <mat-icon>vpn_key</mat-icon>
+            <span i18n> Reset Password </span>
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span i18n> Logout </span>
+          </button>
+        </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="userMenu" class="loop-dark-theme">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+  </div>
+  <section fxLayout="row nowrap" fxLayoutAlign="start stretch" class="content-wrapper">
+    <div *ngIf="haveChildren?.subItems.length > 0" class="secondary-sidenav">
+      <mat-nav-list class="loop-nav-list" dense>
+        <ng-container *ngFor="let link of currentMenuItem.subItems">
+          <a mat-list-item *ngIf="checkPermission(link?.expectedRoles)" [routerLink]="link.route" routerLinkActive="active"
+            #rla="routerLinkActive">
+            <div fxLayout="row nowrap" fxLayoutAlign="start center">
+              <div [matBadge]="10" [matBadgeOverlap]="false" matBadgeSize="medium" [matBadgeHidden]="true"
+                [matBadgeColor]="rla.isActive ? 'primary' : 'accent'">
+                {{ link.name }}
+              </div>
+            </div>
+          </a>
+        </ng-container>
+      </mat-nav-list>
+    </div>
+    <div class="content-wrapper__right-side" fxLayout="column nowrap" fxFlex fxLayoutAlign="start stretch">
+      <loop-breadcrumbs *ngIf="haveChildren?.subItems.length > 0" [crumbs]="routeCrumbs"></loop-breadcrumbs>
+      <div fxFlex class="content-wrapper__content-area">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </section>
+</mat-sidenav-container>

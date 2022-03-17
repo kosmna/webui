@@ -1,0 +1,43 @@
+<form [formGroup]="form">
+  <section class="list">
+    <div  class="list__head">
+      <mat-checkbox 
+        #headBox
+        [indeterminate]="indeterminate" 
+        labelPosition="after"  
+        (change)="setCheckboxes($event)"
+        >
+        {{title}}
+      </mat-checkbox>
+    </div>
+    <div class="list__children" formGroupName="checkboxes">
+      <div class="child-item" *ngFor="let item of data">
+          <mat-checkbox 
+            [formControlName]="item.id"
+            >
+            <span class="list__name">
+            <ng-container [ngSwitch]="type">
+              <ng-container *ngSwitchCase="'flow'">
+
+                  {{item.label}}
+              </ng-container>
+              <ng-container  *ngSwitchCase="'device'" >
+
+
+                  {{item.name}}
+
+
+
+              </ng-container>
+            </ng-container>
+          </span>
+
+             <span class="list__id mat-caption">
+              {{item.id}}
+             </span>
+            </mat-checkbox>
+      </div>
+
+    </div>
+  </section>
+</form>

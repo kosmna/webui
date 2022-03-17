@@ -1,0 +1,357 @@
+<section fxLayoutAlign="center" fxFlexFill.lt-sm>
+  <div fxFlex="100" fxFlexFill.lt-sm>
+
+    <div class="actions-container" fxLayout="row" fxLayoutAlign="space-between">
+
+      <div class="left-container" fxLayout="row" fxLayoutAlign="start center">
+
+        <form [formGroup]="filterForm">
+          <div fxLayout="row" fxLayoutAlign.gt-sm="space-between baseline" fxLayoutGap="5%" class="register-filters">
+            <mat-form-field fxFlex="1 1 100" [floatLabel]="'never'">
+              <mat-select #deviceFilter formControlName="deviceType" placeholder="Filter Device" i18n-placeholder
+                fxFlex multiple [loopDisableControl]="!devices || devices.length === 0">
+                <mat-option *ngFor="let device of devices" [value]="device.name">{{ device.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field [floatLabel]="'never'" fxFlex="0 0 180px">
+              <input #addressFilter (keyup)="applyFilter($event.target.value)" matInput type="text" placeholder="Search"
+                matInput i18n-placeholder>
+              <mat-icon matPrefix>
+                search
+              </mat-icon>
+
+              <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="addressFilter.value = ''; applyFilter('');"
+                *ngIf="addressFilter.value !=='' ">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+            <!--
+            <mat-form-field fxFlex fxHide.lt-md>
+              <mat-select #typeFilter formControlName="typeValues" placeholder="Value Type" fxFlex multiple>
+                <mat-option *ngFor="let type of typeValues" [value]="type">{{ type }}</mat-option>
+              </mat-select>
+            </mat-form-field> -->
+          </div>
+        </form>
+
+
+
+      </div>
+
+      <!-- Search and filter options -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <button mat-icon-button #helpTrigger [matMenuTriggerFor]="helpMenu">
+          <mat-icon class="small-icon">
+            help_outline
+          </mat-icon>
+        </button>
+        <mat-menu #helpMenu="matMenu">
+          <button mat-menu-item (click)="downloadSampleCsv()">
+            <mat-icon>
+              file_download
+            </mat-icon>
+            <span i18n>
+              Sample CSV Template
+            </span>
+          </button>
+          <button *ngIf="showDocsBtn" mat-menu-item (click)="goDocumentation()">
+            <mat-icon>
+              library_books
+            </mat-icon>
+            <span i18n>
+              Go to Documentation
+            </span>
+          </button>
+        </mat-menu>
+
+        <!-- Actions menu -->
+        <button fxHide.lt-md mat-icon-button matTooltip="download as CSV" i18n-matTooltip (click)="downloadRegisters.emit()">
+          <mat-icon class="small-icon">file_download</mat-icon>
+        </button>
+
+        <!-- Add filter -->
+        <button *ngIf="allowedRole" #addTrigger fxHide.lt-md mat-icon-button class="center-block" matTooltip="Add Tag"
+          [matMenuTriggerFor]="addRegisterMenu" [disabled]="!allowedRole" i18n-matTooltip>
+          <mat-icon>add_circle</mat-icon>
+          <!-- Add -->
+        </button>
+        <mat-menu #addRegisterMenu="matMenu">
+
+          <button mat-menu-item (click)="showAddRegisterDialog()">
+            <mat-icon>plus_one</mat-icon>
+            <span i18n>Add One</span>
+          </button>
+          <button mat-menu-item (click)="showUploadForm()">
+            <mat-icon>file_upload</mat-icon>
+            <span i18n>Upload CSV</span>
+          </button>
+
+          <button mat-menu-item matTooltip="download as CSV" (click)="browseTags()">
+            <mat-icon>create_new_folder</mat-icon>
+            <span i18n>Browse Tags</span>
+          </button>
+
+        </mat-menu>
+
+        <button mat-icon-button [matMenuTriggerFor]="settings">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <mat-menu #settings="matMenu">
+          <div class="menu-element__container">
+            <mat-slide-toggle labelPosition="before" [(ngModel)]="showStatus" (click)="$event.stopPropagation();toggleStatus.emit(!showStatus)"
+              fxHide.lt-md>Show status</mat-slide-toggle>
+          </div>
+        </mat-menu>
+
+        <!--small device filter menu -->
+        <button #menuTrigger fxShow="false" fxShow.lt-md mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>
+            more_vert
+          </mat-icon>
+        </button>
+        <mat-menu class="menu menu--dense" #menu="matMenu">
+          <button mat-menu-item class="menu__button" *ngIf="allowedRole" (click)="showAddRegisterDialog()">
+            <mat-icon>plus_one</mat-icon>
+            <span i18n="sub menu on tags table page">Add One</span>
+          </button>
+          <button mat-menu-item class="menu__button" *ngIf="allowedRole" (click)="showUploadForm()">
+            <mat-icon>file_upload</mat-icon>
+            <span i18n>Upload CSV</span>
+          </button>
+          <button mat-menu-item class="menu__button" matTooltip="download as CSV" (click)="downloadRegisters.emit()">
+            <mat-icon>file_download</mat-icon>
+            <span i18n>Download Tags</span>
+          </button>
+
+          <button mat-menu-item matTooltip="download as CSV" (click)="browseTags()">
+            <mat-icon>create_new_folder</mat-icon>
+            <span i18n>Browse Tags</span>
+          </button>
+          <!--   <button mat-menu-item class="menu__button" [matMenuTriggerFor]="deviceTypeMenu" i18n>
+            Device Type
+          </button> -->
+
+        </mat-menu>
+        <!--small device filter menu -->
+      </div>
+
+    </div>
+
+
+
+
+    <div>
+      <div fxLayout="column">
+
+        <!-- Data table definition -->
+        <div class="table" [fxHide]="dataSource.data.length === 0">
+          <mat-table class="table__inner table__inner" [dataSource]="dataSource" matSort [trackBy]="trackBy">
+            <!--
+            <ng-container matColumnDef="select">
+              <mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+              </mat-header-row>
+              <mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+              </mat-cell>
+            </ng-container> -->
+
+            <ng-container cdkColumnDef="status">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef i18n> Status</mat-header-cell>
+              <mat-cell class="table__cell table__cell--mobile" *cdkCellDef="let row" fxLayout="row">
+
+                <loop-register-status *ngIf="row.pollingInterval !== 0; else pollingStatus" [tooltip]="row.status"
+                  [color]="row.status"></loop-register-status>
+                <ng-template #pollingStatus>
+                  <loop-register-status tooltip="Polling"></loop-register-status>
+                </ng-template>
+
+              </mat-cell>
+            </ng-container>
+
+
+            <ng-container cdkColumnDef="tagName">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef mat-sort-header i18n>
+                Tag</mat-header-cell>
+              <mat-cell class="table__cell table__cell--mobile" *cdkCellDef="let row">
+                <a href="javascript:void(0)" (click)="editRegister(row)">
+                  {{row.tagName}}
+                </a>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="name">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef mat-sort-header i18n>
+                Register</mat-header-cell>
+              <mat-cell class="table__cell table__cell--mobile" *cdkCellDef="let row">{{row.name}}</mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="dbNumber">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef mat-sort-header i18n>
+                DB</mat-header-cell>
+              <mat-cell class="table__cell table__cell--mobile" *cdkCellDef="let row">{{row.dbNumber}}</mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="address">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef mat-sort-header i18n>Address</mat-header-cell>
+              <mat-cell class="table__cell table__cell--mobile" *cdkCellDef="let row">{{row.address}}</mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="pollingInterval">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef mat-sort-header i18n>Poll(s)</mat-header-cell>
+              <mat-cell class="table__cell table__cell--mobile" *cdkCellDef="let row" fxFlexOffset="10px">
+                {{(row.pollingInterval / 1000 )}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="description">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef mat-sort-header i18n>Description</mat-header-cell>
+              <mat-cell class="table__cell table__cell--mobile" *cdkCellDef="let row">
+
+                <span class="table__cell--truncate-cell">
+                  {{row.description}}
+                </span>
+
+              </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="valueType">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef mat-sort-header i18n>Value</mat-header-cell>
+              <mat-cell class="table__cell  table__cell--mobile" *cdkCellDef="let row">
+                <span class="table__cell--truncate-cell">
+                  {{row.valueType | uppercase }}
+
+                </span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="deviceId">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef mat-sort-header i18n>Device</mat-header-cell>
+              <mat-cell class="table__cell  table__cell--mobile" *cdkCellDef="let row">
+                <span class="table__cell--truncate-cell">
+                  {{row.deviceId | deviceIdToName: devices }}
+
+                </span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="omaBinding">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef mat-sort-header i18n>OMA</mat-header-cell>
+              <mat-cell class="table__cell table__cell--mobile" *cdkCellDef="let row">
+                <span class="table__cell--truncate-cell">
+                  {{row.oma ? row.oma?.objectId + ' / ' + row.oma?.instanceId + ' / ' + row.oma?.resourceId : 'None'}}
+
+                </span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="rawTopic">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef mat-sort-header i18n
+                fxFlex="20" fxFlex.xl="35">RAW Topic</mat-header-cell>
+              <mat-cell class="table__cell table__cell--mobile" *cdkCellDef="let row" fxFlex="20" fxFlex.xl="35"
+                fxLayout="row" fxLayoutAlign="start center">
+                <span fxFlex="90" class=" table__cell--truncate-cell">
+                  {{row.rawTopic}}
+                </span>
+
+                <loop-copy-button class="copy-button" [content]="row.rawTopic">
+                </loop-copy-button>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="ipsoTopic">
+              <mat-header-cell class="table__head-cell table__head-cell--mobile" *cdkHeaderCellDef mat-sort-header i18n
+                fxFlex="17">IPSO Topic</mat-header-cell>
+              <mat-cell class="table__cell table__cell--mobile" *cdkCellDef="let row" fxFlex="17" fxLayoutAlign="start center">
+                <span fxFlex="90" class="table__cell--truncate-cell">
+                  {{row.ipsoTopic}}
+                </span>
+                <loop-copy-button class="copy-button" *ngIf="row.ipsoTopic" [content]="row.ipsoTopic">
+                </loop-copy-button>
+
+              </mat-cell>
+            </ng-container>
+
+            <ng-container cdkColumnDef="actions">
+              <mat-header-cell class="table__head-cell table__head-cell--action-head" *cdkHeaderCellDef fxLayout="row"
+                fxLayoutAlign="end center" fxFlex="5">Actions</mat-header-cell>
+              <mat-cell class="table__cell table__cell--actions" *cdkCellDef="let register" fxLayout="row"
+                fxLayoutAlign="end center" fxFlex="5">
+
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="editRegister(register)">
+                    <mat-icon>edit</mat-icon>
+                    <span i18n>Edit</span>
+                  </button>
+
+                  <div [matTooltipDisabled]="!register?.readOnly" matTooltip="Write not allowed">
+                    <button mat-menu-item (click)="setValue(register)" [disabled]="register?.readOnly">
+                      <mat-icon>input</mat-icon>
+                      <span i18n>Write</span>
+                    </button>
+                  </div>
+
+                  <button mat-menu-item (click)="pollRegister(register)" [disabled]="register?.readOnly">
+                    <mat-icon>input</mat-icon>
+                    <span i18n>poll</span>
+                  </button>
+
+                  <button mat-menu-item (click)="removeRegister(register)">
+                    <mat-icon>delete</mat-icon>
+                    <span i18n>Remove</span>
+                  </button>
+
+                  <button *ngIf="!register.oma" mat-menu-item (click)="addBindingDialog(register)">
+                    <mat-icon>add_circle_outline</mat-icon>
+                    <span i18n>Add Binding</span>
+                  </button>
+
+                  <button *ngIf="register.oma" mat-menu-item (click)="updateBindingDialog(register.oma)">
+                    <mat-icon>tune</mat-icon>
+                    <span i18n>Update Binding</span>
+                  </button>
+
+                  <button *ngIf="register.oma" mat-menu-item (click)="deleteBindingDialog(register.oma)">
+                    <mat-icon>remove_circle_outline</mat-icon>
+                    <span i18n>Remove Binding</span>
+                  </button>
+                </mat-menu>
+
+              </mat-cell>
+              <!-- End of Actions cell -->
+            </ng-container>
+
+            <!-- Header -->
+            <mat-header-row *cdkHeaderRowDef="columns"></mat-header-row>
+            <mat-row class="table__row" *cdkRowDef="let row; columns: columns;"></mat-row>
+          </mat-table>
+        </div>
+        <div class="mat-title warning" [fxShow]="dataSource.data.length === 0" fxLayoutAlign="center center" i18n="no tags added">
+          No tags added.
+        </div>
+
+        <!-- Paginator -->
+        <div [class.hidden]="dataSource.dataLength < paginator.pageSizeOptions[0]" fxLayout="row nowrap" fxLayoutAlign="start baseline"
+          fxLayoutGap="10px" class="selectable-paginator">
+          
+          <loop-go-to-page  [paginator]="paginator"> </loop-go-to-page>
+          <!-- Jump to page component-->
+          
+          <span fxFlex></span>
+      
+
+          <mat-paginator #paginator [length]="dataSource.dataLength" [pageIndex]="0" [pageSize]="pageSizeOptions[0]"
+            [pageSizeOptions]="pageSizeOptions" (page)="updateSelectedPage()">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

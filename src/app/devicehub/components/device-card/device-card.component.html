@@ -1,0 +1,177 @@
+
+<mat-card  fxLayout="column" fxLayoutAlign="space-between" class="device-card">
+  <mat-card-header fxLayout="column" class="device-card__header" [class]="headerClass(device.state?.status)" >
+    <div fxLayout="row"  fxLayoutAlign="start start" class="tag-container" >
+
+      <span class="loop-tag--side-card"  loopTag [tagColor]="tagColor(device.state?.status)" i18n>
+        {{tagName(device.state?.status)}}
+      </span>
+
+    </div>
+
+    <div class="app-header" fxLayout="column" fxLayoutAlign="start center" fxFlexOffset="-6px">
+      <mat-icon>
+        devices
+      </mat-icon>
+      <span class="app-header__title app-header__title--large-width-mobile">
+        <span class="app-header__text" fxFlex>
+            {{device.name}}
+
+        </span>
+ 
+      </span>
+      <span  class="app-header__subtitle app-header__subtitle--large-width-mobile">
+          <span i18n class="app-header__text" fxFlex>
+              {{ device.driver.name }} 
+              <loop-copy-button [content]="device.driver.name"></loop-copy-button>
+          </span>
+ 
+      </span>
+
+      <span class="app-header__subtitle app-header__subtitle--large-width-mobile">
+        <span class="mat-caption app-header__text" fxFlex matTooltip="Device ID" i18n-matTooltip>
+        {{device.id}}
+        
+        <loop-copy-button [content]="device.id"></loop-copy-button>
+        
+        </span>
+      </span>
+    </div>
+
+  </mat-card-header>
+  <mat-card-content class="device-card-content device-card__content" fxLayout="column"  fxLayoutAlign="center">
+
+    <!-- Network device info -->
+    <div class="stats-row stats device-card__row" fxLayout="row" *ngIf="device.driver.interfaceType === 1">
+      <div class="stats-container stats" fxLayout="column" fxLayoutAlign="center center" fxFlex="50" fxFlexOrder="-1">
+        <span class="output stats__output">{{device.properties?.networkAddress || 'NA'}}</span>
+        <span i18n="device property">IP Address</span>
+      </div>
+
+      <div class="stats-container stats" fxLayout="column" fxLayoutAlign="center center" fxFlex="50"  fxFlexOrder="-1">
+        <span class="output stats__output">{{device.properties?.networkPort || 'NA'}} </span>
+        <span i18n="device property">Port</span>
+      </div>
+
+    </div>
+    <!-- First Row  -->
+    <div class="stats-row device-card__row" fxLayout="row" *ngIf="device.properties?.adsPort || device.properties?.amsId">
+
+        <div class="stats" fxLayout="column" fxLayoutAlign="center center" fxFlex="50"  fxFlexOrder="-1">
+          <span class="stats__output">
+            {{device.properties?.adsPort || 'NA'}}
+          </span>
+          <span i18n="device property">
+            ADS Port
+          </span>
+        </div>
+
+        <div class="stats" fxLayout="column" fxLayoutAlign="center center" fxFlex="50"  fxFlexOrder="-1">
+          <span class="stats__output">
+            {{device.properties?.amsId || 'NA'}}
+          </span>
+          <span i18n="device property">
+            AMS ID
+          </span>
+        </div>
+
+        <span fxFlex></span>
+
+      </div>
+    <div class="stats-row device-card__row" fxLayout="row" *ngIf="device.driver.interfaceType === 0">
+
+      <div class="stats" fxLayout="column" fxLayoutAlign="center center" fxFlex="33"  fxFlexOrder="-1">
+        <span class="stats__output">
+          {{device.properties?.baudRate || 'NA'}}
+        </span>
+        <span i18n="device property">
+          Baudrate
+        </span>
+      </div>
+
+      <div  class="stats" fxLayout="column" fxLayoutAlign="center center" fxFlex="33"  fxFlexOrder="-1">
+        <span class="stats__output">
+          {{device.properties?.dataBits || 'NA'}}
+        </span>
+        <span i18n="device property">
+          Databits
+        </span>
+      </div>
+
+      <div  class="stats" fxLayout="column" fxLayoutAlign="center center" fxFlex="33"  fxFlexOrder="-1">
+        <span class="stats__output">
+          {{device.properties?.stopBits || 'NA'}}
+        </span>
+        <span i18n="device property">
+          Stopbits
+        </span>
+      </div>
+    </div>
+
+    <!-- First Row  -->
+    <div class="device-card__row" fxLayout="row" *ngIf="device.driver.interfaceType === 0">
+
+      <div class="stats" fxLayout="column" fxLayoutAlign="center center" fxFlex="33"  fxFlexOrder="-1">
+        <span class="stats__output">
+          {{ parity || 'NA'}}
+        </span>
+        <span i18n="device property">
+          Parity
+        </span>
+      </div>
+
+      <div class="stats" fxLayout="column" fxLayoutAlign="center center" fxFlex="33"  fxFlexOrder="-1">
+        <span class="stats__output">
+          {{device.properties?.stationId || 'NA'}}
+        </span>
+        <span i18n="device property">
+          Station ID
+        </span>
+      </div>
+
+
+    </div>
+    <!-- Second Row  -->
+  </mat-card-content>
+  <mat-card-actions  fxLayout="row" fxLayoutAlign="space-between">
+
+    <button
+      *ngIf="allowedRole"
+      mat-button mat-icon-button
+      matTooltip="Refresh Device"
+      (click)="refresh.emit(device)"
+      [disabled]="disabledLoading | async"
+      i18n-matTooltip="tooltip refresh device"
+      >
+    <mat-icon>
+      refresh
+    </mat-icon>
+    </button>
+
+    <button
+      *ngIf="allowedRole"
+      mat-button mat-icon-button
+      matTooltip="Edit Device Connection"
+      (click)="edit.emit(device)"
+      [disabled]="disabledLoading | async"
+      i18n-matTooltip="edit device tooltip"
+      >
+      <mat-icon>
+        edit
+      </mat-icon>
+    </button>
+
+    <button
+      *ngIf="allowedRole"
+      mat-button mat-icon-button
+      matTooltip="Disconnect Device"
+      i18n-matTooltip="trash can tooltip on device"
+      (click)="delete.emit(device)"
+      [disabled]="disabledLoading | async">
+      <mat-icon>
+        delete
+      </mat-icon>
+    </button>
+
+  </mat-card-actions>
+</mat-card>

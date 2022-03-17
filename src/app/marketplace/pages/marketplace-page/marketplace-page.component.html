@@ -1,0 +1,94 @@
+<div class="container">
+  <div class="content" fxLayout="column" fxLayoutAlign="start">
+    <mat-card class="filter" loopCard>
+      <mat-card-title>
+        <h2 class="mat-title" i18n> {{currentMarketplace.name}} </h2>
+        <h2 *ngIf="noMarketplaces && noApps" i18n>Marketplace</h2>
+      </mat-card-title>
+      <mat-card-content fxLayout="column nowrap">
+        <div class="search-input">
+          <mat-form-field fxFlex>
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput placeholder="Filter Apps" #search (keyup)="0" i18n-placeholder>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+          <button matTooltip="Change Marketplace" loopButton loopClearButton mat-button [matMenuTriggerFor]="menu"
+            [disabled]="noMarketplaces && noApps" i18n i18n-matTooltip>
+            Marketplace List
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let marketplace of marketplaces" (click)="setMarketplace(marketplace)">
+              <span class="mat-caption">{{marketplace.name}}</span>
+              <mat-icon>{{ marketplace.private ? 'lock_outline': 'lock_open'}}</mat-icon>
+            </button>
+          </mat-menu>
+          <button matTooltip="Sync Marketplace" loopButton loopClearButton mat-button [disabled]="noMarketplaces" i18n
+            i18n-matTooltip (click)="syncMarketplace()">
+            Sync Marketplace
+          </button>
+          <span fxFlex></span>
+          <mat-button-toggle-group [value]="appView" (change)="toggleView()" [disabled]="noMarketplaces && noApps">
+            <mat-button-toggle loopButton loopClearButton value="cards">
+              <mat-icon>view_module</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle loopButton loopClearButton value="list">
+              <mat-icon>view_headline</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <!-- Filter card  -->
+    <mat-card *ngIf="noApps" fxLayout="column" loopCard>
+      <mat-card-content>
+        <h3 i18n>There are no apps avaliable. </h3>
+        <span *ngIf="noMarketplaces" i18n>
+          To add apps please add a marketplace in the configure <a href="Javascript:void(0);" (click)="redirectConfig()">
+            marketplace tab </a>
+        </span>
+      </mat-card-content>
+    </mat-card>
+    <div *ngIf="appView ==='cards'" fxLayoutAlign="center" fxLayout="row wrap">
+
+      <ng-container *ngFor="let app of (apps | searchFilter: search.value : ['image', 'id'] )">
+
+        <!-- <loop-marketplace-app
+          class="marketplace-app"
+          fxFlex="25"
+          fxFlex.lt-md="50"
+          fxFlex.lt-sm="100"
+          [app]="app"
+          (onClick)="appDetails(app)"
+
+          >
+        </loop-marketplace-app> -->
+        <loop-marketplace-app class="marketplace-app" [app]="app" (onClick)="appDetails(app)">
+        </loop-marketplace-app>
+
+      </ng-container>
+      <!-- End of Card App list  -->
+    </div>
+    <mat-card *ngIf="appView ==='list' " loopCard loopMaterialCard fxFlex class="list-app-card">
+      <mat-card-header>
+        <mat-card-title>
+          <h3 i18n>Apps</h3>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <div *ngFor="let app of (apps | searchFilter: search.value )">
+            <mat-list-item class="app-list-item " (click)="appDetails(app)">
+              <!-- <img matListAvatar src="{{app.image}}" alt=""> -->
+              <h3 matLine> <strong>{{app.name}}</strong></h3>
+              <p matLine>{{app.description}}</p>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+          </div>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div> <!-- primary content -->
+</div>

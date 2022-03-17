@@ -1,0 +1,21 @@
+.form{
+   min-width: 450px;
+}
+
+mat-dialog-container {
+    min-width: 500px;
+}
+#user-data-table {
+    min-width: 600px;
+}
+.mat-chip {
+    padding: 4px 6px 4px 6px !important;
+}
+
+.mat-column-actions {
+  flex: none;
+}
+
+.mat-column-actions {
+  width: 40px;
+}

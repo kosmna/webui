@@ -1,0 +1,26 @@
+.center-block {
+  margin: auto;
+}
+
+.mat-column-actions {
+  flex: none;
+  width: 40px;
+}
+
+.mat-column-topicStatus {
+  flex: none;
+  width: 100px;
+}
+
+/* #raw-sub-data-table {
+  min-width: 1000px;
+} */
+
+#raw-sub-data-table mat-cell:nth-child(n+1):nth-child(-n+2),
+#raw-sub-data-table mat-header-cell:nth-child(n+1):nth-child(-n+2) {
+  padding-right: 5px;
+}
+
+mat-cell.wrap-cells {
+  padding-right: 5px;
+}

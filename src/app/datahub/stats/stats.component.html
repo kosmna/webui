@@ -1,0 +1,87 @@
+<div class="content" fxLayoutAlign="center">
+
+  <div class="content__inner" fxFlex fxLayout="column" fxLayoutGap="10px">
+
+    <div class="content__widget-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between">
+
+
+      <loop-number-card fxFlex.lt-md [input]="totalStats.dataVolumeKb" icon="data_usage" title="Total Data Volume"
+        i18n-title memoryUnit="true">
+      </loop-number-card>
+
+      <loop-number-card fxFlex.lt-md [input]="totalStats.numMessages" icon="message" title="Total Number of Messages"
+        i18n-title>
+      </loop-number-card>
+
+      <loop-number-card fxFlex.lt-md [input]="totalStats.numTopics" icon="share" title="Total Number of Topics"
+        i18n-title>
+      </loop-number-card>
+
+    </div>
+
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-card-title>
+          <h2 class="mat-title" i18n="title" i18n> Topics </h2>
+        </mat-card-title>
+
+        <!-- <mat-card-subtitle class="title" i18n>Topics</mat-card-subtitle> -->
+        <span fxFlex></span>
+        <button mat-icon-button [matMenuTriggerFor]="moreMenu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #moreMenu="matMenu">
+          <button *ngIf="canAccess" mat-menu-item (click)="resetStats()" i18n>
+            <mat-icon>sync</mat-icon>
+            Reset Stats
+          </button>
+          <button mat-menu-item (click)="showSearch = !showSearch" i18n>
+            <mat-icon>search</mat-icon>
+            Search Topics
+          </button>
+        </mat-menu>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxLayout="row" fxLayoutAlign="end end">
+          <mat-form-field *ngIf="showSearch" fxFlex>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+          </mat-form-field>
+        </div>
+
+        <mat-table #table [dataSource]="dataSource" [fxHide]="dataSource.data.length === 0">
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef i18n fxFlex="50"> Name </mat-header-cell>
+            <mat-cell *matCellDef="let row" fxFlex="50"> {{row.name}} </mat-cell>
+          </ng-container>
+
+          <!-- Number of Messages Column -->
+          <ng-container matColumnDef="numMessages">
+            <mat-header-cell *matHeaderCellDef i18n> # Messages </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.numMessages}} </mat-cell>
+          </ng-container>
+
+          <!-- Volume data Column -->
+          <ng-container matColumnDef="dataVolumeKb">
+            <mat-header-cell *matHeaderCellDef i18n> Data Volume (MB) </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.dataVolumeKb | unitFormat:'M'}} </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator #paginator [class.hidden]="dataSource.data.length < paginator.pageSizeOptions[0]" [pageSize]="10"
+          [pageSizeOptions]="[10, 20, 50]">
+        </mat-paginator>
+
+        <div class="mat-title" [fxShow]="dataSource.data.length === 0" fxLayoutAlign="center center" i18n="no topics">
+          No topics.
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+</div>

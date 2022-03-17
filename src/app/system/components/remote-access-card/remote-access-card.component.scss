@@ -1,0 +1,85 @@
+@import 'variables';
+@import 'mixins';
+@import 'include-media';
+
+  
+  .stats {
+    height: 25px;
+    font-size: 14px;
+    @include e('output') {
+      color: $sub-header-text-color;
+      padding: 3px;
+
+      @include e('text') {
+        font-size: 16px;
+      }
+    }
+    
+    @include e('addr-list') {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+  }
+
+  .network-card {
+  
+    // width: 325px;
+    min-height: 288px;
+    margin: 10px;
+    
+    @include media('<651px') {
+      width: inherit;
+    }
+  
+    @include e('header') {
+      
+      @include m('enabled-top-border') {
+        border-top: 5px solid $enabled-color;
+      }
+      
+      @include m('disabled-top-border') {
+        border-top: 5px solid $disabled-color;
+      }
+      
+    }
+    
+  }
+  
+  .app-header {
+   margin-bottom: 5px;
+
+    @include e('title') {
+      overflow: hidden;
+      max-width: 200px;    
+      font-size: 20px;
+  
+      @include m('large-width-mobile') {
+  
+        @include media('<960px'){
+          max-width: 775px;
+        }
+      }
+    
+    }
+    
+    @include e('subtitle') {
+      color: $sub-header-text-color;
+      max-width: 275px;    
+  
+      @include m('large-width-mobile') {
+        
+        @include media('<960px') {
+          max-width: inherit;
+        }
+  
+      }
+    }
+    
+    @include e('text') {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  
+    }
+  }

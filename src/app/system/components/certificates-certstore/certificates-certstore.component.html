@@ -1,0 +1,79 @@
+<div class="content" fxLayout="row" fxLayoutAlign="center">
+  <div class="content__inner content__inner--mobile">
+    <mat-card loopCard loopMaterialCard>
+      <mat-card-header fxLayoutAlign="start center">
+        <mat-card-title>
+          <h2 class="mat-title" i18n="card title" i18n>Custom Certificates </h2>
+        </mat-card-title>
+        <span fxFlex></span>
+        <input #fileInput class="input-file" type="file" (change)="uploadFile($event)" [attr.accept]="accept"
+          [disabled]="disabled">
+        <button mat-icon-button (click)="fileInput.click()" matTooltip="Add Certificates" i18n-matTooltip>
+          <mat-icon class="mat-18">add_circle</mat-icon>
+        </button>
+        <span fxFlex="5px"></span>
+      </mat-card-header>
+      <mat-card-content *ngIf="dataSource.data.length !== 0">
+        <mat-table [dataSource]="dataSource">
+          <ng-container cdkColumnDef="valid">
+            <mat-header-cell *cdkHeaderCellDef i18n="column name in Custom Certificates"> </mat-header-cell>
+            <mat-cell *cdkCellDef="let row" [class.invalid]="!notBeforeDateCheck(row.notBefore)">
+              <loop-icon-date-checker [valid]="isCertificateValid(row)" [matTooltip]="isCertificateValid(row) ? 'Valid' : 'Invalid'"></loop-icon-date-checker>
+            </mat-cell>
+          </ng-container>
+          <ng-container cdkColumnDef="issuer">
+            <mat-header-cell *cdkHeaderCellDef i18n="column name in Custom Certificates"> Issuer </mat-header-cell>
+            <mat-cell *cdkCellDef="let row">
+              {{row.issuer}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="notBefore">
+            <mat-header-cell *cdkHeaderCellDef i18n="column name in Custom Certificates"> Not Before </mat-header-cell>
+            <mat-cell *cdkCellDef="let row" [class.invalid]="!notBeforeDateCheck(row.notBefore)"> {{row.notBefore}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="notAfter">
+            <mat-header-cell *cdkHeaderCellDef i18n="column name in Custom Certificates"> Not After </mat-header-cell>
+            <mat-cell *cdkCellDef="let row" [class.invalid]="!notAfterDateCheck(row.notAfter)"> {{row.notAfter}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container cdkColumnDef="subject">
+            <mat-header-cell *cdkHeaderCellDef i18n="column name in Custom Certificates">Subject</mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> {{row.subject}} </mat-cell>
+          </ng-container>
+
+
+          <ng-container cdkColumnDef="actions">
+            <mat-header-cell *cdkHeaderCellDef class="action-header" i18n="column name in Custom Certificates" fxLayout="row"
+              fxLayoutAlign="end end"></mat-header-cell>
+            <mat-cell *cdkCellDef="let row" fxLayout="row" fxLayoutAlign="end end">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="removeFile(row.id)">
+                  <mat-icon>delete</mat-icon>
+                  <span i18n>Remove Certificate</span>
+                </button>
+                <button mat-menu-item (click)="moreDetails(row.id)">
+                  <mat-icon>remove_red_eye</mat-icon>
+                  <span i18n>Show Details</span>
+                </button>
+              </mat-menu>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *cdkHeaderRowDef="columnsDef"></mat-header-row>
+          <mat-row *cdkRowDef="let row; columns: columnsDef;"></mat-row>
+
+        </mat-table>
+      </mat-card-content>
+      <mat-card-content fxLayout="row" fxLayoutAlign="center center" *ngIf="dataSource.data.length === 0">
+        <h3 class="mat-title" i18n>No custom certificates added</h3>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

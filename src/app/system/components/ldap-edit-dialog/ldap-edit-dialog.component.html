@@ -1,0 +1,170 @@
+  <h2 matDialogTitle>
+    <ng-container [ngSwitch]="isNewProvider">
+      <span *ngSwitchCase="true" i18n>Add Provider</span>
+      <span *ngSwitchCase="false" i18n>Update Provider</span>
+    </ng-container>
+
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="providerForm">
+      <mat-vertical-stepper  #linearVerticalStepper="matVerticalStepper"  formArrayName="formArray" linear="false">
+        <mat-step label="Generic"  formGroupName="0" [stepControl]="formArray?.get([0])">
+          <div fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+          
+            <mat-form-field fxFlex="1 1 100%">
+              <input fxFlex="1 1 100%" matInput formControlName="name" type="text" i18n-placeholder placeholder="Name">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="1 1 100%">
+              <mat-select matInput fxFlex="1 1 100%" formControlName="type" i18n-placeholder placeholder="Type">
+                <mat-option *ngFor="let type of types" [value]="type">{{ type }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+
+              <button mat-stroked-button color="primary" matStepperNext type="button" i18n>Next</button>
+          </div>
+        </mat-step>
+
+        <mat-step label="Connection" formGroupName="1" [stepControl]="formArray?.get([1])">
+          <div fxLayout="column" fxLayoutGap="10px">
+
+            <div fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="host" type="text" i18n-placeholder placeholder="Host">
+              </mat-form-field>
+
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="port" type="number" i18n-placeholder placeholder="Port">
+              </mat-form-field>
+            </div>
+
+
+            <mat-checkbox formControlName="tls" i18n>Use TLS</mat-checkbox>
+
+            <mat-form-field fxFlex="1 1 100%">
+              <textarea matInput formControlName="tlsRootCA" rows="6" i18n-placeholder placeholder="TLS Root CA"></textarea>
+            </mat-form-field>
+
+            <div fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="bindDN" type="text" i18n-placeholder placeholder="Bind DN">
+              </mat-form-field>
+
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="bindDNPassword" type="password" i18n-placeholder placeholder="Bind DN Password">
+              </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <button mat-stroked-button color="primary"  matStepperPrevious  type="button" i18n>Back</button>
+
+                <button mat-stroked-button color="primary" matStepperNext type="button" i18n>Next</button>
+            </div>
+          </div>
+        </mat-step>
+
+        <mat-step label="User" formGroupName="2" [stepControl]="formArray?.get([2])">
+          <div fxLayout="column" fxLayoutGap="10px">
+
+            <div fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="userSearchBaseDN" type="text" i18n-placeholder placeholder="User Search Base DN">
+              </mat-form-field>
+
+              <mat-form-field fxFlex="1 1 100%">
+                <mat-select matInput fxFlex="1 1 100%" formControlName="userSearchScope" i18n-placeholder placeholder="Search Scope">
+                  <mat-option *ngFor="let userScope of searchScopes" [value]="userScope">{{ userScope }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+
+            <mat-form-field fxFlex="1 1 100%">
+              <input matInput formControlName="userFilter" type="text" i18n-placeholder placeholder="User Search Filter">
+            </mat-form-field>
+
+            <div fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="userAttrID" type="text" i18n-placeholder placeholder="Attribute for Unique UserID">
+              </mat-form-field>
+
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="userAttrUsername" type="text" i18n-placeholder placeholder="Attribute for Username(for logging in)">
+              </mat-form-field>
+            </div>
+            <div fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="userAttrFirstName" type="text" i18n-placeholder placeholder="First Name">
+              </mat-form-field>
+
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="userAttrLastName" type="text" i18n-placeholder placeholder="Last Name">
+              </mat-form-field>
+
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <button mat-stroked-button color="primary"  matStepperPrevious  type="button" i18n>Back</button>
+
+                <button mat-stroked-button color="primary" matStepperNext type="button" i18n>Next</button>
+            </div>
+          </div>
+        </mat-step>
+
+        <mat-step label="Groups"  formGroupName="3" [stepControl]="formArray?.get([3])">
+          <div fxLayout="column" fxLayoutGap="10px">
+
+            <div fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="groupSearchBaseDN" type="text" i18n-placeholder placeholder="Group Search Base DN">
+              </mat-form-field>
+
+              <mat-form-field fxFlex="1 1 100%">
+                <mat-select matInput fxFlex="1 1 100%" formControlName="groupSearchScope" i18n-placeholder placeholder="Search Scope">
+                  <mat-option *ngFor="let groupScope of searchScopes" [value]="groupScope">{{ groupScope }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+
+            <mat-form-field fxFlex="1 1 100%">
+              <input matInput formControlName="groupFilter" type="text" i18n-placeholder placeholder="Group Search Filter">
+            </mat-form-field>
+
+            <div fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="groupAttrName" type="text" i18n-placeholder placeholder="Group Name Attribute">
+              </mat-form-field>
+
+              <mat-form-field fxFlex="1 1 100%">
+                <input matInput formControlName="groupAttrGroup" type="text" i18n-placeholder placeholder="Group Membership Attribute">
+              </mat-form-field>
+            </div>
+
+            <mat-form-field fxFlex="1 1 100%">
+              <input matInput formControlName="groupAttrUser" type="text" i18n-placeholder placeholder="Member Value Type">
+            </mat-form-field>
+            <div fxLayout="row" fxLayoutGap="10px">
+                <button mat-stroked-button color="primary"  matStepperPrevious  type="button" i18n>Back</button>
+            </div>
+          </div>
+        </mat-step>
+      </mat-vertical-stepper>
+    </form>
+  </mat-dialog-content>
+
+
+  <mat-dialog-actions fxLayoutGap="10px">
+    <button mat-stroked-button type="submit" (click)="submitProvider()" [disabled]="!providerForm.valid"> 
+      <ng-container [ngSwitch]="isNewProvider">
+        <span *ngSwitchCase="true" i18n>Create</span>
+        <span *ngSwitchCase="false" i18n>Update</span>
+      </ng-container>
+    </button>
+    <button mat-stroked-button color="warn" type="button" [matDialogClose]="false" i18n>Cancel</button>
+  </mat-dialog-actions>
+
